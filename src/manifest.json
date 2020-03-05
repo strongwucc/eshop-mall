@@ -1,5 +1,5 @@
 {
-    "name" : "电商模板 更新下单流程、分类、列表",
+    "name" : "eshop mall B2C 商城",
     "appid" : "",
     "description" : "",
     "versionName" : "1.0.0",
@@ -60,5 +60,14 @@
         "setting" : {
             "urlCheck" : true
         }
+    },
+    /* h5配置 */
+    "h5": {
+        "template": "../public/index.html",
+        "router" : {
+            "mode" : "hash",
+            "base" : "/h5/"
+        },
+        "publicPath": ""
     }
 }
