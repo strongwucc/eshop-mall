@@ -104,7 +104,7 @@
 	}
 	.left-aside {
 		flex-shrink: 0;
-		width: 200upx;
+		width: 200rpx;
 		height: 100%;
 		background-color: #fff;
 	}
@@ -113,8 +113,8 @@
 		align-items: center;
 		justify-content: center;
 		width: 100%;
-		height: 100upx;
-		font-size: 28upx;
+		height: 100rpx;
+		font-size: 28rpx;
 		color: $font-color-base;
 		position: relative;
 		&.active{
@@ -126,8 +126,8 @@
 				left: 0;
 				top: 50%;
 				transform: translateY(-50%);
-				height: 36upx;
-				width: 8upx;
+				height: 36rpx;
+				width: 8rpx;
 				background-color: $base-color;
 				border-radius: 0 4px 4px 0;
 				opacity: .8;
@@ -138,14 +138,14 @@
 	.right-aside{
 		flex: 1;
 		overflow: hidden;
-		padding-left: 20upx;
+		padding-left: 20rpx;
 	}
 	.s-item{
 		display: flex;
 		align-items: center;
-		height: 70upx;
-		padding-top: 8upx;
-		font-size: 28upx;
+		height: 70rpx;
+		padding-top: 8rpx;
+		font-size: 28rpx;
 		color: $font-color-dark;
 	}
 	.t-list{
@@ -153,7 +153,7 @@
 		flex-wrap: wrap;
 		width: 100%;
 		background: #fff;
-		padding-top: 12upx;
+		padding-top: 12rpx;
 		&:after{
 			content: '';
 			flex: 99;
@@ -166,14 +166,14 @@
 		justify-content: center;
 		align-items: center;
 		flex-direction: column;
-		width: 176upx;
-		font-size: 26upx;
+		width: 176rpx;
+		font-size: 26rpx;
 		color: #666;
-		padding-bottom: 20upx;
+		padding-bottom: 20rpx;
 		
 		image{
-			width: 140upx;
-			height: 140upx;
+			width: 140rpx;
+			height: 140rpx;
 		}
 	}
 </style>

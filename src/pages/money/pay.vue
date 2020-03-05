@@ -83,44 +83,44 @@
 
 	.price-box {
 		background-color: #fff;
-		height: 265upx;
+		height: 265rpx;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		font-size: 28upx;
+		font-size: 28rpx;
 		color: #909399;
 
 		.price{
-			font-size: 50upx;
+			font-size: 50rpx;
 			color: #303133;
-			margin-top: 12upx;
+			margin-top: 12rpx;
 			&:before{
 				content: '￥';
-				font-size: 40upx;
+				font-size: 40rpx;
 			}
 		}
 	}
 
 	.pay-type-list {
-		margin-top: 20upx;
+		margin-top: 20rpx;
 		background-color: #fff;
-		padding-left: 60upx;
+		padding-left: 60rpx;
 		
 		.type-item{
-			height: 120upx;
-			padding: 20upx 0;
+			height: 120rpx;
+			padding: 20rpx 0;
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			padding-right: 60upx;
-			font-size: 30upx;
+			padding-right: 60rpx;
+			font-size: 30rpx;
 			position:relative;
 		}
 		
 		.icon{
-			width: 100upx;
-			font-size: 52upx;
+			width: 100rpx;
+			font-size: 52rpx;
 		}
 		.icon-erjiye-yucunkuan {
 			color: #fe8e2e;
@@ -134,7 +134,7 @@
 		.tit{
 			font-size: $font-lg;
 			color: $font-color-dark;
-			margin-bottom: 4upx;
+			margin-bottom: 4rpx;
 		}
 		.con{
 			flex: 1;
@@ -148,13 +148,13 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 630upx;
-		height: 80upx;
-		margin: 80upx auto 30upx;
+		width: 630rpx;
+		height: 80rpx;
+		margin: 80rpx auto 30rpx;
 		font-size: $font-lg;
 		color: #fff;
 		background-color: $base-color;
-		border-radius: 10upx;
+		border-radius: 10rpx;
 		box-shadow: 1px 2px 5px rgba(219, 63, 96, 0.4);
 	}
 

@@ -68,7 +68,7 @@
 <style lang='scss'>
 	page {
 		background-color: #f7f7f7;
-		padding-bottom: 30upx;
+		padding-bottom: 30rpx;
 	}
 
 	.notice-item {
@@ -81,30 +81,30 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		height: 80upx;
-		padding-top: 10upx;
-		font-size: 26upx;
+		height: 80rpx;
+		padding-top: 10rpx;
+		font-size: 26rpx;
 		color: #7d7d7d;
 	}
 
 	.content {
-		width: 710upx;
-		padding: 0 24upx;
+		width: 710rpx;
+		padding: 0 24rpx;
 		background-color: #fff;
-		border-radius: 4upx;
+		border-radius: 4rpx;
 	}
 
 	.title {
 		display: flex;
 		align-items: center;
-		height: 90upx;
-		font-size: 32upx;
+		height: 90rpx;
+		font-size: 32rpx;
 		color: #303133;
 	}
 
 	.img-wrapper {
 		width: 100%;
-		height: 260upx;
+		height: 260rpx;
 		position: relative;
 	}
 
@@ -112,7 +112,7 @@
 		display: block;
 		width: 100%;
 		height: 100%;
-		border-radius: 6upx;
+		border-radius: 6rpx;
 	}
 
 	.cover {
@@ -125,29 +125,29 @@
 		width: 100%;
 		height: 100%;
 		background-color: rgba(0, 0, 0, .5);
-		font-size: 36upx;
+		font-size: 36rpx;
 		color: #fff;
 	}
 
 	.introduce {
 		display: inline-block;
-		padding: 16upx 0;
-		font-size: 28upx;
+		padding: 16rpx 0;
+		font-size: 28rpx;
 		color: #606266;
-		line-height: 38upx;
+		line-height: 38rpx;
 	}
 
 	.bot {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		height: 80upx;
-		font-size: 24upx;
+		height: 80rpx;
+		font-size: 24rpx;
 		color: #707070;
 		position: relative;
 	}
 
 	.more-icon {
-		font-size: 32upx;
+		font-size: 32rpx;
 	}
 </style>

@@ -211,7 +211,7 @@
 		background: $page-color-base;
 	}
 	.content{
-		padding-top: 96upx;
+		padding-top: 96rpx;
 	}
 
 	.navbar{
@@ -220,9 +220,9 @@
 		top: var(--window-top);
 		display: flex;
 		width: 100%;
-		height: 80upx;
+		height: 80rpx;
 		background: #fff;
-		box-shadow: 0 2upx 10upx rgba(0,0,0,.06);
+		box-shadow: 0 2rpx 10rpx rgba(0,0,0,.06);
 		z-index: 10;
 		.nav-item{
 			flex: 1;
@@ -230,7 +230,7 @@
 			justify-content: center;
 			align-items: center;
 			height: 100%;
-			font-size: 30upx;
+			font-size: 30rpx;
 			color: $font-color-dark;
 			position: relative;
 			&.current{
@@ -241,9 +241,9 @@
 					left: 50%;
 					bottom: 0;
 					transform: translateX(-50%);
-					width: 120upx;
+					width: 120rpx;
 					height: 0;
-					border-bottom: 4upx solid $base-color;
+					border-bottom: 4rpx solid $base-color;
 				}
 			}
 		}
@@ -254,11 +254,11 @@
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				width: 30upx;
-				height: 14upx;
+				width: 30rpx;
+				height: 14rpx;
 				line-height: 1;
-				margin-left: 4upx;
-				font-size: 26upx;
+				margin-left: 4rpx;
+				font-size: 26rpx;
 				color: #888;
 				&.active{
 					color: $base-color;
@@ -273,9 +273,9 @@
 			justify-content: center;
 			align-items: center;
 			height: 100%;
-			width: 80upx;
+			width: 80rpx;
 			position: relative;
-			font-size: 44upx;
+			font-size: 44rpx;
 			&:after{
 				content: '';
 				position: absolute;
@@ -284,7 +284,7 @@
 				transform: translateY(-50%);
 				border-left: 1px solid #ddd;
 				width: 0;
-				height: 36upx;
+				height: 36rpx;
 			}
 		}
 	}
@@ -301,7 +301,7 @@
 		transition: .3s;
 		
 		.cate-content{
-			width: 630upx;
+			width: 630rpx;
 			height: 100%;
 			background: #fff;
 			float:right;
@@ -326,16 +326,16 @@
 		.cate-item{
 			display: flex;
 			align-items: center;
-			height: 90upx;
-			padding-left: 30upx;
- 			font-size: 28upx;
+			height: 90rpx;
+			padding-left: 30rpx;
+ 			font-size: 28rpx;
 			color: #555;
 			position: relative;
 		}
 		.two{
-			height: 64upx;
+			height: 64rpx;
 			color: #303133;
-			font-size: 30upx;
+			font-size: 30rpx;
 			background: #f8f8f8;
 		}
 		.active{
@@ -347,20 +347,20 @@
 	.goods-list{
 		display:flex;
 		flex-wrap:wrap;
-		padding: 0 30upx;
+		padding: 0 30rpx;
 		background: #fff;
 		.goods-item{
 			display:flex;
 			flex-direction: column;
 			width: 48%;
-			padding-bottom: 40upx;
+			padding-bottom: 40rpx;
 			&:nth-child(2n+1){
 				margin-right: 4%;
 			}
 		}
 		.image-wrapper{
 			width: 100%;
-			height: 330upx;
+			height: 330rpx;
 			border-radius: 3px;
 			overflow: hidden;
 			image{
@@ -372,14 +372,14 @@
 		.title{
 			font-size: $font-lg;
 			color: $font-color-dark;
-			line-height: 80upx;
+			line-height: 80rpx;
 		}
 		.price-box{
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			padding-right: 10upx;
-			font-size: 24upx;
+			padding-right: 10rpx;
+			font-size: 24rpx;
 			color: $font-color-light;
 		}
 		.price{
@@ -388,7 +388,7 @@
 			line-height: 1;
 			&:before{
 				content: '￥';
-				font-size: 26upx;
+				font-size: 26rpx;
 			}
 		}
 	}

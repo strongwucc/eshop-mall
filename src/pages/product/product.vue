@@ -347,14 +347,14 @@
 <style lang='scss'>
 	page{
 		background: $page-color-base;
-		padding-bottom: 160upx;
+		padding-bottom: 160rpx;
 	}
 	.icon-you{
-		font-size: $font-base + 2upx;
+		font-size: $font-base + 2rpx;
 		color: #888;
 	}
 	.carousel {
-		height: 722upx;
+		height: 722rpx;
 		position:relative;
 		swiper{
 			height: 100%;
@@ -367,7 +367,7 @@
 			display: flex;
 			justify-content: center;
 			align-content: center;
-			height: 750upx;
+			height: 750rpx;
 			overflow: hidden;
 			image {
 				width: 100%;
@@ -380,44 +380,44 @@
 	/* 标题简介 */
 	.introduce-section{
 		background: #fff;
-		padding: 20upx 30upx;
+		padding: 20rpx 30rpx;
 		
 		.title{
-			font-size: 32upx;
+			font-size: 32rpx;
 			color: $font-color-dark;
-			height: 50upx;
-			line-height: 50upx;
+			height: 50rpx;
+			line-height: 50rpx;
 		}
 		.price-box{
 			display:flex;
 			align-items:baseline;
-			height: 64upx;
-			padding: 10upx 0;
-			font-size: 26upx;
+			height: 64rpx;
+			padding: 10rpx 0;
+			font-size: 26rpx;
 			color:$uni-color-primary;
 		}
 		.price{
-			font-size: $font-lg + 2upx;
+			font-size: $font-lg + 2rpx;
 		}
 		.m-price{
-			margin:0 12upx;
+			margin:0 12rpx;
 			color: $font-color-light;
 			text-decoration: line-through;
 		}
 		.coupon-tip{
 			align-items: center;
-			padding: 4upx 10upx;
+			padding: 4rpx 10rpx;
 			background: $uni-color-primary;
 			font-size: $font-sm;
 			color: #fff;
-			border-radius: 6upx;
+			border-radius: 6rpx;
 			line-height: 1;
-			transform: translateY(-4upx); 
+			transform: translateY(-4rpx); 
 		}
 		.bot-row{
 			display:flex;
 			align-items:center;
-			height: 50upx;
+			height: 50rpx;
 			font-size: $font-sm;
 			color: $font-color-light;
 			text{
@@ -431,26 +431,26 @@
 		align-items:center;
 		color: $font-color-base;
 		background: linear-gradient(to left, #fdf5f6, #fbebf6);
-		padding: 12upx 30upx;
+		padding: 12rpx 30rpx;
 		.share-icon{
 			display:flex;
 			align-items:center;
-			width: 70upx;
-			height: 30upx;
+			width: 70rpx;
+			height: 30rpx;
 			line-height: 1;
 			border: 1px solid $uni-color-primary;
-			border-radius: 4upx;
+			border-radius: 4rpx;
 			position:relative;
 			overflow: hidden;
-			font-size: 22upx;
+			font-size: 22rpx;
 			color: $uni-color-primary;
 			&:after{
 				content: '';
-				width: 50upx;
-				height: 50upx;
+				width: 50rpx;
+				height: 50rpx;
 				border-radius: 50%;
-				left: -20upx;
-				top: -12upx;
+				left: -20rpx;
+				top: -12rpx;
 				position:absolute;
 				background: $uni-color-primary;
 			}
@@ -458,19 +458,19 @@
 		.icon-xingxing{
 			position:relative;
 			z-index: 1;
-			font-size: 24upx;
-			margin-left: 2upx;
-			margin-right: 10upx;
+			font-size: 24rpx;
+			margin-left: 2rpx;
+			margin-right: 10rpx;
 			color: #fff;
 			line-height: 1;
 		}
 		.tit{
 			font-size: $font-base;
-			margin-left:10upx;
+			margin-left:10rpx;
 		}
 		.icon-bangzhu1{
-			padding: 10upx;
-			font-size: 30upx;
+			padding: 10rpx;
+			font-size: 30rpx;
 			line-height: 1;
 		}
 		.share-btn{
@@ -481,38 +481,38 @@
 		}
 		.icon-you{
 			font-size: $font-sm;
-			margin-left: 4upx;
+			margin-left: 4rpx;
 			color: $uni-color-primary;
 		}
 	}
 	
 	.c-list{
-		font-size: $font-sm + 2upx;
+		font-size: $font-sm + 2rpx;
 		color: $font-color-base;
 		background: #fff;
 		.c-row{
 			display:flex;
 			align-items:center;
-			padding: 20upx 30upx;
+			padding: 20rpx 30rpx;
 			position:relative;
 		}
 		.tit{
-			width: 140upx;
+			width: 140rpx;
 		}
 		.con{
 			flex: 1;
 			color: $font-color-dark;
 			.selected-text{
-				margin-right: 10upx;
+				margin-right: 10rpx;
 			}
 		}
 		.bz-list{
-			height: 40upx;
-			font-size: $font-sm+2upx;
+			height: 40rpx;
+			font-size: $font-sm+2rpx;
 			color: $font-color-dark;
 			text{
 				display: inline-block;
-				margin-right: 30upx;
+				margin-right: 30rpx;
 			}
 		}
 		.con-list{
@@ -520,7 +520,7 @@
 			display:flex;
 			flex-direction: column;
 			color: $font-color-dark;
-			line-height: 40upx;
+			line-height: 40rpx;
 		}
 		.red{
 			color: $uni-color-primary;
@@ -531,36 +531,36 @@
 	.eva-section{
 		display: flex;
 		flex-direction: column;
-		padding: 20upx 30upx;
+		padding: 20rpx 30rpx;
 		background: #fff;
-		margin-top: 16upx;
+		margin-top: 16rpx;
 		.e-header{
 			display: flex;
 			align-items: center;
-			height: 70upx;
-			font-size: $font-sm + 2upx;
+			height: 70rpx;
+			font-size: $font-sm + 2rpx;
 			color: $font-color-light;
 			.tit{
-				font-size: $font-base + 2upx;
+				font-size: $font-base + 2rpx;
 				color: $font-color-dark;
-				margin-right: 4upx;
+				margin-right: 4rpx;
 			}
 			.tip{
 				flex: 1;
 				text-align: right;
 			}
 			.icon-you{
-				margin-left: 10upx;
+				margin-left: 10rpx;
 			}
 		}
 	}
 	.eva-box{
 		display: flex;
-		padding: 20upx 0;
+		padding: 20rpx 0;
 		.portrait{
 			flex-shrink: 0;
-			width: 80upx;
-			height: 80upx;
+			width: 80rpx;
+			height: 80rpx;
 			border-radius: 100px;
 		}
 		.right{
@@ -569,11 +569,11 @@
 			flex-direction: column;
 			font-size: $font-base;
 			color: $font-color-base;
-			padding-left: 26upx;
+			padding-left: 26rpx;
 			.con{
 				font-size: $font-base;
 				color: $font-color-dark;
-				padding: 20upx 0;
+				padding: 20rpx 0;
 			}
 			.bot{
 				display: flex;
@@ -586,18 +586,18 @@
 	/*  详情 */
 	.detail-desc{
 		background: #fff;
-		margin-top: 16upx;
+		margin-top: 16rpx;
 		.d-header{
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			height: 80upx;
-			font-size: $font-base + 2upx;
+			height: 80rpx;
+			font-size: $font-base + 2rpx;
 			color: $font-color-dark;
 			position: relative;
 				
 			text{
-				padding: 0 20upx;
+				padding: 0 20rpx;
 				background: #fff;
 				position: relative;
 				z-index: 1;
@@ -607,7 +607,7 @@
 				left: 50%;
 				top: 50%;
 				transform: translateX(-50%);
-				width: 300upx;
+				width: 300rpx;
 				height: 0;
 				content: '';
 				border-bottom: 1px solid #ccc; 
@@ -617,43 +617,43 @@
 	
 	/* 规格选择弹窗 */
 	.attr-content{
-		padding: 10upx 30upx;
+		padding: 10rpx 30rpx;
 		.a-t{
 			display: flex;
 			image{
-				width: 170upx;
-				height: 170upx;
+				width: 170rpx;
+				height: 170rpx;
 				flex-shrink: 0;
-				margin-top: -40upx;
-				border-radius: 8upx;;
+				margin-top: -40rpx;
+				border-radius: 8rpx;;
 			}
 			.right{
 				display: flex;
 				flex-direction: column;
-				padding-left: 24upx;
-				font-size: $font-sm + 2upx;
+				padding-left: 24rpx;
+				font-size: $font-sm + 2rpx;
 				color: $font-color-base;
-				line-height: 42upx;
+				line-height: 42rpx;
 				.price{
 					font-size: $font-lg;
 					color: $uni-color-primary;
-					margin-bottom: 10upx;
+					margin-bottom: 10rpx;
 				}
 				.selected-text{
-					margin-right: 10upx;
+					margin-right: 10rpx;
 				}
 			}
 		}
 		.attr-list{
 			display: flex;
 			flex-direction: column;
-			font-size: $font-base + 2upx;
+			font-size: $font-base + 2rpx;
 			color: $font-color-base;
-			padding-top: 30upx;
-			padding-left: 10upx;
+			padding-top: 30rpx;
+			padding-left: 10rpx;
 		}
 		.item-list{
-			padding: 20upx 0 0;
+			padding: 20rpx 0 0;
 			display: flex;
 			flex-wrap: wrap;
 			text{
@@ -661,12 +661,12 @@
 				align-items: center;
 				justify-content: center;
 				background: #eee;
-				margin-right: 20upx;
-				margin-bottom: 20upx;
-				border-radius: 100upx;
-				min-width: 60upx;
-				height: 60upx;
-				padding: 0 20upx;
+				margin-right: 20rpx;
+				margin-bottom: 20rpx;
+				border-radius: 100rpx;
+				min-width: 60rpx;
+				height: 60rpx;
+				padding: 0 20rpx;
 				font-size: $font-base;
 				color: $font-color-dark;
 			}
@@ -720,16 +720,16 @@
 			bottom: 0;
 			width: 100%;
 			min-height: 40vh;
-			border-radius: 10upx 10upx 0 0;
+			border-radius: 10rpx 10rpx 0 0;
 			background-color: #fff;
 			.btn{
-				height: 66upx;
-				line-height: 66upx;
-				border-radius: 100upx;
+				height: 66rpx;
+				line-height: 66rpx;
+				border-radius: 100rpx;
 				background: $uni-color-primary;
-				font-size: $font-base + 2upx;
+				font-size: $font-base + 2rpx;
 				color: #fff;
-				margin: 30upx auto 20upx;
+				margin: 30rpx auto 20rpx;
 			}
 		}
 		@keyframes showPopup {
@@ -769,17 +769,17 @@
 	/* 底部操作菜单 */
 	.page-bottom{
 		position:fixed;
-		left: 30upx;
-		bottom:30upx;
+		left: 30rpx;
+		bottom:30rpx;
 		z-index: 95;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		width: 690upx;
-		height: 100upx;
+		width: 690rpx;
+		height: 100rpx;
 		background: rgba(255,255,255,.9);
-		box-shadow: 0 0 20upx 0 rgba(0,0,0,.5);
-		border-radius: 16upx;
+		box-shadow: 0 0 20rpx 0 rgba(0,0,0,.5);
+		border-radius: 16rpx;
 		
 		.p-b-btn{
 			display:flex;
@@ -788,33 +788,33 @@
 			justify-content: center;
 			font-size: $font-sm;
 			color: $font-color-base;
-			width: 96upx;
-			height: 80upx;
+			width: 96rpx;
+			height: 80rpx;
 			.yticon{
-				font-size: 40upx;
-				line-height: 48upx;
+				font-size: 40rpx;
+				line-height: 48rpx;
 				color: $font-color-light;
 			}
 			&.active, &.active .yticon{
 				color: $uni-color-primary;
 			}
 			.icon-fenxiang2{
-				font-size: 42upx;
-				transform: translateY(-2upx);
+				font-size: 42rpx;
+				transform: translateY(-2rpx);
 			}
 			.icon-shoucang{
-				font-size: 46upx;
+				font-size: 46rpx;
 			}
 		}
 		.action-btn-group{
 			display: flex;
-			height: 76upx;
+			height: 76rpx;
 			border-radius: 100px;
 			overflow: hidden;
-			box-shadow: 0 20upx 40upx -16upx #fa436a;
+			box-shadow: 0 20rpx 40rpx -16rpx #fa436a;
 			box-shadow: 1px 2px 5px rgba(219, 63, 96, 0.4);
 			background: linear-gradient(to right, #ffac30,#fa436a,#F56C6C);
-			margin-left: 20upx;
+			margin-left: 20rpx;
 			position:relative;
 			&:after{
 				content: '';
@@ -822,7 +822,7 @@
 				top: 50%;
 				right: 50%;
 				transform: translateY(-50%);
-				height: 28upx;
+				height: 28rpx;
 				width: 0;
 				border-right: 1px solid rgba(255,255,255,.5);
 			}
@@ -830,7 +830,7 @@
 				display:flex;
 				align-items: center;
 				justify-content: center;
-				width: 180upx;
+				width: 180rpx;
 				height: 100%;
 				font-size: $font-base ;
 				padding: 0;

@@ -206,12 +206,12 @@
 	  justify-content: space-around;
 	  align-content: center;
 	  background: #fff;
-	  border-radius: 10upx;
+	  border-radius: 10rpx;
 	}
 
 	.user-section{
-		height: 520upx;
-		padding: 100upx 30upx 0;
+		height: 520rpx;
+		padding: 100rpx 30rpx 0;
 		position:relative;
 		.bg{
 			position:absolute;
@@ -224,21 +224,21 @@
 		}
 	}
 	.user-info-box{
-		height: 180upx;
+		height: 180rpx;
 		display:flex;
 		align-items:center;
 		position:relative;
 		z-index: 1;
 		.portrait{
-			width: 130upx;
-			height: 130upx;
-			border:5upx solid #fff;
+			width: 130rpx;
+			height: 130rpx;
+			border:5rpx solid #fff;
 			border-radius: 50%;
 		}
 		.username{
-			font-size: $font-lg + 6upx;
+			font-size: $font-lg + 6rpx;
 			color: $font-color-dark;
-			margin-left: 20upx;
+			margin-left: 20rpx;
 		}
 	}
 
@@ -246,61 +246,61 @@
 		display:flex;
 		flex-direction: column;
 		color: #f7d680;
-		height: 240upx;
+		height: 240rpx;
 		background: linear-gradient(to left, rgba(0,0,0,.7), rgba(0,0,0,.8));
-		border-radius: 16upx 16upx 0 0;
+		border-radius: 16rpx 16rpx 0 0;
 		overflow: hidden;
 		position: relative;
-		padding: 20upx 24upx;
+		padding: 20rpx 24rpx;
 		.card-bg{
 			position:absolute;
-			top: 20upx;
+			top: 20rpx;
 			right: 0;
-			width: 380upx;
-			height: 260upx;
+			width: 380rpx;
+			height: 260rpx;
 		}
 		.b-btn{
 			position: absolute;
-			right: 20upx;
-			top: 16upx;
-			width: 132upx;
-			height: 40upx;
+			right: 20rpx;
+			top: 16rpx;
+			width: 132rpx;
+			height: 40rpx;
 			text-align: center;
-			line-height: 40upx;
-			font-size: 22upx;
+			line-height: 40rpx;
+			font-size: 22rpx;
 			color: #36343c;
 			border-radius: 20px;
 			background: linear-gradient(to left, #f9e6af, #ffd465);
 			z-index: 1;
 		}
 		.tit{
-			font-size: $font-base+2upx;
+			font-size: $font-base+2rpx;
 			color: #f7d680;
-			margin-bottom: 28upx;
+			margin-bottom: 28rpx;
 			.yticon{
 				color: #f6e5a3;
-				margin-right: 16upx;
+				margin-right: 16rpx;
 			}
 		}
 		.e-b{
 			font-size: $font-sm;
 			color: #d8cba9;
-			margin-top: 10upx;
+			margin-top: 10rpx;
 		}
 	}
 	.cover-container{
 		background: $page-color-base;
-		margin-top: -150upx;
-		padding: 0 30upx;
+		margin-top: -150rpx;
+		padding: 0 30rpx;
 		position:relative;
 		background: #f5f5f5;
-		padding-bottom: 20upx;
+		padding-bottom: 20rpx;
 		.arc{
 			position:absolute;
 			left: 0;
-			top: -34upx;
+			top: -34rpx;
 			width: 100%;
-			height: 36upx;
+			height: 36rpx;
 		}
 	}
 	.tj-sction{
@@ -308,65 +308,65 @@
 		.tj-item{
 			@extend %flex-center;
 			flex-direction: column;
-			height: 140upx;
+			height: 140rpx;
 			font-size: $font-sm;
 			color: #75787d;
 		}
 		.num{
 			font-size: $font-lg;
 			color: $font-color-dark;
-			margin-bottom: 8upx;
+			margin-bottom: 8rpx;
 		}
 	}
 	.order-section{
 		@extend %section;
-		padding: 28upx 0;
-		margin-top: 20upx;
+		padding: 28rpx 0;
+		margin-top: 20rpx;
 		.order-item{
 			@extend %flex-center;
-			width: 120upx;
-			height: 120upx;
-			border-radius: 10upx;
+			width: 120rpx;
+			height: 120rpx;
+			border-radius: 10rpx;
 			font-size: $font-sm;
 			color: $font-color-dark;
 		}
 		.yticon{
-			font-size: 48upx;
-			margin-bottom: 18upx;
+			font-size: 48rpx;
+			margin-bottom: 18rpx;
 			color: #fa436a;
 		}
 		.icon-shouhoutuikuan{
-			font-size:44upx;
+			font-size:44rpx;
 		}
 	}
 	.history-section{
-		padding: 30upx 0 0;
-		margin-top: 20upx;
+		padding: 30rpx 0 0;
+		margin-top: 20rpx;
 		background: #fff;
-		border-radius:10upx;
+		border-radius:10rpx;
 		.sec-header{
 			display:flex;
 			align-items: center;
 			font-size: $font-base;
 			color: $font-color-dark;
-			line-height: 40upx;
-			margin-left: 30upx;
+			line-height: 40rpx;
+			margin-left: 30rpx;
 			.yticon{
-				font-size: 44upx;
+				font-size: 44rpx;
 				color: #5eba8f;
-				margin-right: 16upx;
-				line-height: 40upx;
+				margin-right: 16rpx;
+				line-height: 40rpx;
 			}
 		}
 		.h-list{
 			white-space: nowrap;
-			padding: 30upx 30upx 0;
+			padding: 30rpx 30rpx 0;
 			image{
 				display:inline-block;
-				width: 160upx;
-				height: 160upx;
-				margin-right: 20upx;
-				border-radius: 10upx;
+				width: 160rpx;
+				height: 160rpx;
+				margin-right: 20rpx;
+				border-radius: 10rpx;
 			}
 		}
 	}

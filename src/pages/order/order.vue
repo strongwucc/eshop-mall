@@ -296,14 +296,14 @@
 	.order-item{
 		display: flex;
 		flex-direction: column;
-		padding-left: 30upx;
+		padding-left: 30rpx;
 		background: #fff;
-		margin-top: 16upx;
+		margin-top: 16rpx;
 		.i-top{
 			display: flex;
 			align-items: center;
-			height: 80upx;
-			padding-right:30upx;
+			height: 80rpx;
+			padding-right:30rpx;
 			font-size: $font-base;
 			color: $font-color-dark;
 			position: relative;
@@ -314,17 +314,17 @@
 				color: $base-color;
 			}
 			.del-btn{
-				padding: 10upx 0 10upx 36upx;
+				padding: 10rpx 0 10rpx 36rpx;
 				font-size: $font-lg;
 				color: $font-color-light;
 				position: relative;
 				&:after{
 					content: '';
 					width: 0;
-					height: 30upx;
+					height: 30rpx;
 					border-left: 1px solid $border-color-dark;
 					position: absolute;
-					left: 20upx;
+					left: 20rpx;
 					top: 50%;
 					transform: translateY(-50%);
 				}
@@ -332,14 +332,14 @@
 		}
 		/* 多条商品 */
 		.goods-box{
-			height: 160upx;
-			padding: 20upx 0;
+			height: 160rpx;
+			padding: 20rpx 0;
 			white-space: nowrap;
 			.goods-item{
-				width: 120upx;
-				height: 120upx;
+				width: 120rpx;
+				height: 120rpx;
 				display: inline-block;
-				margin-right: 24upx;
+				margin-right: 24rpx;
 			}
 			.goods-img{
 				display: block;
@@ -350,35 +350,35 @@
 		/* 单条商品 */
 		.goods-box-single{
 			display: flex;
-			padding: 20upx 0;
+			padding: 20rpx 0;
 			.goods-img{
 				display: block;
-				width: 120upx;
-				height: 120upx;
+				width: 120rpx;
+				height: 120rpx;
 			}
 			.right{
 				flex: 1;
 				display: flex;
 				flex-direction: column;
-				padding: 0 30upx 0 24upx;
+				padding: 0 30rpx 0 24rpx;
 				overflow: hidden;
 				.title{
-					font-size: $font-base + 2upx;
+					font-size: $font-base + 2rpx;
 					color: $font-color-dark;
 					line-height: 1;
 				}
 				.attr-box{
-					font-size: $font-sm + 2upx;
+					font-size: $font-sm + 2rpx;
 					color: $font-color-light;
-					padding: 10upx 12upx;
+					padding: 10rpx 12rpx;
 				}
 				.price{
-					font-size: $font-base + 2upx;
+					font-size: $font-base + 2rpx;
 					color: $font-color-dark;
 					&:before{
 						content: '￥';
 						font-size: $font-sm;
-						margin: 0 2upx 0 8upx;
+						margin: 0 2rpx 0 8rpx;
 					}
 				}
 			}
@@ -388,11 +388,11 @@
 			display: flex;
 			justify-content: flex-end;
 			align-items: baseline;
-			padding: 20upx 30upx;
-			font-size: $font-sm + 2upx;
+			padding: 20rpx 30rpx;
+			font-size: $font-sm + 2rpx;
 			color: $font-color-light;
 			.num{
-				margin: 0 8upx;
+				margin: 0 8rpx;
 				color: $font-color-dark;
 			}
 			.price{
@@ -401,7 +401,7 @@
 				&:before{
 					content: '￥';
 					font-size: $font-sm;
-					margin: 0 2upx 0 8upx;
+					margin: 0 2rpx 0 8rpx;
 				}
 			}
 		}
@@ -409,19 +409,19 @@
 			display: flex;
 			justify-content: flex-end;
 			align-items: center;
-			height: 100upx;
+			height: 100rpx;
 			position: relative;
-			padding-right: 30upx;
+			padding-right: 30rpx;
 		}
 		.action-btn{
-			width: 160upx;
-			height: 60upx;
+			width: 160rpx;
+			height: 60rpx;
 			margin: 0;
-			margin-left: 24upx;
+			margin-left: 24rpx;
 			padding: 0;
 			text-align: center;
-			line-height: 60upx;
-			font-size: $font-sm + 2upx;
+			line-height: 60rpx;
+			font-size: $font-sm + 2rpx;
 			color: $font-color-dark;
 			background: #fff;
 			border-radius: 100px;
@@ -443,13 +443,13 @@
 	.uni-load-more {
 		display: flex;
 		flex-direction: row;
-		height: 80upx;
+		height: 80rpx;
 		align-items: center;
 		justify-content: center
 	}
 	
 	.uni-load-more__text {
-		font-size: 28upx;
+		font-size: 28rpx;
 		color: #999
 	}
 	

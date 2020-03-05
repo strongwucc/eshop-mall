@@ -151,32 +151,32 @@ export default {
 
 <style lang="scss">
 	.upload-content{
-		padding:24upx 0 0 28upx;
+		padding:24rpx 0 0 28rpx;
 		background-color: #fff;
 		overflow:hidden;
 	}
 	.upload-item{
 		position: relative;
 		float:left;
-		width:150upx;
-		height:150upx;
-		margin-right:30upx;
-		margin-bottom:30upx;
+		width:150rpx;
+		height:150rpx;
+		margin-right:30rpx;
+		margin-bottom:30rpx;
 		&:nth-child(4n){
 			margin-right:0;
 		}
 		.upload-img{
 			width:100%;
 			height:100%;
-			border-radius:8upx;
+			border-radius:8rpx;
 		}
 		.upload-del-btn{
 			position: absolute;
-			right:-16upx;
-			top:-14upx;
-			width:36upx;
-			height:36upx;
-			border: 4upx solid #fff;
+			right:-16rpx;
+			top:-14rpx;
+			width:36rpx;
+			height:36rpx;
+			border: 4rpx solid #fff;
 			border-radius: 100px;
 		}
 		.upload-progress{
@@ -190,17 +190,17 @@ export default {
 			height:100%;
 			background-color: rgba(0,0,0,.4);
 			color:#fff;
-			font-size:24upx;
-			border-radius:8upx;
+			font-size:24rpx;
+			border-radius:8rpx;
 		}
 	}
 	.upload-add-btn {
 		position: relative;
 		float:left;
-		width: 150upx;
-		height: 150upx;
+		width: 150rpx;
+		height: 150rpx;
 		z-index: 99;
-		border-radius:8upx;
+		border-radius:8rpx;
 		background:#f9f9f9;
 		&:before,
 		&:after {
@@ -210,13 +210,13 @@ export default {
 			left: 50%;
 			-webkit-transform: translate(-50%, -50%);
 			transform: translate(-50%, -50%);
-			width: 4upx;
-			height: 60upx;
+			width: 4rpx;
+			height: 60rpx;
 			background-color: #d6d6d6;
 		}
 		&:after {
-			width: 60upx;
-			height: 4upx;
+			width: 60rpx;
+			height: 4rpx;
 		}
 		&:active {
 			background-color: #f7f7f7;

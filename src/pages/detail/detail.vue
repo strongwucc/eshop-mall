@@ -164,8 +164,8 @@
 	.scroll-view-wrapper{
 		display:flex;
 		align-items:center;
-		height: 90upx;
-		padding: 20upx 0 20upx 40upx;
+		height: 90rpx;
+		padding: 20rpx 0 20rpx 40rpx;
 		background: #fff;
 	}
 	.episode-panel {
@@ -173,8 +173,8 @@
 		width: 100%;
 		view {
 			display: inline-block;
-			margin-right: 30upx;
-			width: 56upx;
+			margin-right: 30rpx;
+			width: 56rpx;
 			font-size: $font-lg;
 			color: $font-color-base;
 			&.current{
@@ -186,53 +186,53 @@
 	.info {
 		display: flex;
 		align-items: center;
-		padding: 10upx 40upx;
+		padding: 10rpx 40rpx;
 		background: #fff;
 
 		.title {
 			flex: 1;
 			display: flex;
 			flex-direction: column;
-			font-size: $font-lg + 4upx;
+			font-size: $font-lg + 4rpx;
 			color: $font-color-dark;
 
 			text:last-child {
 				font-size: $font-sm;
 				color: $font-color-light;
-				margin-top: 4upx;
+				margin-top: 4rpx;
 				&.Skeleton{
-					width:220upx;
+					width:220rpx;
 				}
 			}
 		} 
 		.yticon {
-			font-size: 44upx;
+			font-size: 44rpx;
 			color: $font-color-base;
-			margin: 0 10upx 0 30upx;
+			margin: 0 10rpx 0 30rpx;
 		}
 	}
 
 	.actions {
-		padding: 10upx 28upx;
+		padding: 10rpx 28rpx;
 		background: #fff;
 
 		.yticon {
-			font-size: 46upx;
+			font-size: 46rpx;
 			color: $font-color-base;
-			padding: 10upx 12upx;
+			padding: 10rpx 12rpx;
 			&.active{
 				color: #ff4443;
 			}
 			&:nth-child(2) {
-				font-size: 50upx;
+				font-size: 50rpx;
 			}
 		}
 	}
 
 	.section-tit {
-		font-size: $font-base+2upx;
+		font-size: $font-base+2rpx;
 		color: $font-color-dark;
-		margin-bottom: 30upx;
+		margin-bottom: 30rpx;
 		text-align:center;
 	}
 
@@ -241,8 +241,8 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		padding: 30upx 40upx 10upx;
-		margin-top: 16upx;
+		padding: 30rpx 40rpx 10rpx;
+		margin-top: 16rpx;
 		background: #fff;
 	}
 
@@ -257,8 +257,8 @@
 		flex: 1;
 		overflow: hidden;
 		min-width: 40%;
-		margin-right: 26upx;
-		padding-bottom: 40upx;
+		margin-right: 26rpx;
+		padding-bottom: 40rpx;
 	
 		&:nth-child(2n) {
 			margin-right: 0;
@@ -266,24 +266,24 @@
 	
 		image {
 			width: 100%;
-			height: 200upx;
-			border-radius: 10upx;
+			height: 200rpx;
+			border-radius: 10rpx;
 		}
 	
 		text {
 			font-size: $font-sm;
 			color: $font-color-light;
 			&.Skeleton{
-				width: 180upx;
+				width: 180rpx;
 				&.title{
-					width: 140upx;
+					width: 140rpx;
 				}
 			}
 			&.title{
-				font-size: $font-base+2upx;
+				font-size: $font-base+2rpx;
 				color: $font-color-dark;
-				margin-top:16upx;
-				margin-bottom: 8upx;
+				margin-top:16rpx;
+				margin-bottom: 8rpx;
 			}
 		}
 	}
@@ -291,42 +291,42 @@
 		display:flex;
 		flex-direction:column;
 		background: #fff;
-		margin-top: 16upx;
-		padding: 40upx 0;
+		margin-top: 16rpx;
+		padding: 40rpx 0;
 	}
 
 	.eva-item{
 		display:flex;
-		padding: 20upx 40upx;
+		padding: 20rpx 40rpx;
 		image{
-			width: 60upx;
-			height: 60upx;
+			width: 60rpx;
+			height: 60rpx;
 			border-radius: 50px;
 			flex-shrink: 0;
-			margin-right: 24upx;
+			margin-right: 24rpx;
 		}
 	}
 	.eva-right{
 		display:flex;
 		flex-direction:column;
 		flex: 1;
-		font-size: $font-sm + 2upx;
+		font-size: $font-sm + 2rpx;
 		color: $font-color-light;
 		position:relative;
 		.zan-box{
 			display:flex;
 			align-items:base-line;
 			position:absolute;
-			top: 10upx;
-			right: 10upx;
+			top: 10rpx;
+			right: 10rpx;
 			.yticon{
-				margin-left: 8upx; 
+				margin-left: 8rpx; 
 			}
 		}
 		.content{
 			font-size: $font-base;
 			color: #333;
-			padding-top:20upx;
+			padding-top:20rpx;
 		}
 	}
 </style>

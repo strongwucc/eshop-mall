@@ -319,16 +319,16 @@
 	.mp-search-box{
 		position:absolute;
 		left: 0;
-		top: 30upx;
+		top: 30rpx;
 		z-index: 9999;
 		width: 100%;
-		padding: 0 80upx;
+		padding: 0 80rpx;
 		.ser-input{
 			flex:1;
-			height: 56upx;
-			line-height: 56upx;
+			height: 56rpx;
+			line-height: 56rpx;
 			text-align: center;
-			font-size: 28upx;
+			font-size: 28rpx;
 			color:$font-color-base;
 			border-radius: 20px;
 			background: rgba(255,255,255,.6);
@@ -338,8 +338,8 @@
 		.cate-section{
 			position:relative;
 			z-index:5;
-			border-radius:16upx 16upx 0 0;
-			margin-top:-20upx;
+			border-radius:16rpx 16rpx 0 0;
+			margin-top:-20rpx;
 		}
 		.carousel-section{
 			padding: 0;
@@ -353,8 +353,8 @@
 				}
 			}
 			.swiper-dots{
-				left:45upx;
-				bottom:40upx;
+				left:45rpx;
+				bottom:40rpx;
 			}
 		}
 	}
@@ -365,7 +365,7 @@
 		background: #f5f5f5;
 	}
 	.m-t{
-		margin-top: 16upx;
+		margin-top: 16rpx;
 	}
 	/* 头部 轮播图 */
 	.carousel-section {
@@ -383,53 +383,53 @@
 			top: 0;
 			left: 0;
 			width: 100%;
-			height: 426upx;
+			height: 426rpx;
 			transition: .4s;
 		}
 	}
 	.carousel {
 		width: 100%;
-		height: 350upx;
+		height: 350rpx;
 
 		.carousel-item {
 			width: 100%;
 			height: 100%;
-			padding: 0 28upx;
+			padding: 0 28rpx;
 			overflow: hidden;
 		}
 
 		image {
 			width: 100%;
 			height: 100%;
-			border-radius: 10upx;
+			border-radius: 10rpx;
 		}
 	}
 	.swiper-dots {
 		display: flex;
 		position: absolute;
-		left: 60upx;
-		bottom: 15upx;
-		width: 72upx;
-		height: 36upx;
+		left: 60rpx;
+		bottom: 15rpx;
+		width: 72rpx;
+		height: 36rpx;
 		background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAABkCAYAAADDhn8LAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTMyIDc5LjE1OTI4NCwgMjAxNi8wNC8xOS0xMzoxMzo0MCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OTk4MzlBNjE0NjU1MTFFOUExNjRFQ0I3RTQ0NEExQjMiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OTk4MzlBNjA0NjU1MTFFOUExNjRFQ0I3RTQ0NEExQjMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTcgKFdpbmRvd3MpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6Q0E3RUNERkE0NjExMTFFOTg5NzI4MTM2Rjg0OUQwOEUiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6Q0E3RUNERkI0NjExMTFFOTg5NzI4MTM2Rjg0OUQwOEUiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4Gh5BPAAACTUlEQVR42uzcQW7jQAwFUdN306l1uWwNww5kqdsmm6/2MwtVCp8CosQtP9vg/2+/gY+DRAMBgqnjIp2PaCxCLLldpPARRIiFj1yBbMV+cHZh9PURRLQNhY8kgWyL/WDtwujjI8hoE8rKLqb5CDJaRMJHokC6yKgSCR9JAukmokIknCQJpLOIrJFwMsBJELFcKHwM9BFkLBMKFxNcBCHlQ+FhoocgpVwwnv0Xn30QBJGMC0QcaBVJiAMiec/dcwKuL4j1QMsVCXFAJE4s4NQA3K/8Y6DzO4g40P7UcmIBJxbEesCKWBDg8wWxHrAiFgT4fEGsB/CwIhYE+AeBAAdPLOcV8HRmWRDAiQVcO7GcV8CLM8uCAE4sQCDAlHcQ7x+ABQEEAggEEAggEEAggEAAgQACASAQQCCAQACBAAIBBAIIBBAIIBBAIABe4e9iAe/xd7EAJxYgEGDeO4j3EODp/cOCAE4sYMyJ5cwCHs4rCwI4sYBxJ5YzC84rCwKcXxArAuthQYDzC2JF0H49LAhwYUGsCFqvx5EF2T07dMaJBetx4cRyaqFtHJ8EIhK0i8OJBQxcECuCVutxJhCRoE0cZwMRyRcFefa/ffZBVPogePihhyCnbBhcfMFFEFM+DD4m+ghSlgmDkwlOgpAl4+BkkJMgZdk4+EgaSCcpVX7bmY9kgXQQU+1TgE0c+QJZUUz1b2T4SBbIKmJW+3iMj2SBVBWz+leVfCQLpIqYbp8b85EskIxyfIOfK5Sf+wiCRJEsllQ+oqEkQfBxmD8BBgA5hVjXyrBNUQAAAABJRU5ErkJggg==);
 		background-size: 100% 100%;
 
 		.num {
-			width: 36upx;
-			height: 36upx;
+			width: 36rpx;
+			height: 36rpx;
 			border-radius: 50px;
-			font-size: 24upx;
+			font-size: 24rpx;
 			color: #fff;
 			text-align: center;
-			line-height: 36upx;
+			line-height: 36rpx;
 		}
 
 		.sign {
 			position: absolute;
 			top: 0;
 			left: 50%;
-			line-height: 36upx;
-			font-size: 12upx;
+			line-height: 36rpx;
+			font-size: 12rpx;
 			color: #fff;
 			transform: translateX(-50%);
 		}
@@ -440,29 +440,29 @@
 		justify-content: space-around;
 		align-items: center;
 		flex-wrap:wrap;
-		padding: 30upx 22upx; 
+		padding: 30rpx 22rpx; 
 		background: #fff;
 		.cate-item {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
-			font-size: $font-sm + 2upx;
+			font-size: $font-sm + 2rpx;
 			color: $font-color-dark;
 		}
 		/* 原图标颜色太深,不想改图了,所以加了透明度 */
 		image {
-			width: 88upx;
-			height: 88upx;
-			margin-bottom: 14upx;
+			width: 88rpx;
+			height: 88rpx;
+			margin-bottom: 14rpx;
 			border-radius: 50%;
 			opacity: .7;
-			box-shadow: 4upx 4upx 20upx rgba(250, 67, 106, 0.3);
+			box-shadow: 4rpx 4rpx 20rpx rgba(250, 67, 106, 0.3);
 		}
 	}
 	.ad-1{
 		width: 100%;
-		height: 210upx;
-		padding: 10upx 0;
+		height: 210rpx;
+		padding: 10rpx 0;
 		background: #fff;
 		image{
 			width:100%;
@@ -471,30 +471,30 @@
 	}
 	/* 秒杀专区 */
 	.seckill-section{
-		padding: 4upx 30upx 24upx;
+		padding: 4rpx 30rpx 24rpx;
 		background: #fff;
 		.s-header{
 			display:flex;
 			align-items:center;
-			height: 92upx;
+			height: 92rpx;
 			line-height: 1;
 			.s-img{
-				width: 140upx;
-				height: 30upx;
+				width: 140rpx;
+				height: 30rpx;
 			}
 			.tip{
 				font-size: $font-base;
 				color: $font-color-light;
-				margin: 0 20upx 0 40upx;
+				margin: 0 20rpx 0 40rpx;
 			}
 			.timer{
 				display:inline-block;
-				width: 40upx;
-				height: 36upx;
+				width: 40rpx;
+				height: 36rpx;
 				text-align:center;
-				line-height: 36upx;
-				margin-right: 14upx;
-				font-size: $font-sm+2upx;
+				line-height: 36rpx;
+				margin-right: 14rpx;
+				font-size: $font-sm+2rpx;
 				color: #fff;
 				border-radius: 2px;
 				background: rgba(0,0,0,.8);
@@ -514,15 +514,15 @@
 			align-items: flex-start;
 		}
 		.floor-item{
-			width: 150upx;
-			margin-right: 20upx;
-			font-size: $font-sm+2upx;
+			width: 150rpx;
+			margin-right: 20rpx;
+			font-size: $font-sm+2rpx;
 			color: $font-color-dark;
 			line-height: 1.8;
 			image{
-				width: 150upx;
-				height: 150upx;
-				border-radius: 6upx;
+				width: 150rpx;
+				height: 150rpx;
+				border-radius: 6rpx;
 			}
 			.price{
 				color: $uni-color-primary;
@@ -533,14 +533,14 @@
 	.f-header{
 		display:flex;
 		align-items:center;
-		height: 140upx;
-		padding: 6upx 30upx 8upx;
+		height: 140rpx;
+		padding: 6rpx 30rpx 8rpx;
 		background: #fff;
 		image{
 			flex-shrink: 0;
-			width: 80upx;
-			height: 80upx;
-			margin-right: 20upx;
+			width: 80rpx;
+			height: 80rpx;
+			margin-right: 20rpx;
 		}
 		.tit-box{
 			flex: 1;
@@ -548,7 +548,7 @@
 			flex-direction: column;
 		}
 		.tit{
-			font-size: $font-lg +2upx;
+			font-size: $font-lg +2rpx;
 			color: #font-color-dark;
 			line-height: 1.3;
 		}
@@ -557,7 +557,7 @@
 			color: $font-color-light;
 		}
 		.icon-you{
-			font-size: $font-lg +2upx;
+			font-size: $font-lg +2rpx;
 			color: $font-color-light;
 		}
 	}
@@ -565,17 +565,17 @@
 	.group-section{
 		background: #fff;
 		.g-swiper{
-			height: 650upx;
-			padding-bottom: 30upx;
+			height: 650rpx;
+			padding-bottom: 30rpx;
 		}
 		.g-swiper-item{
 			width: 100%;
-			padding: 0 30upx;
+			padding: 0 30rpx;
 			display:flex;
 		}
 		image{
 			width: 100%;
-			height: 460upx;
+			height: 460rpx;
 			border-radius: 4px;
 		}
 		.g-item{
@@ -585,21 +585,21 @@
 		}
 		.left{
 			flex: 1.2;
-			margin-right: 24upx;
+			margin-right: 24rpx;
 			.t-box{
-				padding-top: 20upx;
+				padding-top: 20rpx;
 			}
 		}
 		.right{
 			flex: 0.8;
 			flex-direction: column-reverse;
 			.t-box{
-				padding-bottom: 20upx;
+				padding-bottom: 20rpx;
 			}
 		}
 		.t-box{
-			height: 160upx;
-			font-size: $font-base+2upx;
+			height: 160rpx;
+			font-size: $font-base+2rpx;
 			color: $font-color-dark;
 			line-height: 1.6;
 		}
@@ -607,34 +607,34 @@
 			color:$uni-color-primary;
 		}
 		.m-price{
-			font-size: $font-sm+2upx;
+			font-size: $font-sm+2rpx;
 			text-decoration: line-through;
 			color: $font-color-light;
-			margin-left: 8upx;
+			margin-left: 8rpx;
 		}
 		.pro-box{
 			display:flex;
 			align-items:center;
-			margin-top: 10upx;
+			margin-top: 10rpx;
 			font-size: $font-sm;
 			color: $font-base;
-			padding-right: 10upx;
+			padding-right: 10rpx;
 		}
 		.progress-box{
 			flex: 1;
 			border-radius: 10px;
 			overflow: hidden;
-			margin-right: 8upx;
+			margin-right: 8rpx;
 		}
 	}
 	/* 分类推荐楼层 */
 	.hot-floor{
 		width: 100%;
 		overflow: hidden;
-		margin-bottom: 20upx;
+		margin-bottom: 20rpx;
 		.floor-img-box{
 			width: 100%;
-			height:320upx;
+			height:320rpx;
 			position:relative;
 			&:after{
 				content: '';
@@ -652,11 +652,11 @@
 		}
 		.floor-list{
 			white-space: nowrap;
-			padding: 20upx;
-			padding-right: 50upx;
-			border-radius: 6upx;
-			margin-top:-140upx;
-			margin-left: 30upx;
+			padding: 20rpx;
+			padding-right: 50rpx;
+			border-radius: 6rpx;
+			margin-top:-140rpx;
+			margin-left: 30rpx;
 			background: #fff;
 			box-shadow: 1px 1px 5px rgba(0,0,0,.2);
 			position: relative;
@@ -667,15 +667,15 @@
 			align-items: flex-start;
 		}
 		.floor-item{
-			width: 180upx;
-			margin-right: 20upx;
-			font-size: $font-sm+2upx;
+			width: 180rpx;
+			margin-right: 20rpx;
+			font-size: $font-sm+2rpx;
 			color: $font-color-dark;
 			line-height: 1.8;
 			image{
-				width: 180upx;
-				height: 180upx;
-				border-radius: 6upx;
+				width: 180rpx;
+				height: 180rpx;
+				border-radius: 6rpx;
 			}
 			.price{
 				color: $uni-color-primary;
@@ -687,14 +687,14 @@
 			justify-content: center;
 			flex-direction: column;
 			flex-shrink: 0;
-			width: 180upx;
-			height: 180upx;
-			border-radius: 6upx;
+			width: 180rpx;
+			height: 180rpx;
+			border-radius: 6rpx;
 			background: #f3f3f3;
 			font-size: $font-base;
 			color: $font-color-light;
 			text:first-child{
-				margin-bottom: 4upx;
+				margin-bottom: 4rpx;
 			}
 		}
 	}
@@ -702,20 +702,20 @@
 	.guess-section{
 		display:flex;
 		flex-wrap:wrap;
-		padding: 0 30upx;
+		padding: 0 30rpx;
 		background: #fff;
 		.guess-item{
 			display:flex;
 			flex-direction: column;
 			width: 48%;
-			padding-bottom: 40upx;
+			padding-bottom: 40rpx;
 			&:nth-child(2n+1){
 				margin-right: 4%;
 			}
 		}
 		.image-wrapper{
 			width: 100%;
-			height: 330upx;
+			height: 330rpx;
 			border-radius: 3px;
 			overflow: hidden;
 			image{
@@ -727,7 +727,7 @@
 		.title{
 			font-size: $font-lg;
 			color: $font-color-dark;
-			line-height: 80upx;
+			line-height: 80rpx;
 		}
 		.price{
 			font-size: $font-lg;

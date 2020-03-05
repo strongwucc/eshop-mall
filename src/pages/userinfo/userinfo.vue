@@ -36,8 +36,8 @@
 		display:flex;
 		align-items:center;
 		justify-content: center;
-		height: 460upx;
-		padding: 40upx 30upx 0;
+		height: 460rpx;
+		padding: 40rpx 30rpx 0;
 		position:relative;
 		.bg{
 			position:absolute;
@@ -49,9 +49,9 @@
 			opacity: .7;
 		}
 		.portrait-box{
-			width: 200upx;
-			height: 200upx;
-			border:6upx solid #fff;
+			width: 200rpx;
+			height: 200rpx;
+			border:6rpx solid #fff;
 			border-radius: 50%;
 			position:relative;
 			z-index: 2;
@@ -66,19 +66,19 @@
 			position:absolute;
 			line-height: 1;
 			z-index: 5;
-			font-size: 48upx;
+			font-size: 48rpx;
 			color: #fff;
-			padding: 4upx 6upx;
-			border-radius: 6upx;
+			padding: 4rpx 6rpx;
+			border-radius: 6rpx;
 			background: rgba(0,0,0,.4);
 		}
 		.pt-upload-btn{
 			right: 0;
-			bottom: 10upx;
+			bottom: 10rpx;
 		}
 		.bg-upload-btn{
-			right: 20upx;
-			bottom: 16upx;
+			right: 20rpx;
+			bottom: 16rpx;
 		}
 	}
 

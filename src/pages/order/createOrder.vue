@@ -188,11 +188,11 @@
 <style lang="scss">
 	page {
 		background: $page-color-base;
-		padding-bottom: 100upx;
+		padding-bottom: 100rpx;
 	}
 
 	.address-section {
-		padding: 30upx 0;
+		padding: 30rpx 0;
 		background: #fff;
 		position: relative;
 
@@ -206,34 +206,34 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			width: 90upx;
+			width: 90rpx;
 			color: #888;
-			font-size: 44upx;
+			font-size: 44rpx;
 		}
 
 		.cen {
 			display: flex;
 			flex-direction: column;
 			flex: 1;
-			font-size: 28upx;
+			font-size: 28rpx;
 			color: $font-color-dark;
 		}
 
 		.name {
-			font-size: 34upx;
-			margin-right: 24upx;
+			font-size: 34rpx;
+			margin-right: 24rpx;
 		}
 
 		.address {
-			margin-top: 16upx;
-			margin-right: 20upx;
+			margin-top: 16rpx;
+			margin-right: 20rpx;
 			color: $font-color-light;
 		}
 
 		.icon-you {
-			font-size: 32upx;
+			font-size: 32rpx;
 			color: $font-color-light;
-			margin-right: 30upx;
+			margin-right: 30rpx;
 		}
 
 		.a-bg {
@@ -242,78 +242,78 @@
 			bottom: 0;
 			display: block;
 			width: 100%;
-			height: 5upx;
+			height: 5rpx;
 		}
 	}
 
 	.goods-section {
-		margin-top: 16upx;
+		margin-top: 16rpx;
 		background: #fff;
 		padding-bottom: 1px;
 
 		.g-header {
 			display: flex;
 			align-items: center;
-			height: 84upx;
-			padding: 0 30upx;
+			height: 84rpx;
+			padding: 0 30rpx;
 			position: relative;
 		}
 
 		.logo {
 			display: block;
-			width: 50upx;
-			height: 50upx;
+			width: 50rpx;
+			height: 50rpx;
 			border-radius: 100px;
 		}
 
 		.name {
-			font-size: 30upx;
+			font-size: 30rpx;
 			color: $font-color-base;
-			margin-left: 24upx;
+			margin-left: 24rpx;
 		}
 
 		.g-item {
 			display: flex;
-			margin: 20upx 30upx;
+			margin: 20rpx 30rpx;
 
 			image {
 				flex-shrink: 0;
 				display: block;
-				width: 140upx;
-				height: 140upx;
-				border-radius: 4upx;
+				width: 140rpx;
+				height: 140rpx;
+				border-radius: 4rpx;
 			}
 
 			.right {
 				flex: 1;
-				padding-left: 24upx;
+				padding-left: 24rpx;
 				overflow: hidden;
 			}
 
 			.title {
-				font-size: 30upx;
+				font-size: 30rpx;
 				color: $font-color-dark;
 			}
 
 			.spec {
-				font-size: 26upx;
+				font-size: 26rpx;
 				color: $font-color-light;
 			}
 
 			.price-box {
 				display: flex;
 				align-items: center;
-				font-size: 32upx;
+				font-size: 32rpx;
 				color: $font-color-dark;
-				padding-top: 10upx;
+				padding-top: 10rpx;
 
 				.price {
-					margin-bottom: 4upx;
+					margin-bottom: 4rpx;
 				}
 				.number{
-					font-size: 26upx;
+					font-size: 26rpx;
 					color: $font-color-base;
-					margin-left: 20upx;
+					margin-left: 20rpx;
 				}
 			}
 
@@ -323,15 +323,15 @@
 		}
 	}
 	.yt-list {
-		margin-top: 16upx;
+		margin-top: 16rpx;
 		background: #fff;
 	}
 
 	.yt-list-cell {
 		display: flex;
 		align-items: center;
-		padding: 10upx 30upx 10upx 40upx;
-		line-height: 70upx;
+		padding: 10rpx 30rpx 10rpx 40rpx;
+		line-height: 70rpx;
 		position: relative;
 
 		&.cell-hover {
@@ -339,19 +339,19 @@
 		}
 
 		&.b-b:after {
-			left: 30upx;
+			left: 30rpx;
 		}
 
 		.cell-icon {
-			height: 32upx;
-			width: 32upx;
-			font-size: 22upx;
+			height: 32rpx;
+			width: 32rpx;
+			font-size: 22rpx;
 			color: #fff;
 			text-align: center;
-			line-height: 32upx;
+			line-height: 32rpx;
 			background: #f85e52;
-			border-radius: 4upx;
-			margin-right: 12upx;
+			border-radius: 4rpx;
+			margin-right: 12rpx;
 
 			&.hb {
 				background: #ffaa0e;
@@ -365,21 +365,21 @@
 
 		.cell-more {
 			align-self: center;
-			font-size: 24upx;
+			font-size: 24rpx;
 			color: $font-color-light;
-			margin-left: 8upx;
-			margin-right: -10upx;
+			margin-left: 8rpx;
+			margin-right: -10rpx;
 		}
 
 		.cell-tit {
 			flex: 1;
-			font-size: 26upx;
+			font-size: 26rpx;
 			color: $font-color-light;
-			margin-right: 10upx;
+			margin-right: 10rpx;
 		}
 
 		.cell-tip {
-			font-size: 26upx;
+			font-size: 26rpx;
 			color: $font-color-dark;
 
 			&.disabled {
@@ -396,7 +396,7 @@
 
 		&.desc-cell {
 			.cell-tit {
-				max-width: 90upx;
+				max-width: 90rpx;
 			}
 		}
 
@@ -409,38 +409,38 @@
 	
 	/* 支付列表 */
 	.pay-list{
-		padding-left: 40upx;
-		margin-top: 16upx;
+		padding-left: 40rpx;
+		margin-top: 16rpx;
 		background: #fff;
 		.pay-item{
 			display: flex;
 			align-items: center;
-			padding-right: 20upx;
+			padding-right: 20rpx;
 			line-height: 1;
-			height: 110upx;	
+			height: 110rpx;	
 			position: relative;
 		}
 		.icon-weixinzhifu{
-			width: 80upx;
-			font-size: 40upx;
+			width: 80rpx;
+			font-size: 40rpx;
 			color: #6BCC03;
 		}
 		.icon-alipay{
-			width: 80upx;
-			font-size: 40upx;
+			width: 80rpx;
+			font-size: 40rpx;
 			color: #06B4FD;
 		}
 		.icon-xuanzhong2{
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			width: 60upx;
-			height: 60upx;
-			font-size: 40upx;
+			width: 60rpx;
+			height: 60rpx;
+			font-size: 40rpx;
 			color: $base-color;
 		}
 		.tit{
-			font-size: 32upx;
+			font-size: 32rpx;
 			color: $font-color-dark;
 			flex: 1;
 		}
@@ -454,32 +454,32 @@
 		display: flex;
 		align-items: center;
 		width: 100%;
-		height: 90upx;
+		height: 90rpx;
 		justify-content: space-between;
-		font-size: 30upx;
+		font-size: 30rpx;
 		background-color: #fff;
 		z-index: 998;
 		color: $font-color-base;
 		box-shadow: 0 -1px 5px rgba(0,0,0,.1);
 		.price-content{
-			padding-left: 30upx;
+			padding-left: 30rpx;
 		}
 		.price-tip{
 			color: $base-color;
-			margin-left: 8upx;
+			margin-left: 8rpx;
 		}
 		.price{
-			font-size: 36upx;
+			font-size: 36rpx;
 			color: $base-color;
 		}
 		.submit{
 			display:flex;
 			align-items:center;
 			justify-content: center;
-			width: 280upx;
+			width: 280rpx;
 			height: 100%;
 			color: #fff;
-			font-size: 32upx;
+			font-size: 32rpx;
 			background-color: $base-color;
 		}
 	}
@@ -522,14 +522,14 @@
 	.coupon-item{
 		display: flex;
 		flex-direction: column;
-		margin: 20upx 24upx;
+		margin: 20rpx 24rpx;
 		background: #fff;
 		.con{
 			display: flex;
 			align-items: center;
 			position: relative;
-			height: 120upx;
-			padding: 0 30upx;
+			height: 120rpx;
+			padding: 0 30rpx;
 			&:after{
 				position: absolute;
 				left: 0;
@@ -547,15 +547,15 @@
 			justify-content: center;
 			flex: 1;
 			overflow: hidden;
-			height: 100upx;
+			height: 100rpx;
 		}
 		.title{
-			font-size: 32upx;
+			font-size: 32rpx;
 			color: $font-color-dark;
-			margin-bottom: 10upx;
+			margin-bottom: 10rpx;
 		}
 		.time{
-			font-size: 24upx;
+			font-size: 24rpx;
 			color: $font-color-light;
 		}
 		.right{
@@ -563,36 +563,36 @@
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
-			font-size: 26upx;
+			font-size: 26rpx;
 			color: $font-color-base;
-			height: 100upx;
+			height: 100rpx;
 		}
 		.price{
-			font-size: 44upx;
+			font-size: 44rpx;
 			color: $base-color;
 			&:before{
 				content: '￥';
-				font-size: 34upx;
+				font-size: 34rpx;
 			}
 		}
 		.tips{
-			font-size: 24upx;
+			font-size: 24rpx;
 			color: $font-color-light;
-			line-height: 60upx;
-			padding-left: 30upx;
+			line-height: 60rpx;
+			padding-left: 30rpx;
 		}
 		.circle{
 			position: absolute;
-			left: -6upx;
-			bottom: -10upx;
+			left: -6rpx;
+			bottom: -10rpx;
 			z-index: 10;
-			width: 20upx;
-			height: 20upx;
+			width: 20rpx;
+			height: 20rpx;
 			background: #f3f3f3;
 			border-radius: 100px;
 			&.r{
 				left: auto;
-				right: -6upx;
+				right: -6rpx;
 			}
 		}
 	}

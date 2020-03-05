@@ -59,7 +59,7 @@
 			}
 		},
 		created() {
-			const height = uni.upx2px(this.contentHeight) + 'px';
+			const height = uni.rpx2px(this.contentHeight) + 'px';
 			this.config = {
 				height: height,
 				transform: `translateY(${height})`,
@@ -137,44 +137,44 @@
 			justify-content: center;
 			align-items: center;
 			width: 100%;
-			height: 90upx;
+			height: 90rpx;
 			background: #fff;
 			z-index: 9;
-			font-size: $font-base + 2upx;
+			font-size: $font-base + 2rpx;
 			color: $font-color-dark;
 		}
 	}
 	
 	.mask-content{
 		width: 100%;
-		height: 580upx;
+		height: 580rpx;
 		transition: .3s;
 		background: #fff;
 		&.has-bottom{
-			padding-bottom: 90upx;
+			padding-bottom: 90rpx;
 		}
 		.view-content{
 			height: 100%;
 		}
 	}
 	.share-header{
-		height: 110upx;
-		font-size: $font-base+2upx;
+		height: 110rpx;
+		font-size: $font-base+2rpx;
 		color: font-color-dark;
 		display:flex;
 		align-items:center;
 		justify-content: center;
-		padding-top: 10upx;
+		padding-top: 10rpx;
 		&:before, &:after{
 			content: '';
-			width: 240upx;
+			width: 240rpx;
 			heighg: 0;
 			border-top: 1px solid $border-color-base;
 			transform: scaleY(.5);
-			margin-right: 30upx;
+			margin-right: 30rpx;
 		}
 		 &:after{
-			 margin-left: 30upx;
+			 margin-left: 30rpx;
 			 margin-right: 0;
 		 }
 	}
@@ -188,11 +188,11 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		height: 180upx;
+		height: 180rpx;
 		image{
-			width: 80upx;
-			height: 80upx;
-			margin-bottom: 16upx;
+			width: 80rpx;
+			height: 80rpx;
+			margin-bottom: 16rpx;
 		}
 		text{
 			font-size: $font-base;

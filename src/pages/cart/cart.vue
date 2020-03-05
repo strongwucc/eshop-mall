@@ -220,7 +220,7 @@
 
 <style lang='scss'>
 	.container{
-		padding-bottom: 134upx;
+		padding-bottom: 134rpx;
 		/* 空白页 */
 		.empty{
 			position:fixed;
@@ -228,24 +228,24 @@
 			top:0;
 			width: 100%;
 			height: 100vh;
-			padding-bottom:100upx;
+			padding-bottom:100rpx;
 			display:flex;
 			justify-content: center;
 			flex-direction: column;
 			align-items:center;
 			background: #fff;
 			image{
-				width: 240upx;
-				height: 160upx;
-				margin-bottom:30upx;
+				width: 240rpx;
+				height: 160rpx;
+				margin-bottom:30rpx;
 			}
 			.empty-tips{
 				display:flex;
-				font-size: $font-sm+2upx;
+				font-size: $font-sm+2rpx;
 				color: $font-color-disabled;
 				.navigator{
 					color: $uni-color-primary;
-					margin-left: 16upx;
+					margin-left: 16rpx;
 				}
 			}
 		}
@@ -254,24 +254,24 @@
 	.cart-item{
 		display:flex;
 		position:relative;
-		padding:30upx 40upx;
+		padding:30rpx 40rpx;
 		.image-wrapper{
-			width: 230upx;
-			height: 230upx;
+			width: 230rpx;
+			height: 230rpx;
 			flex-shrink: 0;
 			position:relative;
 			image{
-				border-radius:8upx;
+				border-radius:8rpx;
 			}
 		}
 		.checkbox{
 			position:absolute;
-			left:-16upx;
-			top: -16upx;
+			left:-16rpx;
+			top: -16rpx;
 			z-index: 8;
-			font-size: 44upx;
+			font-size: 44rpx;
 			line-height: 1;
-			padding: 4upx;
+			padding: 4rpx;
 			color: $font-color-disabled;
 			background:#fff;
 			border-radius: 50px;
@@ -282,53 +282,53 @@
 			flex: 1;
 			overflow: hidden;
 			position:relative;
-			padding-left: 30upx;
+			padding-left: 30rpx;
 			.title,.price{
-				font-size:$font-base + 2upx;
+				font-size:$font-base + 2rpx;
 				color: $font-color-dark;
-				height: 40upx;
-				line-height: 40upx;
+				height: 40rpx;
+				line-height: 40rpx;
 			}
 			.attr{
-				font-size: $font-sm + 2upx;
+				font-size: $font-sm + 2rpx;
 				color: $font-color-light;
-				height: 50upx;
-				line-height: 50upx;
+				height: 50rpx;
+				line-height: 50rpx;
 			}
 			.price{
-				height: 50upx;
-				line-height:50upx;
+				height: 50rpx;
+				line-height:50rpx;
 			}
 		}
 		.del-btn{
-			padding:4upx 10upx;
-			font-size:34upx; 
-			height: 50upx;
+			padding:4rpx 10rpx;
+			font-size:34rpx; 
+			height: 50rpx;
 			color: $font-color-light;
 		}
 	}
 	/* 底部栏 */
 	.action-section{
 		/* #ifdef H5 */
-		margin-bottom:100upx;
+		margin-bottom:100rpx;
 		/* #endif */
 		position:fixed;
-		left: 30upx;
-		bottom:30upx;
+		left: 30rpx;
+		bottom:30rpx;
 		z-index: 95;
 		display: flex;
 		align-items: center;
-		width: 690upx;
-		height: 100upx;
-		padding: 0 30upx;
+		width: 690rpx;
+		height: 100rpx;
+		padding: 0 30rpx;
 		background: rgba(255,255,255,.9);
-		box-shadow: 0 0 20upx 0 rgba(0,0,0,.5);
-		border-radius: 16upx;
+		box-shadow: 0 0 20rpx 0 rgba(0,0,0,.5);
+		border-radius: 16rpx;
 		.checkbox{
-			height:52upx;
+			height:52rpx;
 			position:relative;
 			image{
-				width: 52upx;
+				width: 52rpx;
 				height: 100%;
 				position:relative;
 				z-index: 5;
@@ -336,13 +336,13 @@
 		}
 		.clear-btn{
 			position:absolute;
-			left: 26upx;
+			left: 26rpx;
 			top: 0;
 			z-index: 4;
 			width: 0;
-			height: 52upx;
-			line-height: 52upx;
-			padding-left: 38upx;
+			height: 52rpx;
+			line-height: 52rpx;
+			padding-left: 38rpx;
 			font-size: $font-base;
 			color: #fff;
 			background: $font-color-disabled;
@@ -351,7 +351,7 @@
 			transition: .2s;
 			&.show{
 				opacity: 1;
-				width: 120upx;
+				width: 120rpx;
 			}
 		}
 		.total-box{
@@ -359,7 +359,7 @@
 			display:flex;
 			flex-direction: column;
 			text-align:right;
-			padding-right: 40upx;
+			padding-right: 40rpx;
 			.price{
 				font-size: $font-lg;
 				color: $font-color-dark;
@@ -373,12 +373,12 @@
 			}
 		}
 		.confirm-btn{
-			padding: 0 38upx;
+			padding: 0 38rpx;
 			margin: 0;
 			border-radius: 100px;
-			height: 76upx;
-			line-height: 76upx;
-			font-size: $font-base + 2upx;
+			height: 76rpx;
+			line-height: 76rpx;
+			font-size: $font-base + 2rpx;
 			background: $uni-color-primary;
 			box-shadow: 1px 2px 5px rgba(217, 60, 93, 0.72)
 		}
