@@ -273,7 +273,7 @@
 			//接收传值,id里面放的是标题，因为测试数据并没写id 
 			let id = options.id;
 			if(id){
-				this.$api.msg(`点击了${id}`);
+				this.$test.msg(`点击了${id}`);
 			}
 			
 			
@@ -287,7 +287,7 @@
 					}
 				}
 			})
-			this.shareList = await this.$api.json('shareList');
+			this.shareList = await this.$test.json('shareList');
 		},
 		methods:{
 			//规格弹窗开关

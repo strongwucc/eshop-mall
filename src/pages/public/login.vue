@@ -66,13 +66,13 @@ export default {
       uni.navigateBack();
     },
     toRegist() {
-      this.$api.msg("去注册");
+      this.$test.msg("去注册");
     },
     async toLogin() {
       this.logining = true;
       const { mobile, password } = this;
       /* 数据验证模块
-				if(!this.$api.match({
+				if(!this.$test.match({
 					mobile,
 					password
 				})){
@@ -84,12 +84,12 @@ export default {
         mobile,
         password
       };
-      const result = await this.$api.json("userInfo");
+      const result = await this.$test.json("userInfo");
       if (result.status === 1) {
         this.login(result.data);
         uni.navigateBack();
       } else {
-        this.$api.msg(result.msg);
+        this.$test.msg(result.msg);
         this.logining = false;
       }
     }

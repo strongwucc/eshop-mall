@@ -66,7 +66,7 @@ export default {
     ...mapMutations(["logout"]),
 
     navTo(url) {
-      this.$api.msg(`跳转到${url}`);
+      this.$test.msg(`跳转到${url}`);
     },
     //退出登录
     toLogout() {
@@ -85,7 +85,7 @@ export default {
     //switch
     switchChange(e) {
       let statusTip = e.detail.value ? "打开" : "关闭";
-      this.$api.msg(`${statusTip}消息推送`);
+      this.$test.msg(`${statusTip}消息推送`);
     }
   }
 };

@@ -263,12 +263,12 @@
 			 * 分次请求未作整合
 			 */
 			async loadData() {
-				let carouselList = await this.$api.json('carouselList');
+				let carouselList = await this.$test.json('carouselList');
 				this.titleNViewBackground = carouselList[0].background;
 				this.swiperLength = carouselList.length;
 				this.carouselList = carouselList;
 				
-				let goodsList = await this.$api.json('goodsList');
+				let goodsList = await this.$test.json('goodsList');
 				this.goodsList = goodsList || [];
 			},
 			//轮播图切换修改背景色
@@ -289,13 +289,13 @@
 		// #ifndef MP
 		// 标题栏input搜索框点击
 		onNavigationBarSearchInputClicked: async function(e) {
-			this.$api.msg('点击了搜索框');
+			this.$test.msg('点击了搜索框');
 		},
 		//点击导航栏 buttons 时触发
 		onNavigationBarButtonTap(e) {
 			const index = e.index;
 			if (index === 0) {
-				this.$api.msg('点击了扫描');
+				this.$test.msg('点击了扫描');
 			} else if (index === 1) {
 				// #ifdef APP-PLUS
 				const pages = getCurrentPages();

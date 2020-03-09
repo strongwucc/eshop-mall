@@ -101,7 +101,7 @@
 		methods: {
 			//加载分类
 			async loadCateList(fid, sid){
-				let list = await this.$api.json('cateList');
+				let list = await this.$test.json('cateList');
 				let cateList = list.filter(item=>item.pid == fid);
 				
 				cateList.forEach(item=>{
@@ -122,7 +122,7 @@
 					this.loadingType = 'more'
 				}
 				
-				let goodsList = await this.$api.json('goodsList');
+				let goodsList = await this.$test.json('goodsList');
 				if(type === 'refresh'){
 					this.goodsList = [];
 				}

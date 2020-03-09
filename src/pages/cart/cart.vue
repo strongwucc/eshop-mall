@@ -114,7 +114,7 @@
 		methods: {
 			//请求数据
 			async loadData(){
-				let list = await this.$api.json('cartList'); 
+				let list = await this.$test.json('cartList'); 
 				let cartList = list.map(item=>{
 					item.checked = true;
 					return item;
@@ -212,7 +212,7 @@
 						goodsData: goodsData
 					})}`
 				})
-				this.$api.msg('跳转下一页 sendData');
+				this.$test.msg('跳转下一页 sendData');
 			}
 		}
 	}

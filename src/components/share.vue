@@ -59,7 +59,7 @@
 			}
 		},
 		created() {
-			const height = uni.rpx2px(this.contentHeight) + 'px';
+			const height = this.contentHeight + 'rpx';
 			this.config = {
 				height: height,
 				transform: `translateY(${height})`,

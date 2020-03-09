@@ -1,19 +1,31 @@
 <template>
 	<view class="content">
 		<scroll-view scroll-y class="left-aside">
-			<view v-for="item in flist" :key="item.id" class="f-item b-b" :class="{active: item.id === currentId}" @click="tabtap(item)">
-				{{item.name}}
+			<view v-for="(item, itemIndex) in firstList" :key="item.cat_id" class="f-item b-b" :class="{active: itemIndex === currentIndex}" @click="tabtap(item)">
+				{{item.cat_name}}
 			</view>
 		</scroll-view>
 		<scroll-view scroll-with-animation scroll-y class="right-aside" @scroll="asideScroll" :scroll-top="tabScrollTop">
-			<view v-for="item in slist" :key="item.id" class="s-list" :id="'main-'+item.id">
-				<text class="s-item">{{item.name}}</text>
-				<view class="t-list">
-					<view @click="navToList(item.id, titem.id)" v-if="titem.pid === item.id" class="t-item" v-for="titem in tlist" :key="titem.id">
-						<image :src="titem.picture"></image>
-						<text>{{titem.name}}</text>
+			<view v-for="item in secondList" :key="item.cat_id" class="s-list" :id="'main-'+item.cat_id">
+				<template v-if="item.children.length > 0">
+					<text class="s-item">{{item.cat_name}}</text>
+					<view class="t-list">
+						<view @click="navToList(item.cat_id, titem.cat_id)" v-if="titem.parent_id === item.cat_id" class="t-item" v-for="titem in item.children" :key="titem.cat_id">
+							<image :src="'/static/temp/cate2.jpg'"></image>
+							<text>{{titem.cat_name}}</text>
+						</view>
 					</view>
-				</view>
+				</template>
+				<template v-else>
+					<view class="t-list">
+						<view @click="navToList(firstList[currentIndex].cat_id, item.cat_id)" v-if="item.parent_id === firstList[currentIndex].cat_id" class="t-item" :key="item.cat_id">
+							<image :src="'/static/temp/cate2.jpg'"></image>
+							<text>{{item.cat_name}}</text>
+						</view>
+					</view>
+				</template>
+				
+				
 			</view>
 		</scroll-view>
 	</view>
@@ -23,9 +35,11 @@
 	export default {
 		data() {
 			return {
+				firstList: [],
+				secondList: [],
 				sizeCalcState: false,
 				tabScrollTop: 0,
-				currentId: 1,
+				currentIndex: 0,
 				flist: [],
 				slist: [],
 				tlist: [],
@@ -35,17 +49,73 @@
 			this.loadData();
 		},
 		methods: {
-			async loadData(){
-				let list = await this.$api.json('cateList');
-				list.forEach(item=>{
-					if(!item.pid){
-						this.flist.push(item);  //pid为父级id, 没有pid或者pid=0是一级分类
-					}else if(!item.picture){
-						this.slist.push(item); //没有图的是2级分类
-					}else{
-						this.tlist.push(item); //3级分类
+
+			/**
+			 * 统计单个字符出现的次数
+			 */
+			_strCount (searchStr='', fromStr='') {
+				let count = 0;
+				if (searchStr === '') {
+					return count;
+				}
+				for (let str of fromStr) {
+					if (str === searchStr) {
+						count++;
 					}
-				}) 
+				}
+				return count;
+			},
+
+			/**
+			 * 格式化分类数据
+			 */
+			_formatCategoryData (data=[]) {
+
+				let that = this;
+
+				let parentData = [];
+				let childData = [];
+				let grandsonData = [];
+
+				data.forEach(dataItem => {
+					if (dataItem.parent_id === '0') {
+						parentData.push(dataItem);
+					} else if (that._strCount(',', dataItem.cat_path) === 2) {
+						childData.push(dataItem);
+					} else if (that._strCount(',', dataItem.cat_path) === 3) {
+						grandsonData.push(dataItem);
+					}
+				})
+
+				childData.forEach((childItem, childIndex) => {
+					childData[childIndex]['children'] = [];
+					grandsonData.forEach((grandsonItem, grandsonIndex) => {
+						if (childItem.cat_id === grandsonItem.parent_id) {
+							childData[childIndex]['children'].push(grandsonItem);
+						}
+					})
+				})
+
+				that.firstList = parentData;
+				that.secondList = childData;
+
+			},
+
+			/**
+			 * 加载数据
+			 */
+			loadData(){
+				let that = this;
+				that.$http.post(that.$api.goods.category).then(res => {
+					console.log(res);
+					if (res.return_code === '0000') {
+						that._formatCategoryData(res.data);
+					} else {
+						console.log(res.return_msg);
+					}
+				}).catch(error => {
+					console.log(error);
+				});
 			},
 			//一级分类点击
 			tabtap(item){

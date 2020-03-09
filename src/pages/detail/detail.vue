@@ -102,8 +102,8 @@
 			};
 		},
 		async onLoad(){
-			let detailData = await this.$api.json('detailData');
-			let shareList = await this.$api.json('shareList');
+			let detailData = await this.$test.json('detailData');
+			let shareList = await this.$test.json('shareList');
 			this.loaded = true;
 			this.data = detailData;
 			this.shareList = shareList;
@@ -118,7 +118,7 @@
 			changeEpd(index){
 				let list = this.data.episodeList;
 				let epd = list[index];
-				this.$api.msg(`切换到第${epd}项`);
+				this.$test.msg(`切换到第${epd}项`);
 				this.currentEpd = epd;
 			},
 			//分享
