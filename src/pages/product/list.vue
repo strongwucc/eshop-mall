@@ -280,8 +280,7 @@
 			 * 详情
 			 */
 			navToDetailPage(item){
-				//测试数据没有写id，用title代替
-				let id = item.goods_id;
+				let id = item.products.product_id;
 				uni.navigateTo({
 					url: `/pages/product/product?id=${id}`
 				})

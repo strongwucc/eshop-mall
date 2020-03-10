@@ -49,6 +49,8 @@ Vue.prototype.$store = store;
 Vue.prototype.$test = {msg, json, prePage};
 Vue.prototype.$http = http;
 Vue.prototype.$api = api;
+Vue.prototype.$toast = msg;
+Vue.prototype.$back = prePage;
 
 App.mpType = 'app'
 
