@@ -1,31 +1,21 @@
 <template>
 	<view class="content">
 		<scroll-view scroll-y class="left-aside">
-			<view v-for="(item, itemIndex) in firstList" :key="item.cat_id" class="f-item b-b" :class="{active: itemIndex === currentIndex}" @click="tabtap(item)">
-				{{item.cat_name}}
+			<view v-for="(firstItem, firstIndex) in firstList" :key="firstItem.cat_id" class="f-item b-b" :class="{active: firstIndex === currentIndex}" @click="tabtap(firstItem, firstIndex)">
+				{{firstItem.cat_name}}
 			</view>
 		</scroll-view>
 		<scroll-view scroll-with-animation scroll-y class="right-aside" @scroll="asideScroll" :scroll-top="tabScrollTop">
-			<view v-for="item in secondList" :key="item.cat_id" class="s-list" :id="'main-'+item.cat_id">
-				<template v-if="item.children.length > 0">
-					<text class="s-item">{{item.cat_name}}</text>
+			<view v-for="(secondItem, secondIndex) in secondList" :key="secondItem.cat_id" class="s-list" :id="'main-'+secondItem.cat_id">
+					<text class="s-item">{{secondItem.cat_name}}</text>
 					<view class="t-list">
-						<view @click="navToList(item.cat_id, titem.cat_id)" v-if="titem.parent_id === item.cat_id" class="t-item" v-for="titem in item.children" :key="titem.cat_id">
-							<image :src="'/static/temp/cate2.jpg'"></image>
-							<text>{{titem.cat_name}}</text>
-						</view>
+						<template v-if="secondItem.children.length > 0">
+							<view @click="navToList(thirdItem.cat_id)" v-if="thirdItem.parent_id === secondItem.cat_id" class="t-item" v-for="thirdItem in secondItem.children" :key="thirdItem.cat_id">
+								<image :src="'/static/temp/cate2.jpg'"></image>
+								<text>{{thirdItem.cat_name}}</text>
+							</view>
+						</template>
 					</view>
-				</template>
-				<template v-else>
-					<view class="t-list">
-						<view @click="navToList(firstList[currentIndex].cat_id, item.cat_id)" v-if="item.parent_id === firstList[currentIndex].cat_id" class="t-item" :key="item.cat_id">
-							<image :src="'/static/temp/cate2.jpg'"></image>
-							<text>{{item.cat_name}}</text>
-						</view>
-					</view>
-				</template>
-				
-				
 			</view>
 		</scroll-view>
 	</view>
@@ -118,44 +108,67 @@
 				});
 			},
 			//一级分类点击
-			tabtap(item){
-				if(!this.sizeCalcState){
-					this.calcSize();
+			tabtap(firstItem, firstIndex){
+				let that = this;
+				if(!that.sizeCalcState){
+					that.calcSize();
 				}
 				
-				this.currentId = item.id;
-				let index = this.slist.findIndex(sitem=>sitem.pid === item.id);
-				this.tabScrollTop = this.slist[index].top;
+				that.currentIndex = firstIndex;
+				let secondIndex = that.secondList.findIndex(secondItem => secondItem.parent_id === firstItem.cat_id);
+
+				if (secondIndex === -1) {
+					return false;
+				}
+
+				if (that.secondList[secondIndex].hasOwnProperty('top')) {
+					that.tabScrollTop = that.secondList[secondIndex].top;
+				}
 			},
 			//右侧栏滚动
 			asideScroll(e){
-				if(!this.sizeCalcState){
-					this.calcSize();
+				let that = this;
+				let secondList = that.secondList;
+				if(!that.sizeCalcState){
+					that.calcSize();
 				}
 				let scrollTop = e.detail.scrollTop;
-				let tabs = this.slist.filter(item=>item.top <= scrollTop).reverse();
+				let tabs = secondList.filter(item => item.top <= scrollTop).reverse();
 				if(tabs.length > 0){
-					this.currentId = tabs[0].pid;
+					let parent_id = tabs[0].parent_id;
+					let currentIndex = that.currentIndex;
+					that.firstList.some((firstItem, firstIndex) => {
+						if (firstItem.cat_id === parent_id) {
+							currentIndex = firstIndex;
+							return true;
+						}
+						return false;
+					});
+
+					that.currentIndex = currentIndex;
 				}
 			},
 			//计算右侧栏每个tab的高度等信息
 			calcSize(){
+				let that = this;
 				let h = 0;
-				this.slist.forEach(item=>{
-					let view = uni.createSelectorQuery().select("#main-" + item.id);
+				let secondList = that.secondList;
+				secondList.forEach((item, itemIndex)=>{
+					let view = uni.createSelectorQuery().select("#main-" + item.cat_id);
 					view.fields({
 						size: true
 					}, data => {
-						item.top = h;
+						secondList[itemIndex].top = h;
 						h += data.height;
-						item.bottom = h;
+						secondList[itemIndex].bottom = h;
 					}).exec();
 				})
-				this.sizeCalcState = true;
+				that.secondList = secondList;
+				that.sizeCalcState = true;
 			},
-			navToList(sid, tid){
+			navToList(catId){
 				uni.navigateTo({
-					url: `/pages/product/list?fid=${this.currentId}&sid=${sid}&tid=${tid}`
+					url: `/pages/product/list?catId=${catId}`
 				})
 			}
 		}
