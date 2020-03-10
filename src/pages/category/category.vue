@@ -10,7 +10,7 @@
 					<text class="s-item">{{secondItem.cat_name}}</text>
 					<view class="t-list">
 						<template v-if="secondItem.children.length > 0">
-							<view @click="navToList(thirdItem.cat_id)" v-if="thirdItem.parent_id === secondItem.cat_id" class="t-item" v-for="thirdItem in secondItem.children" :key="thirdItem.cat_id">
+							<view @click="navToList(thirdItem.parent_id, thirdItem.cat_id)" v-if="thirdItem.parent_id === secondItem.cat_id" class="t-item" v-for="thirdItem in secondItem.children" :key="thirdItem.cat_id">
 								<image :src="'/static/temp/cate2.jpg'"></image>
 								<text>{{thirdItem.cat_name}}</text>
 							</view>
@@ -166,9 +166,10 @@
 				that.secondList = secondList;
 				that.sizeCalcState = true;
 			},
-			navToList(catId){
+			navToList(secondCatId,thirdCatId){
+				let that = this;
 				uni.navigateTo({
-					url: `/pages/product/list?catId=${catId}`
+					url: `/pages/product/list?fid=${that.firstList[that.currentIndex].cat_id}&sid=${secondCatId}&tid=${thirdCatId}`
 				})
 			}
 		}
