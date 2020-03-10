@@ -181,75 +181,26 @@
 		},
 		data() {
 			return {
-				productId: null,
+				productId: null, 		// 商品ID
 				specClass: 'none',
-				specSelected:[],
-				selectedSpecs: [],
+				selectedSpecs: [], 	// 已选中规格
 				
 				favorite: true,
 				shareList: [],
-				imgList: [],
-				name: '',
-				image: '',
-				price: 0.00,
-				mktprice: 0.00,
-				sales: 0, // 销量
-				store: 99, // 库存
-				views: 0, // 浏览量
-				promotion: { // 促销信息
+				imgList: [], 				// 商品图片
+				name: '', 					// 商品名称
+				image: '', 					// 商品默认图片
+				price: 0.00, 				// 价格
+				mktprice: 0.00, 		// 市场价
+				sales: 0, 					// 销量
+				store: 99, 					// 库存
+				views: 0, 					// 浏览量
+				promotion: { 				// 促销信息
 					'order': [],
 					'goods': []
 				},
-				desc: '',
-				specList: [],
-				specValues: [],
-				specChildList: [
-					{
-						id: 1,
-						pid: 1,
-						name: 'XS',
-					},
-					{
-						id: 2,
-						pid: 1,
-						name: 'S',
-					},
-					{
-						id: 3,
-						pid: 1,
-						name: 'M',
-					},
-					{
-						id: 4,
-						pid: 1,
-						name: 'L',
-					},
-					{
-						id: 5,
-						pid: 1,
-						name: 'XL',
-					},
-					{
-						id: 6,
-						pid: 1,
-						name: 'XXL',
-					},
-					{
-						id: 7,
-						pid: 2,
-						name: '白色',
-					},
-					{
-						id: 8,
-						pid: 2,
-						name: '珊瑚粉',
-					},
-					{
-						id: 9,
-						pid: 2,
-						name: '草木绿',
-					},
-				],
+				desc: '', 					// 商品详情
+				specList: [], 			// 规格列表
 				specDefaultPic: '',
 			};
 		},
