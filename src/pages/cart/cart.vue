@@ -112,15 +112,17 @@
 			...mapState(['hasLogin'])
 		},
 		methods: {
-			//请求数据
-			async loadData(){
-				let list = await this.$test.json('cartList'); 
-				let cartList = list.map(item=>{
-					item.checked = true;
-					return item;
+			/**
+			 * 获取购物车数据
+			 */
+			loadData(){
+				let that = this;
+				that.$http.post(that.$api.cart.cart).then(res => {
+					console.log(res);
+				}).catch(error => {
+					console.log(error);
 				});
-				this.cartList = cartList;
-				this.calcTotal();  //计算总价
+				that.calcTotal();  //计算总价
 			},
 			//监听image加载完成
 			onImageLoad(key, index) {

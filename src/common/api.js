@@ -19,6 +19,7 @@ module.exports = {
     order: 'orderDetail',                           // 订单明细
     orderCancel: 'doCancel',                        // 取消订单
     favs: 'favorite',                               // 收藏列表
+    addFav: 'goodsFav',                             // 添加收藏
     removeFav: 'delFav',                            // 删除收藏
     addrs: 'receiver',                              // 收货地址
     searchArea: 'getAreaSelect',                    // 收货地区

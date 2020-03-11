@@ -77,6 +77,16 @@
 				}
 			}
 		}, {
+			"path": "pages/public/signup",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false,
+					"animationType": "slide-in-bottom"
+				}
+			}
+		}, {
 			"path": "pages/user/user",
 			"style": {
 				"navigationBarTitleText": "我的",
@@ -223,6 +233,14 @@
 				"path": "pages/category/category"
 			},
 			{
+				"name": "购物车",
+				"path": "pages/cart/cart"
+			},
+			{
+				"name": "我的",
+				"path": "pages/user/user"
+			},
+			{
 				"name": "商品列表",
 				"path": "pages/product/list",
 				"query": "tid=4" //启动参数，在页面的onLoad函数里面得到。
@@ -231,6 +249,14 @@
 				"name": "商品详情",
 				"path": "pages/product/product",
 				"query": "id=241" //启动参数，在页面的onLoad函数里面得到。
+			},
+			{
+				"name": "登录",
+				"path": "pages/public/login"
+			},
+			{
+				"name": "注册",
+				"path": "pages/public/signup"
 			}
 		]
 	}

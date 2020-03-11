@@ -108,12 +108,17 @@
 		},
 		data(){
 			return {
+				isLogin: false,
 				coverTransform: 'translateY(0px)',
 				coverTransition: '0s',
 				moving: false,
 			}
 		},
 		onLoad(){
+		},
+		onShow () {
+			let that = this;
+			that.loadUser();
 		},
 		// #ifndef MP
 		onNavigationBarButtonTap(e) {
@@ -135,11 +140,39 @@
 			}
 		},
 		// #endif
-        computed: {
+    computed: {
 			...mapState(['hasLogin','userInfo'])
 		},
-        methods: {
+    methods: {
+			/**
+			 * 加载用户信息
+			 */
+			loadUser () {
+				let that = this;
+				let userInfo;
+				
+				try {
+					userInfo = uni.getStorageSync('userInfo');
+				} catch (e) {
+					console.log(e);
+				}
 
+				if (!userInfo && that.hasLogin) {
+					that.getUserInfo();
+				}
+			},
+
+			/**
+			 * 获取用户信息
+			 */
+			getUserInfo () {
+				let that = this;
+				that.$http.post(that.$api.user.center).then(res => {
+					console.log(res);
+				}).catch(error => {
+					console.log(error);
+				});
+			},
 			/**
 			 * 统一跳转接口,拦截未登录路由
 			 * navigator标签现在默认没有转场动画，所以用view

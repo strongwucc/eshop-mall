@@ -119,7 +119,7 @@
 			
 			<view class="action-btn-group">
 				<button type="primary" class=" action-btn no-border buy-now-btn" @click="buy">立即购买</button>
-				<button type="primary" class=" action-btn no-border add-cart-btn">加入购物车</button>
+				<button type="primary" class=" action-btn no-border add-cart-btn" @click="addCart">加入购物车</button>
 			</view>
 		</view>
 		
@@ -175,17 +175,19 @@
 
 <script>
 	import share from '@/components/share';
+	import htmlParser from '@/common/html-parser'
 	export default{
 		components: {
 			share
 		},
 		data() {
 			return {
-				productId: null, 		// 商品ID
+				productId: null, 		// 货品ID
+				goodsId: null,			// 商品ID
 				specClass: 'none',
 				selectedSpecs: [], 	// 已选中规格
 				
-				favorite: true,
+				favorite: false,
 				shareList: [],
 				imgList: [], 				// 商品图片
 				name: '', 					// 商品名称
@@ -199,9 +201,10 @@
 					'order': [],
 					'goods': []
 				},
-				desc: '', 					// 商品详情
+				desc: null, 				// 商品详情
 				specList: [], 			// 规格列表
-				specDefaultPic: '',
+				specDefaultPic: '',	// 规格默认图片
+				requesting: false, 	// 是否正在请求
 			};
 		},
 		computed: {
@@ -313,9 +316,11 @@
 							that.imgList = res.data.page_product_basic.images;
 							that.name = res.data.page_product_basic.title;
 							that.image = res.data.page_product_basic.image_default_url;
+							that.goodsId = res.data.page_product_basic.goods_id;
 							that._formatPromotion(res.data.page_product_basic.promotion);
 							that._formatSpec(res.data.page_product_basic.spec);
-							that.desc = res.data.page_product_basic.intro;
+							that.getGoodsIntro(res.data.page_product_basic.goods_id);
+							
 						}
 						// 价格
 						if (res.data.product_price) {
@@ -335,7 +340,30 @@
 
 			},
 
-			//规格弹窗开关
+			/**
+			 * 商品详情
+			 */
+			getGoodsIntro (goodsId) {
+				let that = this;
+				that.$http.post(that.$api.goods.intro, {goods_id: goodsId}).then(res => {
+					if (res.return_code === '0000') {
+						let html = res.data.html;
+						// let newHtml = html.replace(/(<img)(.*?)(>)/g, function (...args) {
+						// 	return args[1] + args[2] + " style=\"width: 100%\"" + args[3];
+						// });
+						// let nodes = htmlParser(newHtml);
+						let nodes = htmlParser(html);
+						that.desc = nodes ? nodes : [];
+					} else {
+						console.log(res.return_msg);
+					}
+				}).catch(error => {
+					console.log(error);
+				});
+			},
+			/**
+			 * 规格弹窗开关
+			 */
 			toggleSpec() {
 				if(this.specClass === 'show'){
 					this.specClass = 'hide';
@@ -346,25 +374,94 @@
 					this.specClass = 'show';
 				}
 			},
-			//选择规格
+			/**
+			 * 选择规格
+			 */
 			selectSpec(spec){
 				let that = this;
 				if (spec.hasOwnProperty('product_id')) {
 					that.loadData(spec.product_id);
 				}
 			},
-			//分享
+			/**
+			 * 分享
+			 */
 			share(){
 				this.$refs.share.toggleMask();	
 			},
-			//收藏
+			/**
+			 * 收藏
+			 */
 			toFavorite(){
-				this.favorite = !this.favorite;
+				let that = this;
+				if (that.requesting) {
+					return false;
+				}
+
+				if (!that.goodsId) {
+					return false
+				}
+
+				that.requesting = true;
+
+				that.$http.post(
+					that.$api.user.addFav,
+					{gid: that.goodsId, type: 'goods'}
+				).then(res => {
+					that.requesting = false;
+					if (res.return_code === '0000') {
+						that.$toast('收藏成功');
+						that.favorite = !that.favorite;
+					} else {
+						console.log(res.error);
+						that.$toast('收藏失败');
+					}
+				}).catch(error => {
+					that.requesting = false;
+					console.log(error);
+					that.$toast('收藏失败');
+				});
 			},
+			/**
+			 * 立即购买
+			 */
 			buy(){
 				uni.navigateTo({
 					url: `/pages/order/createOrder`
 				})
+			},
+			/**
+			 * 加入购物车
+			 */
+			addCart () {
+				let that = this;
+				if (that.requesting) {
+					return false;
+				}
+
+				if (!that.productId || !that.goodsId) {
+					return false
+				}
+
+				that.requesting = true;
+
+				that.$http.post(
+					that.$api.cart.add,
+					{goods_id: that.goodsId, product_id: that.productId, num: 1}
+				).then(res => {
+					that.requesting = false;
+					if (res.return_code === '0000') {
+						that.$toast('添加成功');
+					} else {
+						console.log(res.error);
+						that.$toast('添加失败');
+					}
+				}).catch(error => {
+					that.requesting = false;
+					console.log(error);
+					that.$toast('添加失败');
+				});
+
 			},
 			stopPrevent(){}
 		},

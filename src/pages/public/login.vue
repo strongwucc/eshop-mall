@@ -52,7 +52,7 @@ export default {
     return {
       mobile: "",
       password: "",
-      logining: false
+      requesting: false
     };
   },
   onLoad() {},
@@ -66,32 +66,46 @@ export default {
       uni.navigateBack();
     },
     toRegist() {
-      this.$test.msg("去注册");
+      uni.navigateTo({
+        url: '/pages/public/signup'
+      })
     },
-    async toLogin() {
-      this.logining = true;
-      const { mobile, password } = this;
-      /* 数据验证模块
-				if(!this.$test.match({
-					mobile,
-					password
-				})){
-					this.logining = false;
-					return;
-				}
-				*/
-      const sendData = {
-        mobile,
-        password
-      };
-      const result = await this.$test.json("userInfo");
-      if (result.status === 1) {
-        this.login(result.data);
-        uni.navigateBack();
-      } else {
-        this.$test.msg(result.msg);
-        this.logining = false;
+    /**
+     * 登录
+     */
+    toLogin() {
+      let that = this;
+      if (that.requesting) {
+        return false;
       }
+      if (/^1[0-9]{10,10}$/.test(that.mobile) === false) {
+        that.$toast('请输入正确的手机号');
+        return false;
+      }
+      if (!that.password) {
+        that.$toast('请输入密码');
+        return false;
+      }
+
+      that.requesting = true;
+      that.$http.post(
+        that.$api.auth.login,
+        {uname: that.mobile, password: '279659'}
+      ).then(res => {
+        that.requesting = false;
+        if (res.return_code === '0000') {
+          that.login(res.data.session_id);
+          that.$toast('登录成功');
+          that.navBack();
+        } else {
+          console.log(res);
+          that.$toast(res.error);
+        }
+      }).catch(error => {
+        that.requesting = false;
+        console.log(error);
+        that.$toast('登录失败');
+      });
     }
   }
 };

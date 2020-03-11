@@ -337,7 +337,7 @@ function parseHtml(html) {
         node: 'comment',
         text: text
       };
-      var parent = stacks[0];
+      var parent = stacks[0] || results;
 
       if (!parent.children) {
         parent.children = [];
