@@ -154,30 +154,27 @@
 			"style": {
 				"navigationBarTitleText": "支付成功"
 			}
-		}
-	    ,{
-            "path" : "pages/notice/notice",
-            "style" : {
+		}, {
+			"path": "pages/notice/notice",
+			"style": {
 				"navigationBarTitleText": "通知"
 			}
-        }
-        ,{
-            "path" : "pages/category/category",
-            "style" : {
+		}, {
+			"path": "pages/category/category",
+			"style": {
 				"navigationBarTitleText": "分类",
 				"app-plus": {
 					"bounce": "none"
 				}
 			}
-        }
-        ,{
-            "path" : "pages/product/list",
-            "style" : {
+		}, {
+			"path": "pages/product/list",
+			"style": {
 				"enablePullDownRefresh": true,
 				"navigationBarTitleText": "商品列表"
 			}
-        }
-    ],
+		}
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
@@ -212,6 +209,28 @@
 				"iconPath": "static/tab-my.png",
 				"selectedIconPath": "static/tab-my-current.png",
 				"text": "我的"
+			}
+		]
+	},
+	"condition": { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式（list 的索引项）
+		"list": [{
+				"name": "首页", //模式名称
+				"path": "pages/index/index" //启动页面，必选
+			},
+			{
+				"name": "分类",
+				"path": "pages/category/category"
+			},
+			{
+				"name": "商品列表",
+				"path": "pages/product/list",
+				"query": "tid=4" //启动参数，在页面的onLoad函数里面得到。
+			},
+			{
+				"name": "商品详情",
+				"path": "pages/product/product",
+				"query": "id=241" //启动参数，在页面的onLoad函数里面得到。
 			}
 		]
 	}

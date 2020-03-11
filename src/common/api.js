@@ -34,7 +34,7 @@ module.exports = {
     category: 'categoryList',                       // 商品分类
     gallery: 'gallery',                             // 商品列表（根据分类）
     detail: 'goodsDetail',                          // 商品信息
-    intro: 'goodsDetail',                           // 商品详细介绍
+    intro: 'goodsDetailIntro',                      // 商品详细介绍
   },
 }
 
