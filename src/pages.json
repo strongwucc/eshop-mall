@@ -237,6 +237,14 @@
 				"path": "pages/cart/cart"
 			},
 			{
+				"name": "结算",
+				"path": "pages/order/createOrder"
+			},
+			{
+				"name": "收货地址",
+				"path": "pages/address/address"
+			},
+			{
 				"name": "我的",
 				"path": "pages/user/user"
 			},

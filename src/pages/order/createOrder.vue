@@ -5,11 +5,14 @@
 			<view class="order-content">
 				<text class="yticon icon-shouhuodizhi"></text>
 				<view class="cen">
-					<view class="top">
+					<template v-if="addressData.addr_id">
+						<view class="top">
 						<text class="name">{{addressData.name}}</text>
 						<text class="mobile">{{addressData.mobile}}</text>
 					</view>
 					<text class="address">{{addressData.address}} {{addressData.area}}</text>
+					</template>
+					<text v-else>请添加地址</text>
 				</view>
 				<text class="yticon icon-you"></text>
 			</view>
@@ -18,10 +21,10 @@
 		</navigator>
 
 		<view class="goods-section">
-			<view class="g-header b-b">
+			<!-- <view class="g-header b-b">
 				<image class="logo" src="http://duoduo.qibukj.cn/./Upload/Images/20190321/201903211727515.png"></image>
 				<text class="name">西城小店铺</text>
-			</view>
+			</view> -->
 			<!-- 商品列表 -->
 			<view class="g-item">
 				<image src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=756705744,3505936868&fm=11&gp=0.jpg"></image>
@@ -131,26 +134,26 @@
 				desc: '', //备注
 				payType: 1, //1微信 2支付宝
 				couponList: [
-					{
-						title: '新用户专享优惠券',
-						price: 5,
-					},
-					{
-						title: '庆五一发一波优惠券',
-						price: 10,
-					},
-					{
-						title: '优惠券优惠券优惠券优惠券',
-						price: 15,
-					}
+					// {
+					// 	title: '新用户专享优惠券',
+					// 	price: 5,
+					// },
+					// {
+					// 	title: '庆五一发一波优惠券',
+					// 	price: 10,
+					// },
+					// {
+					// 	title: '优惠券优惠券优惠券优惠券',
+					// 	price: 15,
+					// }
 				],
 				addressData: {
-					name: '许小星',
-					mobile: '13853989563',
-					addressName: '金九大道',
-					address: '山东省济南市历城区',
-					area: '149号',
-					default: false,
+					// name: '许小星',
+					// mobile: '13853989563',
+					// addressName: '金九大道',
+					// address: '山东省济南市历城区',
+					// area: '149号',
+					// default: false,
 				}
 			}
 		},
@@ -274,7 +277,7 @@
 
 		.g-item {
 			display: flex;
-			margin: 20rpx 30rpx;
+			padding: 20rpx 30rpx;
 
 			image {
 				flex-shrink: 0;
