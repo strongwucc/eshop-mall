@@ -90,7 +90,7 @@ export default {
       that.requesting = true;
       that.$http.post(
         that.$api.auth.login,
-        {uname: that.mobile, password: '279659'}
+        {uname: that.mobile, password: that.password}
       ).then(res => {
         that.requesting = false;
         if (res.return_code === '0000') {

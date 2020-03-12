@@ -124,7 +124,7 @@ export default {
 
     },
     /**
-     * 提交 279659
+     * 提交
      */
     toSignup() {
       let that = this;

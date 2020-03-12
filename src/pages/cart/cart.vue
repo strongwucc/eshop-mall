@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<!-- 空白页 -->
-		<view v-if="!hasLogin || empty===true" class="empty">
+		<view v-if="loaded && (!hasLogin || cartInfo.items_count === 0)" class="empty">
 			<image src="/static/emptyCart.jpg" mode="aspectFit"></image>
 			<view v-if="hasLogin" class="empty-tips">
 				空空如也
@@ -15,36 +15,34 @@
 		<view v-else>
 			<!-- 列表 -->
 			<view class="cart-list">
-				<block v-for="(item, index) in cartList" :key="item.id">
+				<block v-for="(item, index) in cartInfo.object.goods" :key="item.obj_ident">
 					<view
 						class="cart-item" 
-						:class="{'b-b': index!==cartList.length-1}"
+						:class="{'b-b': index !== cartInfo.object.goods.length-1}"
 					>
 						<view class="image-wrapper">
-							<image :src="item.image" 
-								:class="[item.loaded]"
-								mode="aspectFill" 
+							<image :src="item.obj_items.products[0].image_url" 
+								mode="aspectFill"
+								class="loaded" 
 								lazy-load 
-								@load="onImageLoad('cartList', index)" 
-								@error="onImageError('cartList', index)"
 							></image>
-							<view 
+							<!-- <view 
 								class="yticon icon-xuanzhong2 checkbox"
 								:class="{checked: item.checked}"
 								@click="check('item', index)"
-							></view>
+							></view> -->
 						</view>
 						<view class="item-right">
-							<text class="clamp title">{{item.title}}</text>
-							<text class="attr">{{item.attr_val}}</text>
-							<text class="price">¥{{item.price}}</text>
+							<text class="clamp title">{{item.obj_items.products[0].name}}</text>
+							<text class="attr">{{item.obj_items.products[0].spec_info}}</text>
+							<text class="price">¥{{item.subtotal}}</text>
 							<uni-number-box 
 								class="step"
-								:min="1" 
-								:max="item.stock"
-								:value="item.number>item.stock?item.stock:item.number"
-								:isMax="item.number>=item.stock?true:false"
-								:isMin="item.number===1"
+								:min="1"
+								:max="item.store.store"
+								:value="item.quantity > item.store.store ? item.store.store : item.quantity"
+								:isMax="item.quantity >= item.stock ? true : false"
+								:isMin="item.quantity === 1"
 								:index="index"
 								@eventChange="numberChange"
 							></uni-number-box>
@@ -55,7 +53,7 @@
 			</view>
 			<!-- 底部菜单栏 -->
 			<view class="action-section">
-				<view class="checkbox">
+				<!-- <view class="checkbox">
 					<image 
 						:src="allChecked?'/static/selected.png':'/static/select.png'" 
 						mode="aspectFit"
@@ -64,14 +62,11 @@
 					<view class="clear-btn" :class="{show: allChecked}" @click="clearCart">
 						清空
 					</view>
-				</view>
+				</view> -->
 				<view class="total-box">
-					<text class="price">¥{{total}}</text>
-					<text class="coupon">
-						已优惠
-						<text>74.35</text>
-						元
-					</text>
+					<text class="count">共 {{cartInfo.items_quantity || 0}} 件，</text>
+					<text class="price">总价 ¥{{cartInfo.promotion_subtotal || 0.00}}</text>
+					<!-- <text class="coupon">已优惠<text>{{cartInfo.subtotal_discount || 0.00}}</text>元</text> -->
 				</view>
 				<button type="primary" class="no-border confirm-btn" @click="createOrder">去结算</button>
 			</view>
@@ -90,23 +85,27 @@
 		},
 		data() {
 			return {
-				total: 0, //总价格
+				loaded: false,
+				cartInfo: {
+					object: {
+						goods: []
+					},
+					subtotal: 0.00,
+					subtotal_price: 0.00,
+					subtotal_discount: 0.00,
+					items_quantity: 0,
+					items_count: 0,
+					discount_amount_order: 0,
+					discount_amount: 0
+				},
 				allChecked: false, //全选状态  true|false
-				empty: false, //空白页现实  true|false
-				cartList: [],
+				requesting: false,
 			};
 		},
 		onLoad(){
 			this.loadData();
 		},
 		watch:{
-			//显示空白页
-			cartList(e){
-				let empty = e.length === 0 ? true: false;
-				if(this.empty !== empty){
-					this.empty = empty;
-				}
-			}
 		},
 		computed:{
 			...mapState(['hasLogin'])
@@ -117,104 +116,103 @@
 			 */
 			loadData(){
 				let that = this;
-				that.$http.post(that.$api.cart.cart).then(res => {
-					console.log(res);
+				that.getCartInfo().then(res => {
+					if (res.return_code === '0000') {
+						that.cartInfo = res.data.aCart;
+					} else {
+						console.log(res);
+					}
+					that.$nextTick(() => {
+						that.loaded = true;
+					});
 				}).catch(error => {
 					console.log(error);
 				});
-				that.calcTotal();  //计算总价
-			},
-			//监听image加载完成
-			onImageLoad(key, index) {
-				this.$set(this[key][index], 'loaded', 'loaded');
-			},
-			//监听image加载失败
-			onImageError(key, index) {
-				this[key][index].image = '/static/errorImage.jpg';
 			},
 			navToLogin(){
 				uni.navigateTo({
 					url: '/pages/public/login'
 				})
 			},
-			 //选中状态处理
-			check(type, index){
-				if(type === 'item'){
-					this.cartList[index].checked = !this.cartList[index].checked;
-				}else{
-					const checked = !this.allChecked
-					const list = this.cartList;
-					list.forEach(item=>{
-						item.checked = checked;
-					})
-					this.allChecked = checked;
-				}
-				this.calcTotal(type);
-			},
-			//数量
-			numberChange(data){
-				this.cartList[data.index].number = data.number;
-				this.calcTotal();
-			},
-			//删除
-			deleteCartItem(index){
-				let list = this.cartList;
-				let row = list[index];
-				let id = row.id;
+			/**
+			 * 获取购物车
+			 */
+			getCartInfo () {
 
-				this.cartList.splice(index, 1);
-				this.calcTotal();
-				uni.hideLoading();
+				let that = this;
+				return that.$http.post(
+					that.$api.cart.cart
+				);
+
 			},
-			//清空
+			/**
+			 * 加入购物车
+			 */
+			addCart (goodsId, productId) {
+
+				let that = this;
+
+				return that.$http.post(
+					that.$api.cart.add,
+					{goods_id: goodsId, product_id: productId, num: 1, mini_cart: true}
+				);
+
+			},
+			/**
+			 * 数量
+			 */
+			async numberChange(data){
+
+				let that = this;
+
+				let goodsData = that.cartInfo.object.goods;
+				
+				let oldStore = goodsData[data.index].quantity;
+				let newStore = data.number;
+
+				let cartIdent = goodsData[data.index].obj_ident;
+				let [cartType, goodsId, productId] = cartIdent.split('_');
+
+				if (newStore - oldStore === 1) {
+					that.$loading.show();
+					let addRes = await that.addCart(goodsId, productId);
+					that.$loading.hide();
+					if (addRes.return_code !== '0000') {
+						that.$toast(addRes.error);
+					}
+
+				} else {
+					console.log('from: ',oldStore, ', to: ', newStore);
+					// 更新购物车todo
+				}
+
+				that.loadData();
+
+			},
+			/**
+			 * 删除
+			 */
+			deleteCartItem(index){
+				console.log(index);
+			},
+			/**
+			 * 清空
+			 */
 			clearCart(){
 				uni.showModal({
 					content: '清空购物车？',
 					success: (e)=>{
 						if(e.confirm){
-							this.cartList = [];
+							console.log(e);
 						}
 					}
 				})
 			},
-			//计算总价
-			calcTotal(){
-				let list = this.cartList;
-				if(list.length === 0){
-					this.empty = true;
-					return;
-				}
-				let total = 0;
-				let checked = true;
-				list.forEach(item=>{
-					if(item.checked === true){
-						total += item.price * item.number;
-					}else if(checked === true){
-						checked = false;
-					}
-				})
-				this.allChecked = checked;
-				this.total = Number(total.toFixed(2));
-			},
 			//创建订单
 			createOrder(){
-				let list = this.cartList;
-				let goodsData = [];
-				list.forEach(item=>{
-					if(item.checked){
-						goodsData.push({
-							attr_val: item.attr_val,
-							number: item.number
-						})
-					}
-				})
-
 				uni.navigateTo({
-					url: `/pages/order/createOrder?data=${JSON.stringify({
-						goodsData: goodsData
-					})}`
+					url: `/pages/order/createOrder`
 				})
-				this.$test.msg('跳转下一页 sendData');
 			}
 		}
 	}
@@ -359,14 +357,16 @@
 		.total-box{
 			flex: 1;
 			display:flex;
-			flex-direction: column;
 			text-align:right;
 			padding-right: 40rpx;
 			.price{
 				font-size: $font-lg;
-				color: $font-color-dark;
+				color: $uni-color-primary;
 			}
 			.coupon{
+				display: flex;
+				justify-content: center;
+				align-items: center;
 				font-size: $font-sm;
 				color: $font-color-light;
 				text{

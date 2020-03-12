@@ -5,10 +5,10 @@
 			<image class="bg" src="/static/user-bg.jpg"></image>
 			<view class="user-info-box">
 				<view class="portrait-box">
-					<image class="portrait" :src="userInfo.portrait || '/static/missing-face.png'"></image>
+					<image class="portrait" :src="userInfo.avatar || '/static/missing-face.png'"></image>
 				</view>
 				<view class="info-box">
-					<text class="username">{{userInfo.nickname || '游客'}}</text>
+					<text class="username">{{userInfo.uname || '游客'}}</text>
 				</view>
 			</view>
 			<view class="vip-card-box">
@@ -18,9 +18,9 @@
 				</view>
 				<view class="tit">
 					<text class="yticon icon-iLinkapp-"></text>
-					DCloud会员
+					会员
 				</view>
-				<text class="e-m">DCloud Union</text>
+				<text class="e-m">Super Wu</text>
 				<text class="e-b">开通会员开发无bug 一测就上线</text>
 			</view>
 		</view>
@@ -39,7 +39,7 @@
 			
 			<view class="tj-sction">
 				<view class="tj-item">
-					<text class="num">128.8</text>
+					<text class="num">{{userInfo.advance || 0.00}}</text>
 					<text>余额</text>
 				</view>
 				<view class="tj-item">
@@ -47,7 +47,7 @@
 					<text>优惠券</text>
 				</view>
 				<view class="tj-item">
-					<text class="num">20</text>
+					<text class="num">{{userInfo.point || 0.00}}</text>
 					<text>积分</text>
 				</view>
 			</view>
@@ -99,7 +99,8 @@
 <script>  
 	import listCell from '@/components/mix-list-cell';
     import {  
-        mapState 
+				mapState,
+				mapMutations
     } from 'vuex';  
 	let startY = 0, moveY = 0, pageAtTop = true;
     export default {
@@ -108,7 +109,6 @@
 		},
 		data(){
 			return {
-				isLogin: false,
 				coverTransform: 'translateY(0px)',
 				coverTransition: '0s',
 				moving: false,
@@ -141,20 +141,41 @@
 		},
 		// #endif
     computed: {
-			...mapState(['hasLogin','userInfo'])
+			...mapState(['hasLogin','token','userInfo'])
 		},
     methods: {
+			...mapMutations([
+				'login',
+				'setUser'
+			]),
 			/**
 			 * 加载用户信息
 			 */
 			loadUser () {
 				let that = this;
-				let userInfo;
+				let userInfo = that.userInfo;
 				
-				try {
-					userInfo = uni.getStorageSync('userInfo');
-				} catch (e) {
-					console.log(e);
+				if (Object.keys(userInfo).length === 0) {
+				  try {
+						userInfo = uni.getStorageSync('userInfo');
+						if (userInfo) {
+							that.setUser(JSON.parse(userInfo));
+						}
+				  } catch (e) {
+				    console.log(e);
+				  }
+				}
+
+				let token = that.token;
+				if (!token) {
+					try {
+						token = uni.getStorageSync('token');
+						if (token) {
+							that.login(token);
+						}
+				  } catch (e) {
+				    console.log(e);
+				  }
 				}
 
 				if (!userInfo && that.hasLogin) {
@@ -168,7 +189,7 @@
 			getUserInfo () {
 				let that = this;
 				that.$http.post(that.$api.user.center).then(res => {
-					console.log(res);
+					that.setUser(res.data.member);
 				}).catch(error => {
 					console.log(error);
 				});

@@ -7,7 +7,7 @@
       class="uni-numbox-value"
       type="number"
       :disabled="disabled"
-      :value="inputValue"
+      :value="value"
       @blur="_onBlur"
     />
     <view class="uni-numbox-plus" @click="_calcValue('add')">
@@ -54,7 +54,6 @@ export default {
   },
   data() {
     return {
-      inputValue: this.value,
       minDisabled: false,
       maxDisabled: false
     };
@@ -65,18 +64,12 @@ export default {
   },
   computed: {},
   watch: {
-    inputValue(number) {
-      const data = {
-        number: number,
-        index: this.index
-      };
-      this.$emit("eventChange", data);
-    }
+    
   },
   methods: {
     _calcValue(type) {
       const scale = this._getDecimalScale();
-      let value = this.inputValue * scale;
+      let value = this.value * scale;
       let newValue = 0;
       let step = this.step * scale;
 
@@ -106,7 +99,13 @@ export default {
       if (newValue === value) {
         return;
       }
-      this.inputValue = newValue / scale;
+
+      const data = {
+        number: newValue / scale,
+        index: this.index
+      };
+
+      this.$emit("eventChange", data);
     },
     _getDecimalScale() {
       let scale = 1;
@@ -117,19 +116,17 @@ export default {
       return scale;
     },
     _onBlur(event) {
-      let value = event.detail.value;
-      if (!value) {
-        this.inputValue = 0;
-        return;
-      }
-      value = +value;
+      let value = ~~ event.detail.value || 1;
       if (value > this.max) {
         value = this.max;
       } else if (value < this.min) {
         value = this.min;
       }
-
-      this.inputValue = value;
+      const data = {
+        number: value,
+        index: this.index
+      };
+      this.$emit("eventChange", data);
     }
   }
 };

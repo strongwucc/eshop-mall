@@ -24,6 +24,18 @@ const msg = (title, duration=1500, mask=false, icon='none')=>{
 		icon
 	});
 }
+
+const loading = {
+	show: function () {
+		uni.showToast({
+			icon: 'loading'
+		});
+	},
+	hide: function () {
+		uni.hideToast();
+	}
+}
+
 const json = type=>{
 	//模拟异步请求数据
 	return new Promise(resolve=>{
@@ -50,6 +62,7 @@ Vue.prototype.$test = {msg, json, prePage};
 Vue.prototype.$http = http;
 Vue.prototype.$api = api;
 Vue.prototype.$toast = msg;
+Vue.prototype.$loading = loading;
 Vue.prototype.$back = prePage;
 
 App.mpType = 'app'

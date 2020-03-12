@@ -316,6 +316,7 @@
 							that.imgList = res.data.page_product_basic.images;
 							that.name = res.data.page_product_basic.title;
 							that.image = res.data.page_product_basic.image_default_url;
+							that.favorite = res.data.page_product_basic.isFav;
 							that.goodsId = res.data.page_product_basic.goods_id;
 							that._formatPromotion(res.data.page_product_basic.promotion);
 							that._formatSpec(res.data.page_product_basic.spec);
@@ -404,13 +405,19 @@
 
 				that.requesting = true;
 
+				let postUrl = that.favorite ? that.$api.user.removeFav : that.$api.user.addFav;
+
 				that.$http.post(
-					that.$api.user.addFav,
+					postUrl,
 					{gid: that.goodsId, type: 'goods'}
 				).then(res => {
 					that.requesting = false;
 					if (res.return_code === '0000') {
-						that.$toast('收藏成功');
+						if (that.favorite) {
+							that.$toast('移除成功');
+						} else {
+							that.$toast('收藏成功');
+						}
 						that.favorite = !that.favorite;
 					} else {
 						console.log(res.error);
@@ -447,7 +454,7 @@
 
 				that.$http.post(
 					that.$api.cart.add,
-					{goods_id: that.goodsId, product_id: that.productId, num: 1}
+					{goods_id: that.goodsId, product_id: that.productId, num: 1, mini_cart: true}
 				).then(res => {
 					that.requesting = false;
 					if (res.return_code === '0000') {

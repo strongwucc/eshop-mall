@@ -36,6 +36,7 @@ http.interceptor.request((config, cancel) => {
   }
   if (token) {
     config.data.session_id = token;
+    config.params.sess_id = token;
   }
   /*
   if (!token) { // 如果token不存在，调用cancel 会取消本次请求，但是该函数的catch() 仍会执行
