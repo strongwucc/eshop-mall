@@ -75,7 +75,7 @@ export default {
       });
     },
     //添加或修改成功之后回调
-    refreshList(data, type) {
+    refreshList() {
       let that = this;
       that.getAddrs();
     }

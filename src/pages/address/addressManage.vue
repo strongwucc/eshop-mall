@@ -40,6 +40,7 @@
       <switch :checked="~~addr.def_addr === 1" color="#fa436a" @change="switchChange" />
     </view>
     <button class="add-btn" @click="confirm">提交</button>
+    <button class="del-btn" @click="delAddr" v-if="manageType === 'edit'">删除地址</button>
     <lb-picker
       ref="addrPicker"
       v-model="region"
@@ -68,16 +69,21 @@ export default {
         def_addr: 0
       },
       region: [],
-      regions: []
+      regions: [],
+      manageType: "add",
+      requesting: false
     };
   },
   computed: {
-    areaTxt () {
+    areaTxt() {
       let that = this;
-      if (that.addr.addr_id) {
-        return that.addr.area.split(':')[1].split('/').join('');
+      if (that.addr.area) {
+        return that.addr.area
+          .split(":")[1]
+          .split("/")
+          .join("");
       }
-      return '请选择地区';
+      return "请选择地区";
     }
   },
   onLoad(option) {
@@ -85,8 +91,16 @@ export default {
     let title = "新增收货地址";
     if (option.type === "edit") {
       title = "编辑收货地址";
-      let {addr_id,name,mobile,area,addr,def_addr,addr_path} = JSON.parse(option.data);
-      that.addr = {addr_id,name,mobile,area,addr,def_addr};
+      let {
+        addr_id,
+        name,
+        mobile,
+        area,
+        addr,
+        def_addr,
+        addr_path
+      } = JSON.parse(option.data);
+      that.addr = { addr_id, name, mobile, area, addr, def_addr };
       that.region = addr_path.length > 0 ? addr_path : [];
     }
     that.manageType = option.type;
@@ -134,16 +148,23 @@ export default {
      */
     confirmRegionPicker(e) {
       let that = this;
-      that.areaTxt = e.item.map(item => item.label).join("");
-      that.addr.area =
+
+      let area =
         "mainland:" +
         e.item.map(item => item.label).join("/") +
         ":" +
         e.item[e.item.length - 1].value;
+
+      that.addr = Object.assign({}, that.addr, {area: area});
     },
     //提交
     confirm() {
       let that = this;
+
+      if (that.requesting) {
+        return false;
+      }
+
       let data = that.addr;
       if (!data.name) {
         that.$toast("请填写收货人姓名");
@@ -162,11 +183,14 @@ export default {
         return false;
       }
 
+      that.requesting = true;
+
       that.$http
         .post(that.$api.user.addAddr, data)
         .then(res => {
+          that.requesting = false;
           if (res.return_code === "0000") {
-            that.$prevPage().refreshList(data, that.manageType);
+            that.$prevPage().refreshList();
             that.$toast(
               `地址${this.manageType == "edit" ? "修改" : "添加"}成功`
             );
@@ -179,9 +203,50 @@ export default {
           }
         })
         .catch(error => {
+          that.requesting = false;
           console.log(error);
           that.$toast("保存失败");
         });
+    },
+    delAddr() {
+      let that = this;
+
+      if (that.requesting) {
+        return false;
+      }
+
+      if (!that.addr.addr_id) {
+        return false;
+      }
+
+      uni.showModal({
+        content: "确定删除？",
+        success: e => {
+          if (e.confirm) {
+            that.requesting = true;
+            that.$http
+              .post(that.$api.user.removeAddr, { addr_id: that.addr.addr_id })
+              .then(res => {
+                that.requesting = false;
+                if (res.return_code === "0000") {
+                  that.$prevPage().refreshList();
+                  that.$toast("地址删除成功");
+                  setTimeout(() => {
+                    uni.navigateBack();
+                  }, 800);
+                } else {
+                  console.log(res);
+                  that.$toast("删除失败");
+                }
+              })
+              .catch(error => {
+                that.requesting = false;
+                console.log(error);
+                that.$toast("删除失败");
+              });
+          }
+        }
+      });
     }
   }
 };
@@ -229,17 +294,22 @@ page {
     transform: translateX(16rpx) scale(0.9);
   }
 }
-.add-btn {
+.add-btn,
+.del-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 690rpx;
   height: 80rpx;
-  margin: 60rpx auto;
+  margin: 60rpx auto 0;
   font-size: $font-lg;
   color: #fff;
-  background-color: $base-color;
   border-radius: 10rpx;
-  box-shadow: 1px 2px 5px rgba(219, 63, 96, 0.4);
+}
+.add-btn {
+  background-color: $base-color;
+}
+.del-btn {
+  background-color: $font-color-disabled;
 }
 </style>
