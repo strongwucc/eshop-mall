@@ -245,6 +245,11 @@
 				"path": "pages/address/address"
 			},
 			{
+				"name": "新增收货地址",
+				"path": "pages/address/addressManage",
+				"query": "type=add&data="
+			},
+			{
 				"name": "我的",
 				"path": "pages/user/user"
 			},

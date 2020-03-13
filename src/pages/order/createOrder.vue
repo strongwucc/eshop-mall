@@ -5,12 +5,12 @@
 			<view class="order-content">
 				<text class="yticon icon-shouhuodizhi"></text>
 				<view class="cen">
-					<template v-if="addressData.addr_id">
+					<template v-if="addr.addr_id">
 						<view class="top">
-						<text class="name">{{addressData.name}}</text>
-						<text class="mobile">{{addressData.mobile}}</text>
+						<text class="name">{{addr.name}}</text>
+						<text class="mobile">{{addr.mobile}}</text>
 					</view>
-					<text class="address">{{addressData.address}} {{addressData.area}}</text>
+					<text class="address">{{addr.area_str}} {{addr.addr}}</text>
 					</template>
 					<text v-else>请添加地址</text>
 				</view>
@@ -26,28 +26,19 @@
 				<text class="name">西城小店铺</text>
 			</view> -->
 			<!-- 商品列表 -->
-			<view class="g-item">
-				<image src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=756705744,3505936868&fm=11&gp=0.jpg"></image>
-				<view class="right">
-					<text class="title clamp">古黛妃 短袖t恤女夏装2019新款</text>
-					<text class="spec">春装款 L</text>
-					<view class="price-box">
-						<text class="price">￥17.8</text>
-						<text class="number">x 1</text>
+			<template v-if="cartInfo.object.goods.length > 0">
+				<view class="g-item" v-for="(item, itemIndex) in cartInfo.object.goods" :key="item.obj_ident">
+					<image :src="item.obj_items.products[0].image_url"></image>
+					<view class="right">
+						<text class="title clamp">{{item.obj_items.products[0].name}}</text>
+						<text class="spec">{{item.obj_items.products[0].spec_info}}</text>
+						<view class="price-box">
+							<text class="price">￥{{item.obj_items.products[0].price.price || 0.00}}</text>
+							<text class="number">x {{item.quantity}}</text>
+						</view>
 					</view>
 				</view>
-			</view>
-			<view class="g-item">
-				<image src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1620020012,789258862&fm=26&gp=0.jpg"></image>
-				<view class="right">
-					<text class="title clamp">韩版于是洞洞拖鞋 夏季浴室防滑简约居家【新人专享，限选意见】</text>
-					<text class="spec">春装款 L</text>
-					<view class="price-box">
-						<text class="price">￥17.8</text>
-						<text class="number">x 1</text>
-					</view>
-				</view>
-			</view>
+			</template>
 		</view>
 
 		<!-- 优惠明细 -->
@@ -74,11 +65,11 @@
 		<view class="yt-list">
 			<view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">商品金额</text>
-				<text class="cell-tip">￥179.88</text>
+				<text class="cell-tip">￥{{cartInfo.subtotal || 0.00}}</text>
 			</view>
 			<view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">优惠金额</text>
-				<text class="cell-tip red">-￥35</text>
+				<text class="cell-tip red">-￥{{cartInfo.subtotal_discount || 0.00}}</text>
 			</view>
 			<view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">运费</text>
@@ -95,7 +86,7 @@
 			<view class="price-content">
 				<text>实付款</text>
 				<text class="price-tip">￥</text>
-				<text class="price">475</text>
+				<text class="price">{{cartInfo.promotion_subtotal || 0.00}}</text>
 			</view>
 			<text class="submit" @click="submit">提交订单</text>
 		</view>
@@ -130,6 +121,18 @@
 	export default {
 		data() {
 			return {
+				cartInfo: {
+					object: {
+						goods: []
+					},
+					subtotal: 0.00,
+					subtotal_price: 0.00,
+					subtotal_discount: 0.00,
+					items_quantity: 0,
+					items_count: 0,
+					discount_amount_order: 0,
+					discount_amount: 0
+				},
 				maskState: 0, //优惠券面板显示状态
 				desc: '', //备注
 				payType: 1, //1微信 2支付宝
@@ -147,13 +150,8 @@
 					// 	price: 15,
 					// }
 				],
-				addressData: {
-					// name: '许小星',
-					// mobile: '13853989563',
-					// addressName: '金九大道',
-					// address: '山东省济南市历城区',
-					// area: '149号',
-					// default: false,
+				addr: {
+					addr_id: ''
 				}
 			}
 		},
@@ -161,8 +159,46 @@
 			//商品数据
 			//let data = JSON.parse(option.data);
 			//console.log(data);
+			let that = this;
+			that.getDefAddr();
+			that.getCartInfo();
 		},
 		methods: {
+			/**
+			 * 获取默认收货地址
+			 */
+			getDefAddr() {
+			  let that = this;
+			  that.$http.post(that.$api.user.defAddr).then(res => {
+			    if (res.return_code === '0000') {
+			      if (Object.values(res.data).length > 0) {
+							res.data.area_str = res.data.area.split(':')[1].split('/').join('');
+			        that.addr = res.data
+			      }
+			    } else {
+			      console.log(res);
+			    }
+			  }).catch(error => {
+			    console.log(error);
+			  });
+			},
+			getCartInfo () {
+				let that = this;
+				that.$http.post(
+					that.$api.cart.cart
+				).then(res => {
+					if (res.return_code === '0000') {
+						that.cartInfo = res.data.aCart;
+					} else {
+						console.log(res);
+					}
+					that.$nextTick(() => {
+						that.loaded = true;
+					});
+				}).catch(error => {
+					console.log(error);
+				});
+			},
 			//显示优惠券面板
 			toggleMask(type){
 				let timer = type === 'show' ? 10 : 300;

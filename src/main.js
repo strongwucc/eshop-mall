@@ -63,7 +63,7 @@ Vue.prototype.$http = http;
 Vue.prototype.$api = api;
 Vue.prototype.$toast = msg;
 Vue.prototype.$loading = loading;
-Vue.prototype.$back = prePage;
+Vue.prototype.$prevPage = prePage;
 
 App.mpType = 'app'
 

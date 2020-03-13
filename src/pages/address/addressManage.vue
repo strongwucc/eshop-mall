@@ -5,7 +5,7 @@
       <input
         class="input"
         type="text"
-        v-model="addressData.name"
+        v-model="addr.name"
         placeholder="收货人姓名"
         placeholder-class="placeholder"
       />
@@ -15,102 +15,173 @@
       <input
         class="input"
         type="number"
-        v-model="addressData.mobile"
+        v-model="addr.mobile"
         placeholder="收货人手机号码"
         placeholder-class="placeholder"
       />
     </view>
-    <view class="row b-b">
-      <text class="tit">地址</text>
-      <text @click="chooseLocation" class="input">{{addressData.addressName}}</text>
-      <text class="yticon icon-shouhuodizhi"></text>
+    <view class="row b-b" @click="showRegions">
+      <text class="tit">所在地区</text>
+      <text class="input" :class="{'empty': addr.area ? false : true}">{{areaTxt}}</text>
     </view>
     <view class="row b-b">
-      <text class="tit">门牌号</text>
+      <text class="tit">详细地址</text>
       <input
         class="input"
         type="text"
-        v-model="addressData.area"
-        placeholder="楼号、门牌"
+        v-model="addr.addr"
+        placeholder="详细地址"
         placeholder-class="placeholder"
       />
     </view>
 
     <view class="row default-row">
       <text class="tit">设为默认</text>
-      <switch :checked="addressData.defaule" color="#fa436a" @change="switchChange" />
+      <switch :checked="~~addr.def_addr === 1" color="#fa436a" @change="switchChange" />
     </view>
     <button class="add-btn" @click="confirm">提交</button>
+    <lb-picker
+      ref="addrPicker"
+      v-model="region"
+      mode="multiSelector"
+      :list="regions"
+      :level="3"
+      @confirm="confirmRegionPicker"
+    ></lb-picker>
   </view>
 </template>
 
 <script>
+import LbPicker from "@/components/lb-picker";
 export default {
+  components: {
+    LbPicker
+  },
   data() {
     return {
-      addressData: {
+      addr: {
+        addr_id: "",
         name: "",
         mobile: "",
-        addressName: "在地图选择",
-        address: "",
         area: "",
-        default: false
-      }
+        addr: "",
+        def_addr: 0
+      },
+      region: [],
+      regions: []
     };
   },
+  computed: {
+    areaTxt () {
+      let that = this;
+      if (that.addr.addr_id) {
+        return that.addr.area.split(':')[1].split('/').join('');
+      }
+      return '请选择地区';
+    }
+  },
   onLoad(option) {
+    let that = this;
     let title = "新增收货地址";
     if (option.type === "edit") {
       title = "编辑收货地址";
-
-      this.addressData = JSON.parse(option.data);
+      let {addr_id,name,mobile,area,addr,def_addr,addr_path} = JSON.parse(option.data);
+      that.addr = {addr_id,name,mobile,area,addr,def_addr};
+      that.region = addr_path.length > 0 ? addr_path : [];
     }
-    this.manageType = option.type;
+    that.manageType = option.type;
     uni.setNavigationBarTitle({
       title
     });
+
+    that.getRegions();
   },
   methods: {
+    /**
+     * 获取地区映射信息
+     */
+    getRegions() {
+      let that = this;
+      that.$http
+        .post(that.$api.ectools.regions)
+        .then(res => {
+          if (res.return_code === "0000") {
+            that.regions = res.data;
+          } else {
+            console.log(res);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    /**
+     * 切换默认值
+     */
     switchChange(e) {
-      this.addressData.default = e.detail;
+      let that = this;
+      that.addr.def_addr = e.detail.value ? 1 : 0;
     },
-
-    //地图选择地址
-    chooseLocation() {
-      uni.chooseLocation({
-        success: data => {
-          this.addressData.addressName = data.name;
-          this.addressData.address = data.name;
-        }
-      });
+    /**
+     * 展示地区选择
+     */
+    showRegions() {
+      let that = this;
+      that.$refs.addrPicker.show();
     },
-
+    /**
+     * 确认地区选择
+     */
+    confirmRegionPicker(e) {
+      let that = this;
+      that.areaTxt = e.item.map(item => item.label).join("");
+      that.addr.area =
+        "mainland:" +
+        e.item.map(item => item.label).join("/") +
+        ":" +
+        e.item[e.item.length - 1].value;
+    },
     //提交
     confirm() {
-      let data = this.addressData;
+      let that = this;
+      let data = that.addr;
       if (!data.name) {
-        this.$test.msg("请填写收货人姓名");
-        return;
+        that.$toast("请填写收货人姓名");
+        return false;
       }
       if (!/(^1[3|4|5|7|8][0-9]{9}$)/.test(data.mobile)) {
-        this.$test.msg("请输入正确的手机号码");
-        return;
-      }
-      if (!data.address) {
-        this.$test.msg("请在地图选择所在位置");
-        return;
+        that.$toast("请输入正确的手机号码");
+        return false;
       }
       if (!data.area) {
-        this.$test.msg("请填写门牌号信息");
-        return;
+        that.$toast("请选择所在地区");
+        return false;
+      }
+      if (!data.addr) {
+        that.$toast("请填写详细地址");
+        return false;
       }
 
-      //this.$test.prePage()获取上一页实例，可直接调用上页所有数据和方法，在App.vue定义
-      this.$test.prePage().refreshList(data, this.manageType);
-      this.$test.msg(`地址${this.manageType == "edit" ? "修改" : "添加"}成功`);
-      setTimeout(() => {
-        uni.navigateBack();
-      }, 800);
+      that.$http
+        .post(that.$api.user.addAddr, data)
+        .then(res => {
+          if (res.return_code === "0000") {
+            that.$prevPage().refreshList(data, that.manageType);
+            that.$toast(
+              `地址${this.manageType == "edit" ? "修改" : "添加"}成功`
+            );
+            setTimeout(() => {
+              uni.navigateBack();
+            }, 800);
+          } else {
+            console.log(res);
+            that.$toast("保存失败");
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          that.$toast("保存失败");
+        });
     }
   }
 };
@@ -132,7 +203,7 @@ page {
 
   .tit {
     flex-shrink: 0;
-    width: 120rpx;
+    width: 150rpx;
     font-size: 30rpx;
     color: $font-color-dark;
   }
@@ -140,6 +211,9 @@ page {
     flex: 1;
     font-size: 30rpx;
     color: $font-color-dark;
+  }
+  .empty {
+    color: $font-color-light;
   }
   .icon-shouhuodizhi {
     font-size: 36rpx;

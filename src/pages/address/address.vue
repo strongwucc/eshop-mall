@@ -1,15 +1,10 @@
 <template>
   <view class="content b-t">
-    <view
-      class="list b-b"
-      v-for="(item, index) in addressList"
-      :key="index"
-      @click="checkAddress(item)"
-    >
+    <view class="list b-b" v-for="(item, index) in addrs" :key="index" @click="checkAddress(item)">
       <view class="wrapper">
         <view class="address-box">
-          <text v-if="item.default" class="tag">默认</text>
-          <text class="address">{{item.addressName}} {{item.area}}</text>
+          <text v-if="item.def_addr === '1'" class="tag">默认</text>
+          <text class="address">{{item.name}} {{item.area_str}} {{item.addr}}</text>
         </view>
         <view class="u-box">
           <text class="name">{{item.name}}</text>
@@ -18,10 +13,6 @@
       </view>
       <text class="yticon icon-bianji" @click.stop="addAddress('edit', item)"></text>
     </view>
-    <text
-      style="display:block;padding: 16rpx 30rpx 10rpx;lihe-height: 1.6;color: #fa436a;font-size: 24rpx;"
-    >重要：添加和修改地址回调仅增加了一条数据做演示，实际开发中将回调改为请求后端接口刷新一下列表即可</text>
-
     <button class="add-btn" @click="addAddress('add')">新增地址</button>
   </view>
 </template>
@@ -31,36 +22,48 @@ export default {
   data() {
     return {
       source: 0,
-      addressList: [
-        {
-          name: "刘晓晓",
-          mobile: "18666666666",
-          addressName: "贵族皇仕牛排(东城店)",
-          address: "北京市东城区",
-          area: "B区",
-          default: true
-        },
-        {
-          name: "刘大大",
-          mobile: "18667766666",
-          addressName: "龙回1区12号楼",
-          address: "山东省济南市历城区",
-          area: "西单元302",
-          default: false
-        }
-      ]
+      addrs: []
     };
   },
   onLoad(option) {
-    console.log(option.source);
-    this.source = option.source;
+    let that = this;
+
+    if (option.source) {
+      that.source = ~~option.source;
+    }
+
+    that.getAddrs();
   },
   methods: {
+    /**
+     * 收货地址列表
+     */
+    getAddrs() {
+      let that = this;
+      that.$http
+        .post(that.$api.user.addrs)
+        .then(res => {
+          if (res.return_code === "0000") {
+            if (res.data.receiver.length > 0) {
+              let addrs = res.data.receiver.map(addr => {
+                addr.area_str = addr.area.split(':')[1].split('/').join('');
+                return addr;
+              });
+              that.addrs = addrs;
+            }
+          } else {
+            console.log(res);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     //选择地址
     checkAddress(item) {
-      if (this.source == 1) {
-        //this.$test.prePage()获取上一页实例，在App.vue定义
-        this.$test.prePage().addressData = item;
+      let that = this;
+      if (that.source === 1) {
+        that.$prevPage().addr = item;
         uni.navigateBack();
       }
     },
@@ -73,10 +76,8 @@ export default {
     },
     //添加或修改成功之后回调
     refreshList(data, type) {
-      //添加或修改后事件，这里直接在最前面添加了一条数据，实际应用中直接刷新地址列表即可
-      this.addressList.unshift(data);
-
-      console.log(data, type);
+      let that = this;
+      that.getAddrs();
     }
   }
 };
@@ -113,8 +114,10 @@ page {
     border-radius: 4rpx;
     padding: 4rpx 10rpx;
     line-height: 1;
+    flex: none;
   }
   .address {
+    flex: 1;
     font-size: 30rpx;
     color: $font-color-dark;
   }
