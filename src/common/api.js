@@ -29,6 +29,7 @@ module.exports = {
   cart: {
     cart: 'cart', // 购物车信息
     add: 'cartAddGoods', // 添加购物车
+    checkout: 'checkout', // 结算
   },
   goods: {
     // category: 'goodsCat',                           // 商品分类
@@ -40,5 +41,7 @@ module.exports = {
   ectools: {
     searchArea: 'getAreaSelect', // 收货地区
     regions: 'getAreaMap', // 收货地区映射
+    dlytype: 'getDlytype', // 快递信息
+    payment: 'getPayments', // 支付方式
   }
 }

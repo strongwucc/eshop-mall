@@ -2,6 +2,8 @@ import Vue from 'vue'
 import store from './store'
 import App from './App'
 
+import './common/filter'
+
 import { http } from './common/request'
 import api from './common/api'
 import Json from './Json' //测试用数据

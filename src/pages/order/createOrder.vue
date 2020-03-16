@@ -41,9 +41,29 @@
 			</template>
 		</view>
 
+		<!-- 配送方式 -->
+		<view class="yt-list">
+			<view class="yt-list-cell b-b" @click="toggleDeliveryMask('show')">
+				<text class="cell-tit clamp">配送方式</text>
+				<text class="cell-tip" :class="{active: selectedDlyType.selected === false}">
+					{{selectedDlyType.txt}}
+				</text>
+			</view>
+		</view>
+
+		<!-- 支付方式 -->
+		<view class="yt-list">
+			<view class="yt-list-cell b-b" @click="togglePaymentsMask('show')">
+				<text class="cell-tit clamp">支付方式</text>
+				<text class="cell-tip" :class="{active: selectedPayment.selected === false}">
+					{{selectedPayment.txt}}
+				</text>
+			</view>
+		</view>
+
 		<!-- 优惠明细 -->
 		<view class="yt-list">
-			<view class="yt-list-cell b-b" @click="toggleMask('show')">
+			<view class="yt-list-cell b-b" @click="toggleCouponMask('show')">
 				<view class="cell-icon">
 					券
 				</view>
@@ -55,10 +75,10 @@
 			</view>
 			<view class="yt-list-cell b-b">
 				<view class="cell-icon hb">
-					减
+					抵
 				</view>
-				<text class="cell-tit clamp">商家促销</text>
-				<text class="cell-tip disabled">暂无可用优惠</text>
+				<text class="cell-tit clamp">积分抵扣</text>
+				<text class="cell-tip disabled">暂无积分抵扣</text>
 			</view>
 		</view>
 		<!-- 金额明细 -->
@@ -69,12 +89,12 @@
 			</view>
 			<view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">优惠金额</text>
-				<text class="cell-tip red">-￥{{cartInfo.subtotal_discount || 0.00}}</text>
+				<text class="cell-tip red">-￥{{orderDetail.pmt_amount || 0.00}}</text>
 			</view>
-			<view class="yt-list-cell b-b">
+			<!-- <view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">运费</text>
 				<text class="cell-tip">免运费</text>
-			</view>
+			</view> -->
 			<view class="yt-list-cell desc-cell">
 				<text class="cell-tit clamp">备注</text>
 				<input class="desc" type="text" v-model="desc" placeholder="请填写备注信息" placeholder-class="placeholder" />
@@ -86,30 +106,48 @@
 			<view class="price-content">
 				<text>实付款</text>
 				<text class="price-tip">￥</text>
-				<text class="price">{{cartInfo.promotion_subtotal || 0.00}}</text>
+				<text class="price">{{subtotal || 0.00}}</text>
 			</view>
 			<text class="submit" @click="submit">提交订单</text>
 		</view>
 		
+		<!-- 配送方式面板 -->
+		<view class="mask" :class="deliveryMaskState===0 ? 'none' : deliveryMaskState===1 ? 'show' : ''" @click="toggleDeliveryMask">
+			<view class="mask-content" @click.stop.prevent="stopPrevent">
+				<!-- 配送方式页面，仿mt -->
+				<view class="deltype-item" v-for="(item,index) in dlyTypes" :key="item.dt_id" @click="selectDlyType(index)">
+					<image class="check-icon" src="/static/selected.png" v-if="item.selected"></image>
+					<image class="check-icon" src="/static/select.png" v-else></image>
+					<text class="deltype-name">{{item.dt_name}}</text>
+					<text class="deltype-price">运费：<text>{{item.money || 0.00}}</text>元</text>
+				</view>
+			</view>
+		</view>
+
+		<!-- 支付方式面板 -->
+		<view class="mask" :class="paymentsMaskState===0 ? 'none' : paymentsMaskState===1 ? 'show' : ''" @click="togglePaymentsMask">
+			<view class="mask-content" @click.stop.prevent="stopPrevent">
+				<!-- 支付方式页面，仿mt -->
+				<view class="payment-item" v-for="(item,index) in payments" :key="item.app_id" @click="selectPayment(index)">
+					<image class="check-icon" src="/static/selected.png" v-if="item.selected"></image>
+					<image class="check-icon" src="/static/select.png" v-else></image>
+					<text class="payment-name">{{item.app_name}}</text>
+				</view>
+			</view>
+		</view>
+
 		<!-- 优惠券面板 -->
-		<view class="mask" :class="maskState===0 ? 'none' : maskState===1 ? 'show' : ''" @click="toggleMask">
+		<view class="mask" :class="couponMaskState===0 ? 'none' : couponMaskState===1 ? 'show' : ''" @click="toggleCouponMask">
 			<view class="mask-content" @click.stop.prevent="stopPrevent">
 				<!-- 优惠券页面，仿mt -->
 				<view class="coupon-item" v-for="(item,index) in couponList" :key="index">
-					<view class="con">
-						<view class="left">
-							<text class="title">{{item.title}}</text>
-							<text class="time">有效期至2019-06-30</text>
-						</view>
-						<view class="right">
-							<text class="price">{{item.price}}</text>
-							<text>满30可用</text>
-						</view>
-						
-						<view class="circle l"></view>
-						<view class="circle r"></view>
+					<view class="left">
+					  <text class="title">{{item.coupons_info.cpns_name}}</text>
+					  <text class="time">有效期至 {{item.time.to_time|formatTime(1)}}</text>
 					</view>
-					<text class="tips">限新用户使用</text>
+					<view class="right">
+					  <text>立即使用</text>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -118,110 +156,252 @@
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				cartInfo: {
-					object: {
-						goods: []
-					},
-					subtotal: 0.00,
-					subtotal_price: 0.00,
-					subtotal_discount: 0.00,
-					items_quantity: 0,
-					items_count: 0,
-					discount_amount_order: 0,
-					discount_amount: 0
+import { formatTime } from '@/common/util';
+export default {
+	data() {
+		return {
+			cartInfo: {
+				object: {
+					goods: []
 				},
-				maskState: 0, //优惠券面板显示状态
-				desc: '', //备注
-				payType: 1, //1微信 2支付宝
-				couponList: [
-					// {
-					// 	title: '新用户专享优惠券',
-					// 	price: 5,
-					// },
-					// {
-					// 	title: '庆五一发一波优惠券',
-					// 	price: 10,
-					// },
-					// {
-					// 	title: '优惠券优惠券优惠券优惠券',
-					// 	price: 15,
-					// }
-				],
-				addr: {
-					addr_id: ''
+				subtotal: 0.00,
+				subtotal_price: 0.00,
+				subtotal_discount: 0.00,
+				items_quantity: 0,
+				items_count: 0,
+				discount_amount_order: 0,
+				discount_amount: 0
+			},
+			orderDetail: {
+				cost_item: 0.00,
+				total_amount: 0.00,
+				pmt_order: 0.00,
+				pmt_amount: 0.00,
+				total_consume_score: 0,
+				total_gain_score: 0,
+				total_score: 0,
+				final_amount: 0,
+				discount: 0
+			},
+			addr: {
+				addr_id: ''
+			},
+			dlyTypes: [], // 配送方式
+			deliveryMaskState: 0, // 配送方式面板显示状态
+			payments: [], // 支付方式
+			paymentsMaskState: 0, // 支付方式面板显示状态
+			couponMaskState: 0, //优惠券面板显示状态
+			desc: '', //备注
+			payType: 1, //1微信 2支付宝
+			couponList: []
+		}
+	},
+	watch: {
+		'addr': function (newAddr, oldAddr) {
+			console.log(newAddr,oldAddr);
+			let that = this;
+			let area = newAddr.area || null;
+			if (area) {
+				let area_id = area.split(':')[2];
+				that.getDlyTypes(area_id);
+			}
+		}
+	},
+	computed: {
+		selectedDlyType () {
+			let that = this;
+			let dlytype = {txt: '请选择配送方式', selected: false};
+			that.dlyTypes.some(item => {
+				if (item.selected === true) {
+					dlytype.txt = item.dt_name + '（运费：' + item.money + '元）';
+					dlytype.selected = true;
+					return true;
+				}
+				return false;
+			});
+			return dlytype;
+		},
+		selectedPayment () {
+			let that = this;
+			let payment = {txt: '请选择支付方式', selected: false};
+			that.payments.some(item => {
+				if (item.selected === true) {
+					payment.txt = item.app_name;
+					payment.selected = true;
+					return true;
+				}
+				return false;
+			});
+			return payment;
+		},
+		subtotal () {
+			let that = this;
+			let delivery = 0;
+			that.dlyTypes.some(item => {
+				if (item.selected === true) {
+					delivery = item.money;
+					return true;
+				}
+				return false;
+			});
+			let total = parseFloat(that.orderDetail.total_amount);
+			total = isNaN(total) ? 0 : total;
+			return total + (~~delivery); 
+		}
+	},
+	onLoad(option){
+		//商品数据
+		//let data = JSON.parse(option.data);
+		//console.log(data);
+		let that = this;
+		that.getDefAddr();
+		that.getCartInfo();
+		that.getPayments();
+	},
+	methods: {
+		/**
+		 * 获取默认收货地址
+		 */
+		getDefAddr() {
+			let that = this;
+			that.$http.post(that.$api.user.defAddr).then(res => {
+				if (res.return_code === '0000') {
+					if (Object.values(res.data).length > 0) {
+						res.data.area_str = res.data.area.split(':')[1].split('/').join('');
+						that.addr = res.data
+					}
+				} else {
+					console.log(res);
+				}
+			}).catch(error => {
+				console.log(error);
+			});
+		},
+		/**
+		 * 获取购物车信息
+		 */
+		getCartInfo () {
+			let that = this;
+			that.$http.post(
+				that.$api.cart.checkout
+			).then(res => {
+				if (res.return_code === '0000') {
+					that.cartInfo = res.data.aCart;
+					that.orderDetail = res.data.order_detail;
+					that.couponList = res.data.coupon_lists;
+				} else {
+					console.log(res);
+				}
+				that.$nextTick(() => {
+					that.loaded = true;
+				});
+			}).catch(error => {
+				console.log(error);
+			});
+		},
+		/**
+		 * 获取快递信息
+		 */
+		getDlyTypes (area_id) {
+			let that = this;
+			that.$http.post(
+				that.$api.ectools.dlytype,
+				{area_id: area_id}
+			).then(res => {
+				if (res.return_code === '0000') {
+					that.dlyTypes = res.data;
+				} else {
+					console.log(res);
+				}
+			}).catch(error => {
+				console.log(error);
+			});
+		},
+		getPayments () {
+			let that = this;
+			that.$http.post(
+				that.$api.ectools.payment
+			).then(res => {
+				if (res.return_code === '0000') {
+					that.payments = Object.values(res.data);
+				} else {
+					console.log(res);
+				}
+			}).catch(error => {
+				console.log(error);
+			});
+		},
+		//显示优惠券面板
+		toggleCouponMask(type){
+			let timer = type === 'show' ? 10 : 300;
+			let	state = type === 'show' ? 1 : 0;
+			this.couponMaskState = 2;
+			setTimeout(()=>{
+				this.couponMaskState = state;
+			}, timer)
+		},
+		toggleDeliveryMask (type) {
+			let timer = type === 'show' ? 10 : 300;
+			let	state = type === 'show' ? 1 : 0;
+			this.deliveryMaskState = 2;
+			setTimeout(()=>{
+				this.deliveryMaskState = state;
+			}, timer)
+		},
+		togglePaymentsMask (type) {
+			let timer = type === 'show' ? 10 : 300;
+			let	state = type === 'show' ? 1 : 0;
+			this.paymentsMaskState = 2;
+			setTimeout(()=>{
+				this.paymentsMaskState = state;
+			}, timer)
+		},
+		selectDlyType (dltypeIndex) {
+			let that = this;
+			let dlyTypes = that.dlyTypes;
+
+			for (let index=0; index < dlyTypes.length; index++) {
+				if (index === dltypeIndex) {
+					dlyTypes[index].selected = true;
+				} else {
+					dlyTypes[index].selected = false;
 				}
 			}
+
+			that.dlyTypes = [].concat(dlyTypes);
+			that.toggleDeliveryMask();
+			
 		},
-		onLoad(option){
-			//商品数据
-			//let data = JSON.parse(option.data);
-			//console.log(data);
+		selectPayment (paymentIndex) {
 			let that = this;
-			that.getDefAddr();
-			that.getCartInfo();
+			let payments = that.payments;
+
+			for (let index=0; index < payments.length; index++) {
+				if (index === paymentIndex) {
+					payments[index].selected = true;
+				} else {
+					payments[index].selected = false;
+				}
+			}
+
+			that.payments = [].concat(payments);
+			that.togglePaymentsMask();
+			
 		},
-		methods: {
-			/**
-			 * 获取默认收货地址
-			 */
-			getDefAddr() {
-			  let that = this;
-			  that.$http.post(that.$api.user.defAddr).then(res => {
-			    if (res.return_code === '0000') {
-			      if (Object.values(res.data).length > 0) {
-							res.data.area_str = res.data.area.split(':')[1].split('/').join('');
-			        that.addr = res.data
-			      }
-			    } else {
-			      console.log(res);
-			    }
-			  }).catch(error => {
-			    console.log(error);
-			  });
-			},
-			getCartInfo () {
-				let that = this;
-				that.$http.post(
-					that.$api.cart.cart
-				).then(res => {
-					if (res.return_code === '0000') {
-						that.cartInfo = res.data.aCart;
-					} else {
-						console.log(res);
-					}
-					that.$nextTick(() => {
-						that.loaded = true;
-					});
-				}).catch(error => {
-					console.log(error);
-				});
-			},
-			//显示优惠券面板
-			toggleMask(type){
-				let timer = type === 'show' ? 10 : 300;
-				let	state = type === 'show' ? 1 : 0;
-				this.maskState = 2;
-				setTimeout(()=>{
-					this.maskState = state;
-				}, timer)
-			},
-			numberChange(data) {
-				this.number = data.number;
-			},
-			changePayType(type){
-				this.payType = type;
-			},
-			submit(){
-				uni.redirectTo({
-					url: '/pages/money/pay'
-				})
-			},
-			stopPrevent(){}
-		}
+		numberChange(data) {
+			this.number = data.number;
+		},
+		changePayType(type){
+			this.payType = type;
+		},
+		submit(){
+			uni.redirectTo({
+				url: '/pages/money/pay'
+			})
+		},
+		stopPrevent(){}
 	}
+}
 </script>
 
 <style lang="scss">
@@ -557,81 +737,95 @@
 		}
 	}
 
+	.deltype-item {
+		display: flex;
+		background: #fff;
+		justify-content: center;
+		align-items: center;
+		margin: 20rpx 0;
+		padding: 0 24rpx;
+		box-sizing: border-box;
+		height: 88rpx;
+		line-height: 88rpx;
+		.check-icon {
+			width: 44rpx;
+			height: 44rpx;
+			flex: none;
+		}
+		.deltype-name {
+			flex: auto;
+			padding-left: 20rpx;
+		}
+		.deltype-price {
+			flex: none;
+			text {
+				color: $uni-color-primary;
+			}
+		}
+	}
+
+	.payment-item {
+		display: flex;
+		background: #fff;
+		justify-content: center;
+		align-items: center;
+		margin: 20rpx 0;
+		padding: 0 24rpx;
+		box-sizing: border-box;
+		height: 88rpx;
+		line-height: 88rpx;
+		.check-icon {
+			width: 44rpx;
+			height: 44rpx;
+			flex: none;
+		}
+		.payment-name {
+			flex: auto;
+			text-align: right;
+		}
+	}
+
 	/* 优惠券列表 */
 	.coupon-item{
 		display: flex;
-		flex-direction: column;
 		margin: 20rpx 24rpx;
 		background: #fff;
-		.con{
-			display: flex;
-			align-items: center;
-			position: relative;
-			height: 120rpx;
-			padding: 0 30rpx;
-			&:after{
-				position: absolute;
-				left: 0;
-				bottom: 0;
-				content: '';
-				width: 100%;
-				height: 0;
-				border-bottom: 1px dashed #f3f3f3;
-				transform: scaleY(50%);
-			}
-		}
+		box-shadow: 0px 0px 15rpx rgba(0,0,0,0.05);
+		border-radius: 16rpx;
+		padding: 40rpx 20rpx;
+		box-sizing: border-box;
 		.left{
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
-			flex: 1;
-			overflow: hidden;
-			height: 100rpx;
-		}
-		.title{
-			font-size: 32rpx;
-			color: $font-color-dark;
-			margin-bottom: 10rpx;
-		}
-		.time{
-			font-size: 24rpx;
-			color: $font-color-light;
+			align-items: left;
+			flex: auto;
+			.title {
+			  font-size: 32rpx;
+			  font-weight: bold;
+			  color: rgba(51, 51, 51, 1);
+			}
+			.time {
+				margin-top: 10rpx;
+			  font-size: 22rpx;
+			  color: rgba(153, 153, 153, 1);
+			}
 		}
 		.right{
+			flex: none;
 			display: flex;
-			flex-direction: column;
 			justify-content: center;
 			align-items: center;
 			font-size: 26rpx;
 			color: $font-color-base;
-			height: 100rpx;
-		}
-		.price{
-			font-size: 44rpx;
-			color: $base-color;
-			&:before{
-				content: '￥';
-				font-size: 34rpx;
-			}
-		}
-		.tips{
-			font-size: 24rpx;
-			color: $font-color-light;
-			line-height: 60rpx;
-			padding-left: 30rpx;
-		}
-		.circle{
-			position: absolute;
-			left: -6rpx;
-			bottom: -10rpx;
-			z-index: 10;
-			width: 20rpx;
-			height: 20rpx;
-			background: #f3f3f3;
-			border-radius: 100px;
-			&.r{
-				left: auto;
-				right: -6rpx;
+			text {
+			  width: 140rpx;
+				height: 52rpx;
+				line-height: 52rpx;
+				text-align: center;
+			  background: linear-gradient(92deg, rgba(255, 80, 114, 1) 0%, rgba(255, 136, 128, 1) 100%);
+				border-radius: 30rpx;
+				color: rgba(255,255,255,1);
 			}
 		}
 	}
