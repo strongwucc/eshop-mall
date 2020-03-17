@@ -33,7 +33,7 @@
 						<text class="title clamp">{{item.obj_items.products[0].name}}</text>
 						<text class="spec">{{item.obj_items.products[0].spec_info}}</text>
 						<view class="price-box">
-							<text class="price">￥{{item.obj_items.products[0].price.price || 0.00}}</text>
+							<text class="price">￥{{item.obj_items.products[0].price.buy_price || 0.00}}</text>
 							<text class="number">x {{item.quantity}}</text>
 						</view>
 					</view>
@@ -45,9 +45,10 @@
 		<view class="yt-list">
 			<view class="yt-list-cell b-b" @click="toggleDeliveryMask('show')">
 				<text class="cell-tit clamp">配送方式</text>
-				<text class="cell-tip" :class="{active: selectedDlyType.selected === false}">
+				<text class="cell-tip" :class="{disabled: selectedDlyType.selected === false}">
 					{{selectedDlyType.txt}}
 				</text>
+				<text class="yticon icon-you"></text>
 			</view>
 		</view>
 
@@ -55,9 +56,10 @@
 		<view class="yt-list">
 			<view class="yt-list-cell b-b" @click="togglePaymentsMask('show')">
 				<text class="cell-tit clamp">支付方式</text>
-				<text class="cell-tip" :class="{active: selectedPayment.selected === false}">
+				<text class="cell-tip" :class="{disabled: selectedPayment.selected === false}">
 					{{selectedPayment.txt}}
 				</text>
+				<text class="yticon icon-you"></text>
 			</view>
 		</view>
 
@@ -68,17 +70,20 @@
 					券
 				</view>
 				<text class="cell-tit clamp">优惠券</text>
-				<text class="cell-tip active">
-					选择优惠券
+				<text class="cell-tip" :class="{disabled: selectedCoupon.selected === false}">
+					{{selectedCoupon.txt}}
 				</text>
-				<text class="cell-more wanjia wanjia-gengduo-d"></text>
+				<text class="yticon icon-you"></text>
 			</view>
-			<view class="yt-list-cell b-b">
+			<view class="yt-list-cell b-b" @click="toggleScoreMask('show')">
 				<view class="cell-icon hb">
 					抵
 				</view>
 				<text class="cell-tit clamp">积分抵扣</text>
-				<text class="cell-tip disabled">暂无积分抵扣</text>
+				<text class="cell-tip" :class="{disabled: selectedScore.selected === false}">
+					{{selectedScore.txt}}
+				</text>
+				<text class="yticon icon-you"></text>
 			</view>
 		</view>
 		<!-- 金额明细 -->
@@ -108,7 +113,7 @@
 				<text class="price-tip">￥</text>
 				<text class="price">{{subtotal || 0.00}}</text>
 			</view>
-			<text class="submit" @click="submit">提交订单</text>
+			<text class="submit" @click="createOrder">提交订单</text>
 		</view>
 		
 		<!-- 配送方式面板 -->
@@ -146,8 +151,35 @@
 					  <text class="time">有效期至 {{item.time.to_time|formatTime(1)}}</text>
 					</view>
 					<view class="right">
-					  <text>立即使用</text>
+					  <text class="unused" v-if="!item.selected" @click="useCoupon(item.memc_code, index)">立即使用</text>
+					  <text class="used" v-else @click="removeCoupon(item.memc_code, index)">取消使用</text>
 					</view>
+				</view>
+			</view>
+		</view>
+
+		<!-- 积分面板 -->
+		<view class="mask" :class="scoreMaskState===0 ? 'none' : scoreMaskState===1 ? 'show' : ''" @click="toggleScoreMask">
+			<view class="mask-content" @click.stop.prevent="stopPrevent">
+				<!-- 积分页面，仿mt -->
+				<view class="score-area">
+					<view class="score-info">
+						<view class="left">
+							<text class="label">可用积分：</text>
+							<text class="value">{{realUsagePoint}}</text>
+						</view>
+						<view class="right">
+							<text class="label">抵扣</text>
+							<text class="value">￥{{discountScore}}</text>
+						</view>
+					</view>
+					<view class="score-input">
+						<input type="number" v-model="inputPoint" placeholder="请输入积分" @input="inputScore" @confirm="useScore">
+					</view>
+					<view class="score-notice" v-if="discountRate > 0">
+						{{discountRateNotice}}
+					</view>
+					<view class="score-btn" @click="useScore">确定</view>
 				</view>
 			</view>
 		</view>
@@ -160,7 +192,8 @@ import { formatTime } from '@/common/util';
 export default {
 	data() {
 		return {
-			cartInfo: {
+			fastbuy: false,
+			cartInfo: { // 商品信息
 				object: {
 					goods: []
 				},
@@ -172,7 +205,7 @@ export default {
 				discount_amount_order: 0,
 				discount_amount: 0
 			},
-			orderDetail: {
+			orderDetail: { // 金额信息
 				cost_item: 0.00,
 				total_amount: 0.00,
 				pmt_order: 0.00,
@@ -191,9 +224,15 @@ export default {
 			payments: [], // 支付方式
 			paymentsMaskState: 0, // 支付方式面板显示状态
 			couponMaskState: 0, //优惠券面板显示状态
+			scoreMaskState: 0, // 积分面板显示状态
 			desc: '', //备注
-			payType: 1, //1微信 2支付宝
-			couponList: []
+			couponList: [],
+			realUsagePoint: 0, // 可用积分
+			usedPoint: 0, // 已用积分
+			inputPoint: '',
+			discountRate: 0.00, // 积分抵扣率
+			maxDiscountValue: 0, // 最多抵扣金额
+			requesting: false
 		}
 	},
 	watch: {
@@ -208,6 +247,9 @@ export default {
 		}
 	},
 	computed: {
+		/**
+		 * 配送方式显示
+		 */
 		selectedDlyType () {
 			let that = this;
 			let dlytype = {txt: '请选择配送方式', selected: false};
@@ -221,6 +263,9 @@ export default {
 			});
 			return dlytype;
 		},
+		/**
+		 * 支付方式显示
+		 */
 		selectedPayment () {
 			let that = this;
 			let payment = {txt: '请选择支付方式', selected: false};
@@ -234,6 +279,58 @@ export default {
 			});
 			return payment;
 		},
+		/**
+		 * 优惠券显示
+		 */
+		selectedCoupon () {
+			let that = this;
+			let coupon = {txt: '请选择优惠券', selected: false};
+			that.couponList.some(item => {
+				if (item.selected === true) {
+					coupon.txt = item.coupons_info.cpns_name;
+					coupon.selected = true;
+					return true;
+				}
+				return false;
+			});
+			return coupon;
+		},
+		/**
+		 * 积分规则显示
+		 */
+		discountRateNotice () {
+			let that = this;
+			let discountRate = that.discountRate;
+			if (discountRate > 0) {
+				return `${~~ (1 / discountRate)}积分抵扣1元`;
+			}
+		},
+		/**
+		 * 积分抵扣显示
+		 */
+		selectedScore () {
+			let that = this;
+			let score = {txt: `可用${that.realUsagePoint}积分`, selected: false};
+			if (that.usedPoint > 0) {
+				score.txt = that.usedPoint * that.discountRate >= that.maxDiscountValue ? `-￥${that.maxDiscountValue}元` : `-￥${that.usedPoint * that.discountRate}元`;
+				score.selected = true;
+			}
+			return score;
+		},
+		/**
+		 * 积分使用显示
+		 */
+		discountScore () {
+			let that = this;
+			let score = 0;
+			if (that.usedPoint > 0) {
+				score = that.usedPoint * that.discountRate >= that.maxDiscountValue ? that.maxDiscountValue : that.usedPoint * that.discountRate;
+			}
+			return score;
+		},
+		/**
+		 * 总金额显示
+		 */
 		subtotal () {
 			let that = this;
 			let delivery = 0;
@@ -254,6 +351,11 @@ export default {
 		//let data = JSON.parse(option.data);
 		//console.log(data);
 		let that = this;
+
+		if (option.hasOwnProperty('fastbuy') && option.fastbuy) {
+			that.fastbuy = true;
+		}
+
 		that.getDefAddr();
 		that.getCartInfo();
 		that.getPayments();
@@ -282,13 +384,21 @@ export default {
 		 */
 		getCartInfo () {
 			let that = this;
+			let data = {};
+			if (that.fastbuy) {
+				data.is_fastbuy = 1;
+			}
 			that.$http.post(
-				that.$api.cart.checkout
+				that.$api.cart.checkout,
+				data
 			).then(res => {
 				if (res.return_code === '0000') {
 					that.cartInfo = res.data.aCart;
 					that.orderDetail = res.data.order_detail;
 					that.couponList = res.data.coupon_lists;
+					that.realUsagePoint = res.data.real_usage_point;
+					that.discountRate = res.data.discount_rate;
+					that.maxDiscountValue = res.data.max_discount_value;
 				} else {
 					console.log(res);
 				}
@@ -317,6 +427,9 @@ export default {
 				console.log(error);
 			});
 		},
+		/**
+		 * 获取支付方式
+		 */
 		getPayments () {
 			let that = this;
 			that.$http.post(
@@ -331,7 +444,127 @@ export default {
 				console.log(error);
 			});
 		},
-		//显示优惠券面板
+		/**
+		 * 使用优惠券
+		 */
+		useCoupon(code, couponIndex) {
+
+		  let that = this;
+		  if (that.requesting) {
+		    return false;
+		  }
+
+		  that.requesting = true;
+
+		  that.$http.post(
+				that.$api.cart.add,
+				{ coupon: code, response_type: true, type: 'coupon' }
+		  ).then(res => {
+		    that.requesting = false;
+		    if (res.return_code === '0000') {
+					that.$toast('使用成功');
+					that.couponList[couponIndex].selected = true;
+					that.getTotal();
+		    } else {
+		      console.log(res);
+		      that.$toast('使用失败');
+		    }
+		  }).catch(error => {
+		    that.requesting = false;
+		    console.log(error);
+		    that.$toast('使用失败');
+		  });
+
+		},
+		/**
+		 * 使用积分
+		 */
+		useScore (e) {
+			let that = this;
+			that.toggleScoreMask();
+			that.getTotal();
+		},
+		/**
+		 * 积分输入
+		 */
+		inputScore (e) {
+			let that = this;
+			let inputScore = e.detail.value;
+
+			let disPoint = that.discountRate > 0 ? that.maxDiscountValue / that.discountRate : Infinity;
+			let thresholdPoint = disPoint > that.realUsagePoint ? that.realUsagePoint :disPoint;
+
+			if (inputScore >= thresholdPoint) {
+				inputScore = thresholdPoint;
+			}
+
+			setTimeout(function () {
+				that.inputPoint = inputScore;
+				that.usedPoint = inputScore;
+			}, 100)
+			
+		},
+		/**
+		 * 结算总额
+		 */
+		getTotal () {
+
+			let that = this;
+
+			if (!that.addr.area) {
+				return false;
+			}
+
+			let area_id = that.addr.area.split(':')[2];
+
+			let shipping_id = 0;
+
+			// if (!that.dlyTypes.some(dlytype => {
+			// 	if (dlytype.selected === true) {
+			// 		shipping_id = dlytype.dt_id;
+			// 		return true;
+			// 	}
+			// 	return false;
+			// })) {
+			// 	return false;
+			// }
+
+			let pay_app_id = '';
+
+			if (!that.payments.some(payment => {
+				if (payment.selected === true) {
+					pay_app_id = payment.app_id;
+					return true;
+				}
+				return false;
+			})) {
+				return false;
+			}
+
+			let data = { pay_app_id: pay_app_id, shipping_id: shipping_id, area_id: area_id, dis_point: that.usedPoint };
+
+			if (that.fastbuy) {
+				data.isfastbuy = true;
+			}
+			that.$http.post(
+				that.$api.cart.total,
+				data
+		  ).then(res => {
+		    if (res.return_code === '0000') {
+		      console.log(res.data);
+		      that.orderDetail = Object.assign({},
+		        that.orderDetail, { total_amount: res.data.total_amount, pmt_amount: res.data.pmt_amount }
+		      );
+		    } else {
+		      console.log(res.error);
+		    }
+		  }).catch(error => {
+		    console.log(error);
+		  });
+		},
+		/**
+		 * 显示优惠券面板
+		 */
 		toggleCouponMask(type){
 			let timer = type === 'show' ? 10 : 300;
 			let	state = type === 'show' ? 1 : 0;
@@ -340,6 +573,9 @@ export default {
 				this.couponMaskState = state;
 			}, timer)
 		},
+		/**
+		 * 显示配送面板
+		 */
 		toggleDeliveryMask (type) {
 			let timer = type === 'show' ? 10 : 300;
 			let	state = type === 'show' ? 1 : 0;
@@ -348,6 +584,9 @@ export default {
 				this.deliveryMaskState = state;
 			}, timer)
 		},
+		/**
+		 * 显示支付方式面板
+		 */
 		togglePaymentsMask (type) {
 			let timer = type === 'show' ? 10 : 300;
 			let	state = type === 'show' ? 1 : 0;
@@ -356,6 +595,23 @@ export default {
 				this.paymentsMaskState = state;
 			}, timer)
 		},
+		/**
+		 * 显示积分面板
+		 */
+		toggleScoreMask (type) {
+			if (this.realUsagePoint <= 0) {
+				return false;
+			}
+			let timer = type === 'show' ? 10 : 300;
+			let	state = type === 'show' ? 1 : 0;
+			this.scoreMaskState = 2;
+			setTimeout(()=>{
+				this.scoreMaskState = state;
+			}, timer)
+		},
+		/**
+		 * 选择配送方式
+		 */
 		selectDlyType (dltypeIndex) {
 			let that = this;
 			let dlyTypes = that.dlyTypes;
@@ -372,6 +628,9 @@ export default {
 			that.toggleDeliveryMask();
 			
 		},
+		/**
+		 * 选择支付方式
+		 */
 		selectPayment (paymentIndex) {
 			let that = this;
 			let payments = that.payments;
@@ -388,16 +647,78 @@ export default {
 			that.togglePaymentsMask();
 			
 		},
-		numberChange(data) {
-			this.number = data.number;
-		},
-		changePayType(type){
-			this.payType = type;
-		},
-		submit(){
-			uni.redirectTo({
-				url: '/pages/money/pay'
-			})
+		/**
+		 * 创建订单
+		 */
+		createOrder () {
+
+			let that = this;
+		  if (that.requesting) {
+		    return false;
+			}
+			
+			// 收货地址
+			if (!that.addr.addr_id) {
+				that.$toast('请先选择收货地址');
+				return false;
+			}
+
+			let shipping_id = 0;
+
+			if (!that.dlyTypes.some(dlytype => {
+				if (dlytype.selected === true) {
+					shipping_id = dlytype.dt_id;
+					return true;
+				}
+				return false;
+			})) {
+				that.$toast('请先选择配送方式');
+				return false;
+			}
+
+			let pay_app_id = '';
+
+			if (!that.payments.some(payment => {
+				if (payment.selected === true) {
+					pay_app_id = payment.app_id;
+					return true;
+				}
+				return false;
+			})) {
+				that.$toast('请先选择支付方式');
+				return false;
+			}
+
+			that.requesting = true;
+
+			let data = { pay_app_id: pay_app_id, shipping_id: shipping_id, addr_id: that.addr.addr_id, dis_point: that.usedPoint };
+			if (that.fastbuy) {
+				data.isfastbuy = true;
+			}
+
+			that.$http.post(
+				that.$api.cart.order,
+				data
+		  ).then(res => {
+				that.requesting = false;
+		    if (res.return_code === '0000') {
+					console.log(res.data);
+					that.$toast('订单创建成功');
+					setTimeout(function () {
+						uni.redirectTo({
+							url: '/pages/money/pay?order_id=' + res.data.order_id
+						})
+					}, 2000);
+		    } else {
+					console.log(res);
+					that.$toast('订单创建失败');
+		    }
+		  }).catch(error => {
+				that.requesting = false;
+				console.log(error);
+				that.$toast('订单创建失败');
+		  });
+
 		},
 		stopPrevent(){}
 	}
@@ -408,6 +729,10 @@ export default {
 	page {
 		background: $page-color-base;
 		padding-bottom: 100rpx;
+	}
+
+	.yticon {
+		color: $font-color-light;
 	}
 
 	.address-section {
@@ -827,6 +1152,70 @@ export default {
 				border-radius: 30rpx;
 				color: rgba(255,255,255,1);
 			}
+			.used {
+				border: 1px solid rgba(255,80,114,1);
+				color: rgba(255,80,114,1);
+				background: #fff;
+			}
+		}
+	}
+
+	.score-area {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: center;
+		padding: 45rpx 0 0;
+		box-sizing: border-box;
+		.score-info {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			width: 100%;
+			padding: 0 28rpx;
+			box-sizing: border-box;
+			.left {
+				.value {
+					color: $uni-color-primary;
+				}
+			}
+			.right {
+				.value {
+					color: $uni-color-primary;
+				}
+			}
+		}
+		.score-input {
+			padding: 0 28rpx;
+			box-sizing: border-box;
+			margin-top: 30rpx;
+			input {
+				width: 691rpx;
+				height: 88rpx;
+				background: $page-color-base;
+				border: 1px solid rgba(238, 238, 238, 1);
+				border-radius: 8rpx;
+				text-align: center;
+			}
+		}
+		.score-notice {
+			margin-top: 30rpx;
+			padding: 0 28rpx;
+			box-sizing: border-box;
+			width: 100%;
+			text-align: left;
+		  font-size: 28rpx;
+		  line-height: 24rpx;
+		  color: $font-color-light;
+		}
+		.score-btn {
+			margin-top: 30rpx;
+		  height: 88rpx;
+			background: $uni-color-primary;
+			color: $page-color-light;
+			line-height: 88rpx;
+			text-align: center;
+			width: 100%;
 		}
 	}
 

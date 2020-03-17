@@ -118,7 +118,7 @@
 			</view>
 			
 			<view class="action-btn-group">
-				<button type="primary" class=" action-btn no-border buy-now-btn" @click="buy">立即购买</button>
+				<button type="primary" class=" action-btn no-border buy-now-btn" @click="addCart('is_fastbuy')">立即购买</button>
 				<button type="primary" class=" action-btn no-border add-cart-btn" @click="addCart">加入购物车</button>
 			</view>
 		</view>
@@ -440,7 +440,7 @@
 			/**
 			 * 加入购物车
 			 */
-			addCart () {
+			addCart (btype="") {
 				let that = this;
 				if (that.requesting) {
 					return false;
@@ -452,13 +452,26 @@
 
 				that.requesting = true;
 
+				let data = {goods_id: that.goodsId, product_id: that.productId, num: 1, mini_cart: true};
+
+				if (btype === 'is_fastbuy') {
+					data.btype = 'is_fastbuy';
+				}
+
 				that.$http.post(
 					that.$api.cart.add,
-					{goods_id: that.goodsId, product_id: that.productId, num: 1, mini_cart: true}
+					data
 				).then(res => {
 					that.requesting = false;
 					if (res.return_code === '0000') {
 						that.$toast('添加成功');
+						if (btype === 'is_fastbuy') {
+							setTimeout(function () {
+								uni.navigateTo({
+									url: `/pages/order/createOrder?fastbuy=1`
+								})
+							}, 1000);
+						}
 					} else {
 						console.log(res.error);
 						that.$toast('添加失败');

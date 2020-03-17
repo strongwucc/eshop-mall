@@ -30,6 +30,8 @@ module.exports = {
     cart: 'cart', // 购物车信息
     add: 'cartAddGoods', // 添加购物车
     checkout: 'checkout', // 结算
+    total: 'total', // 结算总额
+    order: 'createOrder', // 创建订单
   },
   goods: {
     // category: 'goodsCat',                           // 商品分类
