@@ -18,7 +18,7 @@
 				</view>
 				<view class="tit">
 					<text class="yticon icon-iLinkapp-"></text>
-					会员
+					{{userInfo.levelname}}
 				</view>
 				<text class="e-m">Super Wu</text>
 				<text class="e-b">开通会员开发无bug 一测就上线</text>
@@ -43,7 +43,7 @@
 					<text>余额</text>
 				</view>
 				<view class="tj-item">
-					<text class="num">0</text>
+					<text class="num">{{userInfo.coupons || 0}}</text>
 					<text>优惠券</text>
 				</view>
 				<view class="tj-item">
