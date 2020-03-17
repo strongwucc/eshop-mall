@@ -22,7 +22,12 @@ let wxRedirect = ''
 let aliRedirect = ''
 
 if (process.env.NODE_ENV === 'development') {
+  // #ifndef H5
   rootUrl = 'http://localhost/ecstore/'
+  // #endif
+  // #ifdef H5
+  rootUrl = '/ecstore/'
+  // #endif
   baseUrl = rootUrl + 'index.php/openapi/wxapp_rpc/'
   imgBaseUrl = rootUrl + ''
   wxRedirect = ''

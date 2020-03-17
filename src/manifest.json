@@ -68,6 +68,13 @@
       "mode": "hash",
       "base": "/h5/"
     },
-    "publicPath": ""
+    "publicPath": "",
+    "devServer": {
+      "proxy": {
+        "/ecstore/index.php/openapi/wxapp_rpc": {
+          "target": "http://localhost"
+        }
+      }
+    }
   }
 }

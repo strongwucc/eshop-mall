@@ -23,7 +23,7 @@
           <text class="tit">密码</text>
           <input
             type="mobile"
-            value
+            :value="password"
             placeholder="8-18位不含特殊字符的数字、字母组合"
             placeholder-class="input-empty"
             maxlength="20"
@@ -34,7 +34,7 @@
           />
         </view>
       </view>
-      <button class="confirm-btn" @click="toLogin" :disabled="logining">登录</button>
+      <button class="confirm-btn" @click="toLogin" :disabled="requesting">登录</button>
       <view class="forget-section">忘记密码?</view>
     </view>
     <view class="register-section">
