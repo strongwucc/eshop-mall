@@ -18,7 +18,7 @@
 				</view>
 				<view class="tit">
 					<text class="yticon icon-iLinkapp-"></text>
-					{{userInfo.levelname}}
+					{{userInfo.levelname || ''}}
 				</view>
 				<text class="e-m">Super Wu</text>
 				<text class="e-b">开通会员开发无bug 一测就上线</text>
@@ -38,16 +38,16 @@
 			<image class="arc" src="/static/arc.png"></image>
 			
 			<view class="tj-sction">
-				<view class="tj-item">
-					<text class="num">{{userInfo.advance || 0.00}}</text>
+				<view class="tj-item" @click="navTo('/pages/balance/records')" hover-class="common-hover"  :hover-stay-time="50">
+					<text class="num">{{userInfo.advance | formatMoney}}</text>
 					<text>余额</text>
 				</view>
 				<view class="tj-item">
 					<text class="num">{{userInfo.coupons || 0}}</text>
 					<text>优惠券</text>
 				</view>
-				<view class="tj-item">
-					<text class="num">{{userInfo.point || 0.00}}</text>
+				<view class="tj-item" @click="navTo('/pages/score/records')" hover-class="common-hover"  :hover-stay-time="50">
+					<text class="num">{{userInfo.point || 0}}</text>
 					<text>积分</text>
 				</view>
 			</view>
@@ -98,155 +98,156 @@
 </template>  
 <script>  
 	import listCell from '@/components/mix-list-cell';
-    import {  
-				mapState,
-				mapMutations
-    } from 'vuex';  
-	let startY = 0, moveY = 0, pageAtTop = true;
-    export default {
-		components: {
-			listCell
-		},
-		data(){
-			return {
-				coverTransform: 'translateY(0px)',
-				coverTransition: '0s',
-				moving: false,
-			}
-		},
-		onLoad(){
-		},
-		onShow () {
-			let that = this;
+	import {
+	  mapState,
+	  mapMutations
+	} from 'vuex';
+	let startY = 0,
+	  moveY = 0,
+	  pageAtTop = true;
+	export default {
+	  components: {
+	    listCell
+	  },
+	  data() {
+	    return {
+	      coverTransform: 'translateY(0px)',
+	      coverTransition: '0s',
+	      moving: false,
+	    }
+	  },
+	  onLoad(options) {},
+	  onShow() {
+	    let that = this;
 			that.loadUser();
-		},
-		// #ifndef MP
-		onNavigationBarButtonTap(e) {
-			const index = e.index;
-			if (index === 0) {
-				this.navTo('/pages/set/set');
-			}else if(index === 1){
-				// #ifdef APP-PLUS
-				const pages = getCurrentPages();
-				const page = pages[pages.length - 1];
-				const currentWebview = page.$getAppWebview();
-				currentWebview.hideTitleNViewButtonRedDot({
-					index
-				});
-				// #endif
-				uni.navigateTo({
-					url: '/pages/notice/notice'
-				})
-			}
-		},
-		// #endif
-    computed: {
-			...mapState(['hasLogin','token','userInfo'])
-		},
-    methods: {
-			...mapMutations([
-				'login',
-				'setUser'
-			]),
-			/**
-			 * 加载用户信息
-			 */
-			loadUser () {
-				let that = this;
-				let userInfo = that.userInfo;
-				
-				if (Object.keys(userInfo).length === 0) {
-				  try {
-						userInfo = uni.getStorageSync('userInfo');
-						if (userInfo) {
-							that.setUser(JSON.parse(userInfo));
-						}
-				  } catch (e) {
-				    console.log(e);
-				  }
-				}
+	  },
+	  // #ifndef MP
+	  onNavigationBarButtonTap(e) {
+	    const index = e.index;
+	    if (index === 0) {
+	      this.navTo('/pages/set/set');
+	    } else if (index === 1) {
+	      // #ifdef APP-PLUS
+	      const pages = getCurrentPages();
+	      const page = pages[pages.length - 1];
+	      const currentWebview = page.$getAppWebview();
+	      currentWebview.hideTitleNViewButtonRedDot({
+	        index
+	      });
+	      // #endif
+	      uni.navigateTo({
+	        url: '/pages/notice/notice'
+	      })
+	    }
+	  },
+	  // #endif
+	  computed: {
+	    ...mapState(['hasLogin', 'token', 'userInfo'])
+	  },
+	  methods: {
+	    ...mapMutations([
+	      'login',
+	      'setUser'
+	    ]),
+	    /**
+	     * 加载用户信息
+	     */
+	    loadUser () {
+	      let that = this;
+	      let userInfo = that.userInfo;
 
-				let token = that.token;
-				if (!token) {
-					try {
-						token = uni.getStorageSync('token');
-						if (token) {
-							that.login(token);
-						}
-				  } catch (e) {
-				    console.log(e);
-				  }
-				}
+	      if (Object.keys(userInfo).length === 0) {
+	        try {
+	          userInfo = uni.getStorageSync('userInfo');
+	          if (userInfo) {
+	            that.setUser(JSON.parse(userInfo));
+	          }
+	        } catch (e) {
+	          console.log(e);
+	        }
+	      }
 
-				if (!userInfo && that.hasLogin) {
-					that.getUserInfo();
-				}
-			},
+	      let token = that.token;
+	      if (!token) {
+	        try {
+	          token = uni.getStorageSync('token');
+	          if (token) {
+	            that.login(token);
+	          }
+	        } catch (e) {
+	          console.log(e);
+	        }
+	      }
 
-			/**
-			 * 获取用户信息
-			 */
-			getUserInfo () {
-				let that = this;
-				that.$http.post(that.$api.user.center).then(res => {
-					that.setUser(res.data.member);
-				}).catch(error => {
-					console.log(error);
-				});
+	      if (!userInfo && that.hasLogin) {
+	        that.getUserInfo();
+	      }
+	    },
+
+	    /**
+	     * 获取用户信息
+	     */
+	    getUserInfo () {
+	      let that = this;
+	      that.$http.post(that.$api.user.center).then(res => {
+	        that.setUser(res.data.member);
+	      }).catch(error => {
+	        console.log(error);
+	      });
 			},
-			/**
-			 * 统一跳转接口,拦截未登录路由
-			 * navigator标签现在默认没有转场动画，所以用view
-			 */
-			navTo(url){
-				if(!this.hasLogin){
-					url = '/pages/public/login';
-				}
-				uni.navigateTo({  
-					url
-				})  
-			}, 
-	
-			/**
-			 *  会员卡下拉和回弹
-			 *  1.关闭bounce避免ios端下拉冲突
-			 *  2.由于touchmove事件的缺陷（以前做小程序就遇到，比如20跳到40，h5反而好很多），下拉的时候会有掉帧的感觉
-			 *    transition设置0.1秒延迟，让css来过渡这段空窗期
-			 *  3.回弹效果可修改曲线值来调整效果，推荐一个好用的bezier生成工具 http://cubic-bezier.com/
-			 */
-			coverTouchstart(e){
-				if(pageAtTop === false){
-					return;
-				}
-				this.coverTransition = 'transform .1s linear';
-				startY = e.touches[0].clientY;
-			},
-			coverTouchmove(e){
-				moveY = e.touches[0].clientY;
-				let moveDistance = moveY - startY;
-				if(moveDistance < 0){
-					this.moving = false;
-					return;
-				}
-				this.moving = true;
-				if(moveDistance >= 80 && moveDistance < 100){
-					moveDistance = 80;
-				}
-		
-				if(moveDistance > 0 && moveDistance <= 80){
-					this.coverTransform = `translateY(${moveDistance}px)`;
-				}
-			},
-			coverTouchend(){
-				if(this.moving === false){
-					return;
-				}
-				this.moving = false;
-				this.coverTransition = 'transform 0.3s cubic-bezier(.21,1.93,.53,.64)';
-				this.coverTransform = 'translateY(0px)';
-			}
-        }  
-    }  
+	    /**
+	     * 统一跳转接口,拦截未登录路由
+	     * navigator标签现在默认没有转场动画，所以用view
+	     */
+	    navTo(url) {
+	      if (!this.hasLogin) {
+	        url = '/pages/public/login';
+	      }
+	      uni.navigateTo({
+	        url
+	      })
+	    },
+
+	    /**
+	     *  会员卡下拉和回弹
+	     *  1.关闭bounce避免ios端下拉冲突
+	     *  2.由于touchmove事件的缺陷（以前做小程序就遇到，比如20跳到40，h5反而好很多），下拉的时候会有掉帧的感觉
+	     *    transition设置0.1秒延迟，让css来过渡这段空窗期
+	     *  3.回弹效果可修改曲线值来调整效果，推荐一个好用的bezier生成工具 http://cubic-bezier.com/
+	     */
+	    coverTouchstart(e) {
+	      if (pageAtTop === false) {
+	        return;
+	      }
+	      this.coverTransition = 'transform .1s linear';
+	      startY = e.touches[0].clientY;
+	    },
+	    coverTouchmove(e) {
+	      moveY = e.touches[0].clientY;
+	      let moveDistance = moveY - startY;
+	      if (moveDistance < 0) {
+	        this.moving = false;
+	        return;
+	      }
+	      this.moving = true;
+	      if (moveDistance >= 80 && moveDistance < 100) {
+	        moveDistance = 80;
+	      }
+
+	      if (moveDistance > 0 && moveDistance <= 80) {
+	        this.coverTransform = `translateY(${moveDistance}px)`;
+	      }
+	    },
+	    coverTouchend() {
+	      if (this.moving === false) {
+	        return;
+	      }
+	      this.moving = false;
+	      this.coverTransition = 'transform 0.3s cubic-bezier(.21,1.93,.53,.64)';
+	      this.coverTransform = 'translateY(0px)';
+	    }
+	  }
+	}
 </script>  
 <style lang='scss'>
 	%flex-center {

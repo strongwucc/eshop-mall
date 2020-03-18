@@ -118,6 +118,30 @@
 				}
 			}
 		}, {
+			"path": "pages/balance/records",
+			"style": {
+				"navigationBarTitleText": "我的余额",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		}, {
+			"path": "pages/balance/recharge",
+			"style": {
+				"navigationBarTitleText": "余额充值",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		}, {
+			"path": "pages/score/records",
+			"style": {
+				"navigationBarTitleText": "我的积分",
+				"app-plus": {
+					"bounce": "none"
+				}
+			}
+		}, {
 			"path": "pages/detail/detail",
 			"style": {
 				"navigationBarTitleText": "",
@@ -257,6 +281,18 @@
 			{
 				"name": "我的",
 				"path": "pages/user/user"
+			},
+			{
+				"name": "我的余额",
+				"path": "pages/balance/records"
+			},
+			{
+				"name": "充值",
+				"path": "pages/balance/recharge"
+			},
+			{
+				"name": "我的积分",
+				"path": "pages/score/records"
 			},
 			{
 				"name": "商品列表",
