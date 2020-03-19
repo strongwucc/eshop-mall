@@ -35,7 +35,7 @@
         </view>
       </view>
       <button class="confirm-btn" @click="toLogin" :disabled="requesting">登录</button>
-      <view class="forget-section">忘记密码?</view>
+      <view class="forget-section" @click="forgetPwd">忘记密码?</view>
     </view>
     <view class="register-section">
       还没有账号?
@@ -68,6 +68,11 @@ export default {
     toRegist() {
       uni.navigateTo({
         url: '/pages/public/signup'
+      })
+    },
+    forgetPwd () {
+      uni.navigateTo({
+        url: '/pages/public/forgetPwd1'
       })
     },
     /**

@@ -101,6 +101,8 @@ export default {
         return false;
       }
 
+      that.requesting = true;
+
       that.$http.post(that.$api.auth.sendSms, {uname: that.mobile, type: 'signup'}).then(res => {
         that.requesting = false;
         if (res.return_code === '0000') {
@@ -288,13 +290,12 @@ page {
     font-size: $font-sm + 2rpx;
     text {
       padding: 10rpx;
-      background: $font-color-light;
-      color: $font-color-base;
+      background: $font-color-disabled;
+      color: $page-color-light;
       border-radius: 4px;
     }
     .active {
-      background: $btn-color-green;
-      color: $font-color-base;
+      background: $uni-color-primary;
     }
   }
 }

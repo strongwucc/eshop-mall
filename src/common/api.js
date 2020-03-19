@@ -7,7 +7,7 @@ module.exports = {
     login: 'login', // 登录
     sendSms: 'sendSms', // 发送短信
     signup: 'create', // 注册
-    resetPwdSms: 'resetPwdCode', // 找回密码短信
+    resetPwdCode: 'resetPwdCode', // 找回密码短信验证
     resetPassWord: 'resetPassWord' // 密码重置
   },
   user: {

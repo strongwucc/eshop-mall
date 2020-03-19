@@ -54,6 +54,11 @@
 			"style": {
 				"navigationBarTitleText": "设置"
 			}
+		}, {
+			"path": "pages/set/resetPwd",
+			"style": {
+				"navigationBarTitleText": "修改密码"
+			}
 		},
 
 		{
@@ -85,6 +90,16 @@
 					"titleNView": false,
 					"animationType": "slide-in-bottom"
 				}
+			}
+		}, {
+			"path": "pages/public/forgetStep1",
+			"style": {
+				"navigationBarTitleText": "忘记密码"
+			}
+		}, {
+			"path": "pages/public/forgetStep2",
+			"style": {
+				"navigationBarTitleText": "忘记密码"
 			}
 		}, {
 			"path": "pages/user/user",
@@ -181,6 +196,16 @@
 			"path": "pages/money/pay",
 			"style": {
 				"navigationBarTitleText": "支付"
+			}
+		}, {
+			"path": "pages/order/cancel",
+			"style": {
+				"navigationBarTitleText": "取消订单"
+			}
+		}, {
+			"path": "pages/collection/goods",
+			"style": {
+				"navigationBarTitleText": "我的收藏"
 			}
 		},
 		{
@@ -295,6 +320,20 @@
 				"path": "pages/score/records"
 			},
 			{
+				"name": "我的订单",
+				"path": "pages/order/order",
+				"query": "state=0"
+			},
+			{
+				"name": "取消订单",
+				"path": "pages/order/cancel",
+				"query": "order_id=0"
+			},
+			{
+				"name": "我的收藏",
+				"path": "pages/collection/goods"
+			},
+			{
 				"name": "商品列表",
 				"path": "pages/product/list",
 				"query": "tid=4" //启动参数，在页面的onLoad函数里面得到。
@@ -311,6 +350,18 @@
 			{
 				"name": "注册",
 				"path": "pages/public/signup"
+			},
+			{
+				"name": "修改密码",
+				"path": "pages/set/resetPwd"
+			},
+			{
+				"name": "忘记密码1",
+				"path": "pages/public/forgetStep1"
+			},
+			{
+				"name": "忘记密码2",
+				"path": "pages/public/forgetStep2"
 			}
 		]
 	}
