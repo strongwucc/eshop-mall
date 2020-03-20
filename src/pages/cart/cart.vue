@@ -35,7 +35,7 @@
 						<view class="item-right">
 							<text class="clamp title">{{item.obj_items.products[0].name}}</text>
 							<text class="attr">{{item.obj_items.products[0].spec_info}}</text>
-							<text class="price">¥{{item.subtotal}}</text>
+							<text class="price">¥{{item.subtotal | formatMoney}}</text>
 							<uni-number-box 
 								class="step"
 								:min="1"
@@ -65,7 +65,7 @@
 				</view> -->
 				<view class="total-box">
 					<text class="count">共 {{cartInfo.items_quantity || 0}} 件，</text>
-					<text class="price">总价 ¥{{cartInfo.promotion_subtotal || 0.00}}</text>
+					<text class="price">总价 ¥{{cartInfo.promotion_subtotal | formatMoney}}</text>
 					<!-- <text class="coupon">已优惠<text>{{cartInfo.subtotal_discount || 0.00}}</text>元</text> -->
 				</view>
 				<button type="primary" class="no-border confirm-btn" @click="createOrder">去结算</button>
@@ -95,8 +95,9 @@
 					subtotal_discount: 0.00,
 					items_quantity: 0,
 					items_count: 0,
-					discount_amount_order: 0,
-					discount_amount: 0
+					discount_amount_order: 0.00,
+					discount_amount: 0.00,
+					promotion_subtotal: 0.00
 				},
 				allChecked: false, //全选状态  true|false
 				requesting: false,
@@ -159,6 +160,48 @@
 
 			},
 			/**
+			 * 更新购物车
+			 */
+			updateCart(goodsIdent, quantity) {
+			  let that = this;
+			  let dataKey = `modify_quantity[${goodsIdent}][quantity]`;
+			  let data = {
+			    obj_type: 'goods',
+			    goods_ident: goodsIdent,
+			    goods_id: goodsIdent.split('_')[1],
+			    response_type: true
+			  };
+			  data[dataKey] = quantity;
+
+			  return that.$http.post(
+			    that.$api.cart.update,
+			    data
+			  );
+			},
+			/**
+			 * 删除清空购物车
+			 */
+			removeCart(goodsIdent = '', quantity = 0) {
+			  let that = this;
+
+			  let data = {
+					obj_type: 'goods',
+					goods_ident: goodsIdent,
+					goods_id: goodsIdent.split('_')[1],
+					response_type: true
+				};
+
+			  if (goodsIdent !== '') {
+					let dataKey = `modify_quantity[${goodsIdent}][quantity]`;
+					data[dataKey] = quantity;
+			  }
+
+			  return that.$http.post(
+			    that.$api.cart.remove,
+			    data
+			  );
+			},
+			/**
 			 * 数量
 			 */
 			async numberChange(data){
@@ -179,21 +222,68 @@
 					that.$loading.hide();
 					if (addRes.return_code !== '0000') {
 						that.$toast(addRes.error);
+					} else {
+						that.loadData();
 					}
 
-				} else {
+				} else if (newStore !== oldStore) {
 					console.log('from: ',oldStore, ', to: ', newStore);
-					// 更新购物车todo
+					that.$loading.show();
+					let updateRes = await that.updateCart(cartIdent, newStore);
+					that.$loading.hide();
+					if (updateRes.return_code === '0000') {
+						that.cartInfo = Object.assign({}, that.cartInfo, updateRes.data.sub_total);
+						that.$set(goodsData[data.index], 'subtotal', goodsData[data.index].subtotal / oldStore * newStore);
+						that.$set(goodsData[data.index], 'quantity', newStore);
+					} else {
+						that.$toast(updateRes.error);
+					}
 				}
-
-				that.loadData();
 
 			},
 			/**
 			 * 删除
 			 */
-			deleteCartItem(index){
-				console.log(index);
+			deleteCartItem(index) {
+			  let that = this;
+			  uni.showModal({
+			    content: '确认移除商品？',
+			    success: (e) => {
+			      if (e.confirm) {
+			        console.log(index);
+			        let goodsData = that.cartInfo.object.goods;
+			        let quantity = goodsData[index].quantity;
+			        let cartIdent = goodsData[index].obj_ident;
+			        let [cartType, goodsId, productId] = cartIdent.split('_');
+			        that.$loading.show();
+			        that.removeCart(cartIdent, quantity).then(removeRes => {
+			          that.$loading.hide();
+			          if (removeRes.return_code === '0000') {
+			            that.cartInfo.object.goods.splice(index, 1);
+			            if (removeRes.data.is_empty) {
+			              that.cartInfo = Object.assign({}, that.cartInfo, {
+			                subtotal: 0.00,
+			                subtotal_price: 0.00,
+			                subtotal_discount: 0.00,
+			                items_quantity: 0,
+			                items_count: 0,
+			                discount_amount_order: 0.00,
+			                discount_amount: 0.00,
+			                promotion_subtotal: 0.00
+			              });
+			            } else {
+			              that.cartInfo = Object.assign({}, that.cartInfo, removeRes.data.sub_total);
+			            }
+			          } else {
+			            that.$toast(removeRes.error);
+			          }
+			        }).catch(error => {
+			          console.log(error);
+			        });
+
+			      }
+			    }
+			  })
 			},
 			/**
 			 * 清空

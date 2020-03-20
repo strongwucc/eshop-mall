@@ -1,7 +1,7 @@
 <template>
   <view class="container">
     <scroll-view class="goods-scroll" v-if="goods.length > 0" scroll-y="true" @scrolltolower="loadGoods">
-      <view class="goods-item" v-for="(goodsItem, goodsIndex) in goods" :key="goodsItem.goods_id">
+      <view class="goods-item" v-for="(goodsItem, goodsIndex) in goods" :key="goodsItem.goods_id" @click="goodsDetail(goodsItem.product_id)">
         <view class="left"><image :src="goodsItem.image_default_url"></image></view>
         <view class="right">
           <view class="name">{{goodsItem.name}}</view>
@@ -103,6 +103,14 @@ export default {
           console.log(error);
           that.$toast("取消失败");
         });
+    },
+    /**
+     * 商品详情
+     */
+    goodsDetail (productId) {
+      uni.navigateTo({
+        url: `/pages/product/product?id=${productId}`
+      })
     }
   }
 };

@@ -242,7 +242,7 @@ export default {
 				stateTip = "已完成";
 			} else if (payStatus === 0) {
 				stateTip = "待付款";
-			} else if (shipStatus === 1) {
+			} else if (shipStatus === 0) {
 				stateTip = "待收货";
 			}
 

@@ -2,12 +2,12 @@
 	<view class="app">
 		<view class="price-box">
 			<text>支付金额</text>
-			<text class="price">38.88</text>
+			<text class="price">{{orderInfo.total_amount | formatMoney}}</text>
 		</view>
 
 		<view class="pay-type-list">
 
-			<view class="type-item b-b" @click="changePayType(1)">
+			<!-- <view class="type-item b-b" @click="changePayType(1)">
 				<text class="icon yticon icon-weixinzhifu"></text>
 				<view class="con">
 					<text class="tit">微信支付</text>
@@ -27,15 +27,15 @@
 					<radio value="" color="#fa436a" :checked='payType == 2' />
 					</radio>
 				</label>
-			</view>
-			<view class="type-item" @click="changePayType(3)">
+			</view> -->
+			<view class="type-item" v-for="(payment, paymentIndex) in payments" :key="payment.app_id" @click.capture.stop="changePayType(paymentIndex)">
 				<text class="icon yticon icon-erjiye-yucunkuan"></text>
 				<view class="con">
-					<text class="tit">预存款支付</text>
-					<text>可用余额 ¥198.5</text>
+					<text class="tit">{{payment.app_name}}</text>
+					<text v-if="payment.app_id === 'deposit'">可用余额 ¥{{deposit | formatMoney}}</text>
 				</view>
 				<label class="radio">
-					<radio value="" color="#fa436a" :checked='payType == 3' />
+					<radio value="" color="#fa436a" :checked='payment.app_id === orderInfo.payinfo.pay_app_id' />
 					</radio>
 				</label>
 			</view>
@@ -50,27 +50,113 @@
 	export default {
 		data() {
 			return {
-				payType: 1,
-				orderInfo: {}
+				orderId: '',
+				orderInfo: {
+					total_amount: 0.00
+				},
+				payments: [],
+				deposit: 0.00,
+				paying: false
 			};
 		},
 		computed: {
 		
 		},
 		onLoad(options) {
-			
+			let that = this;
+			if (options.order_id) {
+				that.orderId = options.order_id;
+			}
+		},
+
+		onShow () {
+			let that = this;
+			that.loadData();
 		},
 
 		methods: {
+			loadData () {
+				let that = this;
+				that.$http.post(that.$api.user.pay, {order_id: that.orderId}).then(res => {
+					console.log(res);
+					if (res.return_code === '0000') {
+						that.deposit = res.data.deposit_money;
+						that.orderInfo = res.data.order;
+						that.payments = res.data.payments;
+					} else {
+						console.log(res);
+						that.$toast(res.error);
+					}
+				}).catch(error => {
+					console.log(error);
+					that.$toast('出错啦');
+				});
+			},
 			//选择支付方式
-			changePayType(type) {
-				this.payType = type;
+			changePayType(paymentIndex) {
+				let that = this;
+				let {app_id,app_name} = that.payments[paymentIndex];
+				let orderInfo = that.orderInfo;
+				
+				if (app_id === orderInfo.payinfo.pay_app_id) {
+					return false;
+				}
+
+				that.$http.post(that.$api.user.changePayment, {order_id: that.orderId, app_id: app_id}).then(res => {
+					if (res.return_code === '0000') {
+						that.$set(that.orderInfo, 'payinfo', {...orderInfo.payinfo, pay_app_id: app_id, pay_name: app_name});
+					} else {
+						console.log(res);
+						that.$toast('更换失败');
+					}
+				}).catch(error => {
+					console.log(error);
+					that.$toast('更换失败');
+				});
+
+
 			},
 			//确认支付
 			confirm: async function() {
-				uni.redirectTo({
-					url: '/pages/money/paySuccess'
-				})
+
+				let that = this;
+
+				if (that.paying === true) {
+					return false;
+				}
+
+				if (!that.orderId) {
+					return false;
+				}
+
+				if (!that.orderInfo.cur_amount) {
+					return false;
+				}
+
+				if (!that.orderInfo.payinfo.pay_app_id) {
+					return false;
+				}
+
+				let payData = {
+					order_id: that.orderId,
+					cur_money: that.orderInfo.cur_amount,
+					pay_app_id: that.orderInfo.payinfo.pay_app_id
+				};
+
+				that.$http.post(that.$api.user.doPayment, payData).then(res => {
+					console.log(res);
+					if (res.return_code === '0000') {
+						uni.redirectTo({
+							url: '/pages/money/paySuccess?order_id=' + that.orderId
+						})
+					} else {
+						console.log(res);
+						that.$toast(res.error);
+					}
+				}).catch(error => {
+					console.log(error);
+					that.$toast('支付失败');
+				});
 			},
 		}
 	}

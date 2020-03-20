@@ -17,6 +17,9 @@ module.exports = {
     changePwd: 'saveSecurity', // 修改密码
     orders: 'orders', // 订单列表
     order: 'orderDetail', // 订单明细
+    pay: 'paycenter', // 去支付
+    changePayment: 'changePayment', // 更换支付方式
+    doPayment: 'dopayment', // 确认支付
     orderCancel: 'doCancel', // 取消订单
     favs: 'favorite', // 收藏列表
     addFav: 'goodsFav', // 添加收藏
@@ -29,6 +32,8 @@ module.exports = {
   cart: {
     cart: 'cart', // 购物车信息
     add: 'cartAddGoods', // 添加购物车
+    update: 'updateCart', // 更新购物车
+    remove: 'removeCart', // 删除、清空购物车
     checkout: 'checkout', // 结算
     total: 'total', // 结算总额
     order: 'createOrder', // 创建订单

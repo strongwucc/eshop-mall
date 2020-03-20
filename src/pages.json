@@ -175,6 +175,11 @@
 				}
 			}
 		}, {
+			"path": "pages/order/orderDetail",
+			"style": {
+				"navigationBarTitleText": "订单详情"
+			}
+		}, {
 			"path": "pages/money/money",
 			"style": {}
 		}, {
@@ -323,6 +328,11 @@
 				"name": "我的订单",
 				"path": "pages/order/order",
 				"query": "state=0"
+			},
+			{
+				"name": "订单详情",
+				"path": "pages/order/orderDetail",
+				"query": "order_id=200317172798530"
 			},
 			{
 				"name": "取消订单",
