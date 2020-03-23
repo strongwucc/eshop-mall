@@ -17,7 +17,7 @@
           <empty v-if="tabItem.loaded === true && tabItem.orderList.length === 0"></empty>
 
           <!-- 订单列表 -->
-          <view v-for="(item,index) in tabItem.orderList" :key="index" class="order-item">
+          <view v-for="(item,index) in tabItem.orderList" :key="index" class="order-item" @click="orderDetail(item)">
             <view class="i-top b-b">
               <text class="time">{{item.createtime | formatTime}}</text>
               <text class="state" :style="{color: item.stateTipColor}">{{item.stateTip}}</text>
@@ -212,6 +212,11 @@ export default {
         uni.hideLoading();
       }, 600);
     },
+    orderDetail (item) {
+      uni.navigateTo({
+				url: '/pages/order/orderDetail?order_id=' + item.order_id
+			});
+    },
     //取消订单
     cancelOrder(item) {
       uni.navigateTo({
@@ -243,6 +248,8 @@ export default {
 			} else if (payStatus === 0) {
 				stateTip = "待付款";
 			} else if (shipStatus === 0) {
+				stateTip = "待发货";
+			} else if (shipStatus === 1) {
 				stateTip = "待收货";
 			}
 
