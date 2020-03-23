@@ -12,13 +12,13 @@
 		>
 			<scroll-view class="view-content" scroll-y>
 				<view class="share-header">
-					分享到
+					分享
 				</view>
 				<view class="share-list">
 					<view 
 						v-for="(item, index) in shareList" :key="index"
 						class="share-item" 
-						@click="shareToFriend(item.text)"
+						@click="shareToFriend(item.type)"
 					>
 						<image :src="item.icon" mode=""></image>
 						<text>{{item.text}}</text>
@@ -110,8 +110,8 @@
 			stopPrevent(){},
 			//分享操作
 			shareToFriend(type){
-				this.$api.msg(`分享给${type}`);
 				this.toggleMask();
+				this.$emit('shareClick',{type});
 			},
 		}
 	}
@@ -168,7 +168,7 @@
 		&:before, &:after{
 			content: '';
 			width: 240rpx;
-			heighg: 0;
+			height: 0;
 			border-top: 1px solid $border-color-base;
 			transform: scaleY(.5);
 			margin-right: 30rpx;

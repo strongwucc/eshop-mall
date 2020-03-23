@@ -164,11 +164,29 @@
 				<button class="btn" @click="toggleSpec">完成</button>
 			</view>
 		</view>
+		<!-- 海报-模态层弹窗 -->
+		<view 
+			class="popup poster" 
+			:class="posterClass"
+			@touchmove.stop.prevent="stopPrevent"
+			@click="togglePoster"
+		>
+			<!-- 遮罩层 -->
+			<view class="mask"></view>
+			<view class="layer poster-content" @click.stop="stopPrevent">
+				<view class="title">保存到相册</view>
+				<view class="image"><image :src="poster.path || ''" mode="aspectFit"></image></view>
+				<view >
+					<button class="btn" @click="togglePoster">保存图片</button>
+				</view>
+			</view>
+		</view>
 		<!-- 分享 -->
 		<share 
 			ref="share" 
-			:contentHeight="580"
+			:contentHeight="400"
 			:shareList="shareList"
+			@shareClick="doShare"
 		></share>
 	</view>
 </template>
@@ -186,9 +204,21 @@
 				goodsId: null,			// 商品ID
 				specClass: 'none',
 				selectedSpecs: [], 	// 已选中规格
-				
+				posterClass: 'none',
+				poster: {
+					path: 'http://tmp/wxa254ff7d0ca3df29.o6zAJs4JKH3lGYFcg3d5AIssddos.B2HaLLgEACJ8f6db092fe02dc3956ca32ee21c5c6ecc.jpg'
+				},
 				favorite: false,
-				shareList: [],
+				shareList: [{
+				  type: 1,
+				  icon: '/static/temp/share_wechat.png',
+				  text: '分享给好友'
+				},
+				{
+				  type: 2,
+				  icon: '/static/temp/share_moment.png',
+				  text: '生成分享海报'
+				}],
 				imgList: [], 				// 商品图片
 				name: '', 					// 商品名称
 				image: '', 					// 商品默认图片
@@ -376,6 +406,19 @@
 				}
 			},
 			/**
+			 * 海报弹窗开关
+			 */
+			togglePoster() {
+				if(this.posterClass === 'show'){
+					this.posterClass = 'hide';
+					setTimeout(() => {
+						this.posterClass = 'none';
+					}, 250);
+				}else if(this.posterClass === 'none'){
+					this.posterClass = 'show';
+				}
+			},
+			/**
 			 * 选择规格
 			 */
 			selectSpec(spec){
@@ -389,6 +432,13 @@
 			 */
 			share(){
 				this.$refs.share.toggleMask();	
+			},
+			doShare (e) {
+				let that = this;
+				if (e.type === 2) {
+					console.log('生成海报');
+					that.togglePoster();
+				}
 			},
 			/**
 			 * 收藏
@@ -908,6 +958,36 @@
 			100% {
 				transform: translateY(120%);
 			}
+		}
+		.poster-content {
+		  display: flex;
+		  flex-direction: column;
+		  justify-content: flex-start;
+			align-items: center;
+			.title {
+				height: 66rpx;
+				line-height: 66rpx;
+				text-align: left;
+				background: $page-color-base;
+			}
+			.image {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin-top: 30rpx;
+				image {
+					height: 580rpx;
+				}
+			}
+		  view {
+				width: 100%;
+				padding: 0 20rpx;
+				box-sizing: border-box;
+		    .btn {
+		      width: 100%;
+		    }
+		  }
+
 		}
 	}
 	
