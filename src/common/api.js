@@ -13,6 +13,7 @@ module.exports = {
   user: {
     center: 'member', // 个人中心
     balance: 'balance', // 预存款账户查询
+    coupons: 'myCoupons', // 我的优惠券
     integralRecords: 'pointHistory', // 历史积分
     changePwd: 'saveSecurity', // 修改密码
     orders: 'orders', // 订单列表

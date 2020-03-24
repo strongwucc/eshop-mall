@@ -41,10 +41,15 @@
           hover-class="common-hover"
           :hover-stay-time="50"
         >
-          <text class="num">{{userInfo.advance | formatMoney}}</text>
+          <text class="num">{{userInfo.advance || 0}}</text>
           <text>余额</text>
         </view>
-        <view class="tj-item">
+        <view class="tj-item"
+          class="tj-item"
+          @click="navTo('/pages/user/coupons')"
+          hover-class="common-hover"
+          :hover-stay-time="50"
+        >
           <text class="num">{{userInfo.coupons || 0}}</text>
           <text>优惠券</text>
         </view>

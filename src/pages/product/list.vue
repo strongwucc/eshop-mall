@@ -27,7 +27,7 @@
 				</view>
 				<text class="title clamp">{{item.name}}</text>
 				<view class="price-box">
-					<text class="price">{{item.price}}</text>
+					<text class="price">{{item.price | formatMoney}}</text>
 					<text>已售 {{item.buy_w_count}}</text>
 				</view>
 			</view>

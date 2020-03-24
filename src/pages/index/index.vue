@@ -27,23 +27,23 @@
 		</view>
 		<!-- 分类 -->
 		<view class="cate-section">
-			<view class="cate-item">
+			<view class="cate-item" @click="navToGoodsList(4)">
 				<image src="/static/temp/c3.png"></image>
 				<text>环球美食</text>
 			</view>
-			<view class="cate-item">
+			<view class="cate-item" @click="navToGoodsList(5)">
 				<image src="/static/temp/c5.png"></image>
 				<text>个护美妆</text>
 			</view>
-			<view class="cate-item">
+			<view class="cate-item" @click="navToGoodsList(6)">
 				<image src="/static/temp/c6.png"></image>
 				<text>营养保健</text>
 			</view>
-			<view class="cate-item">
+			<view class="cate-item" @click="navToGoodsList(7)">
 				<image src="/static/temp/c7.png"></image>
 				<text>家居厨卫</text>
 			</view>
-			<view class="cate-item">
+			<view class="cate-item" @click="navToGoodsList(8)">
 				<image src="/static/temp/c8.png"></image>
 				<text>速食生鲜</text>
 			</view>
@@ -276,6 +276,11 @@
 				const index = e.detail.current;
 				this.swiperCurrent = index;
 				this.titleNViewBackground = this.carouselList[index].background;
+			},
+			navToGoodsList (tid) {
+				uni.navigateTo({
+					url: `/pages/product/list?tid=${tid}`
+				})
 			},
 			//详情页
 			navToDetailPage(item) {

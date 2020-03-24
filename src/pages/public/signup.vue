@@ -104,6 +104,7 @@ export default {
       that.requesting = true;
 
       that.$http.post(that.$api.auth.sendSms, {uname: that.mobile, type: 'signup'}).then(res => {
+        console.log(res);
         that.requesting = false;
         if (res.return_code === '0000') {
           that.$toast('发送成功');

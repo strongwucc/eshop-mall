@@ -196,6 +196,7 @@
 import share from '@/components/share';
 import htmlParser from '@/common/html-parser'
 import { getSharePoster } from "@/common/poster/poster";
+import { mapState } from 'vuex';
 export default {
 	components: {
 		share
@@ -241,6 +242,7 @@ export default {
 		};
 	},
 	computed: {
+		...mapState(['hasLogin']),
 		discount() {
 			let that = this;
 			return Math.round(that.price / that.mktprice * 100) / 10;
@@ -434,7 +436,15 @@ export default {
 		 * 分享
 		 */
 		share() {
-			this.$refs.share.toggleMask();
+			let that = this;
+			// 判断是否登录
+			if (!that.hasLogin) {
+        uni.navigateTo({
+					url: '/pages/public/login'
+				});
+				return false;
+      }
+			that.$refs.share.toggleMask();
 		},
 		doShare(e) {
 			let that = this;
@@ -621,6 +631,15 @@ export default {
 		 */
 		toFavorite() {
 			let that = this;
+
+			// 判断是否登录
+			if (!that.hasLogin) {
+        uni.navigateTo({
+					url: '/pages/public/login'
+				});
+				return false;
+      }
+
 			if (that.requesting) {
 				return false;
 			}
@@ -658,6 +677,17 @@ export default {
 		 * 立即购买
 		 */
 		buy() {
+
+			let that = this;
+
+			// 判断是否登录
+			if (!that.hasLogin) {
+        uni.navigateTo({
+					url: '/pages/public/login'
+				});
+				return false;
+      }
+
 			uni.navigateTo({
 				url: `/pages/order/createOrder`
 			})
@@ -667,6 +697,15 @@ export default {
 		 */
 		addCart(btype = "") {
 			let that = this;
+
+			// 判断是否登录
+			if (!that.hasLogin) {
+        uni.navigateTo({
+					url: '/pages/public/login'
+				});
+				return false;
+      }
+
 			if (that.requesting) {
 				return false;
 			}
