@@ -177,7 +177,7 @@
 				<view class="title">保存到相册</view>
 				<view class="image"><image :src="poster.path || ''" mode="aspectFit"></image></view>
 				<view >
-					<button class="btn" @click="togglePoster">保存图片</button>
+					<button class="btn" @click="savePoster">保存图片</button>
 				</view>
 			</view>
 		</view>
@@ -188,355 +188,530 @@
 			:shareList="shareList"
 			@shareClick="doShare"
 		></share>
+		<canvas class="hideCanvas" canvas-id="default_PosterCanvasId" :style="{width: (poster.width||0) + 'px', height: (poster.height||0) + 'px'}"></canvas>
 	</view>
 </template>
 
 <script>
-	import share from '@/components/share';
-	import htmlParser from '@/common/html-parser'
-	export default{
-		components: {
-			share
-		},
-		data() {
-			return {
-				productId: null, 		// 货品ID
-				goodsId: null,			// 商品ID
-				specClass: 'none',
-				selectedSpecs: [], 	// 已选中规格
-				posterClass: 'none',
-				poster: {
-					path: 'http://tmp/wxa254ff7d0ca3df29.o6zAJs4JKH3lGYFcg3d5AIssddos.B2HaLLgEACJ8f6db092fe02dc3956ca32ee21c5c6ecc.jpg'
-				},
-				favorite: false,
-				shareList: [{
-				  type: 1,
-				  icon: '/static/temp/share_wechat.png',
-				  text: '分享给好友'
-				},
-				{
-				  type: 2,
-				  icon: '/static/temp/share_moment.png',
-				  text: '生成分享海报'
-				}],
-				imgList: [], 				// 商品图片
-				name: '', 					// 商品名称
-				image: '', 					// 商品默认图片
-				price: 0.00, 				// 价格
-				mktprice: 0.00, 		// 市场价
-				sales: 0, 					// 销量
-				store: 99, 					// 库存
-				views: 0, 					// 浏览量
-				promotion: { 				// 促销信息
-					'order': [],
-					'goods': []
-				},
-				desc: null, 				// 商品详情
-				specList: [], 			// 规格列表
-				specDefaultPic: '',	// 规格默认图片
-				requesting: false, 	// 是否正在请求
-			};
-		},
-		computed: {
-			discount () {
-				let that = this;
-				return Math.round(that.price / that.mktprice * 100) / 10;
-			}
-		},
-		onLoad(options){
-			
-			let that = this;
-			let productId = options.id;
-			that.productId = productId;
-			
-			that.loadData(productId)
-	
-
-		},
-		methods:{
-
-			/**
-			 * 格式化活动数据
-			 */
-			_formatPromotion (promotion) {
-				let that = this;
-				let newPromotion = {
-					'order': [],
-					'goods': []
-				};
-				for (let proKey in promotion) {
-					let proItem = promotion[proKey];
-					for (let itemKey in proItem) {
-						proItem[itemKey].id = itemKey;
-						newPromotion[proKey].push(proItem[itemKey]);
-					}
-				}
-				that.promotion = newPromotion;
+import share from '@/components/share';
+import htmlParser from '@/common/html-parser'
+import { getSharePoster } from "@/common/poster/poster";
+export default {
+	components: {
+		share
+	},
+	data() {
+		return {
+			productId: null, // 货品ID
+			goodsId: null, // 商品ID
+			specClass: 'none',
+			selectedSpecs: [], // 已选中规格
+			posterClass: 'none',
+			canvasId: "default_PosterCanvasId",
+			poster: {
+				path: ''
 			},
+			favorite: false,
+			shareList: [{
+				type: 1,
+				icon: '/static/temp/share_wechat.png',
+				text: '分享给好友'
+			},
+			{
+				type: 2,
+				icon: '/static/temp/share_moment.png',
+				text: '生成分享海报'
+			}],
+			imgList: [], // 商品图片
+			name: '', // 商品名称
+			image: '', // 商品默认图片
+			price: 0.00, // 价格
+			mktprice: 0.00, // 市场价
+			sales: 0, // 销量
+			store: 99, // 库存
+			views: 0, // 浏览量
+			promotion: { // 促销信息
+				'order': [],
+				'goods': []
+			},
+			desc: null, // 商品详情
+			specList: [], // 规格列表
+			specDefaultPic: '', // 规格默认图片
+			requesting: false, // 是否正在请求
+		};
+	},
+	computed: {
+		discount() {
+			let that = this;
+			return Math.round(that.price / that.mktprice * 100) / 10;
+		}
+	},
+	onLoad(options) {
 
-			/**
-			 * 格式化规格
-			 */
-			_formatSpec (spec) {
+		let that = this;
+		let productId = options.id;
+		that.productId = productId;
 
-				let that = this;
-				// 规格类型
-				let specList = [];
-				if (spec.hasOwnProperty('specification') && spec.specification.hasOwnProperty('spec_name')) {
-					for (let specKey in spec.specification.spec_name) {
-						specList.push({id: specKey, name: spec.specification.spec_name[specKey], values: []});
-					}
+		that.loadData(productId)
+
+
+	},
+	methods: {
+
+		/**
+		 * 格式化活动数据
+		 */
+		_formatPromotion(promotion) {
+			let that = this;
+			let newPromotion = {
+				'order': [],
+				'goods': []
+			};
+			for (let proKey in promotion) {
+				let proItem = promotion[proKey];
+				for (let itemKey in proItem) {
+					proItem[itemKey].id = itemKey;
+					newPromotion[proKey].push(proItem[itemKey]);
 				}
-				// 选中的规格
-				let selectedSpec = [];
-				if (spec.hasOwnProperty('product')) {
-					for (let specId in spec.product) {
-						selectedSpec.push({spec_id: specId, p_spec_value_id: spec.product[specId]});
-					}
+			}
+			that.promotion = newPromotion;
+		},
+
+		/**
+		 * 格式化规格
+		 */
+		_formatSpec(spec) {
+
+			let that = this;
+			// 规格类型
+			let specList = [];
+			if (spec.hasOwnProperty('specification') && spec.specification.hasOwnProperty('spec_name')) {
+				for (let specKey in spec.specification.spec_name) {
+					specList.push({ id: specKey, name: spec.specification.spec_name[specKey], values: [] });
 				}
+			}
+			// 选中的规格
+			let selectedSpec = [];
+			if (spec.hasOwnProperty('product')) {
+				for (let specId in spec.product) {
+					selectedSpec.push({ spec_id: specId, p_spec_value_id: spec.product[specId] });
+				}
+			}
 
-				// 商品所有规格
-				let specs = [];
-				if (spec.hasOwnProperty('goods')) {
-					for (let specId in spec.goods) {
-						for (let specValue in spec.goods[specId]) {
+			// 商品所有规格
+			let specs = [];
+			if (spec.hasOwnProperty('goods')) {
+				for (let specId in spec.goods) {
+					for (let specValue in spec.goods[specId]) {
 
-							if (selectedSpec.some((selectedSpecItem, selectedSpecIndex) => {
-								if(selectedSpecItem.p_spec_value_id === specValue) {
+						if (selectedSpec.some((selectedSpecItem, selectedSpecIndex) => {
+								if (selectedSpecItem.p_spec_value_id === specValue) {
 									selectedSpec[selectedSpecIndex].spec_value = spec.goods[specId][specValue].spec_value;
 									selectedSpec[selectedSpecIndex].spec_value_id = spec.goods[specId][specValue].spec_value_id;
 									return true;
 								}
 								return false;
 							})) {
-								spec.goods[specId][specValue].selected = true;
-							} else {
-								spec.goods[specId][specValue].selected = false;
-							}
-
-							specList.some((specItem, specIndex) => {
-								if(specItem.id === specId) {
-									specList[specIndex].values.push({spec_id: specId, ...spec.goods[specId][specValue]});
-									return true;
-								}
-								return false;
-							})
-						}
-					}
-				}
-				that.selectedSpecs = selectedSpec;
-				that.specList = specList;
-			},
-			/**
-			 * 获取商品信息
-			 */
-			loadData (productId) {
-
-				let that = this;
-
-				that.$http.post(that.$api.goods.detail, {product_id: productId}).then(res => {
-					console.log(res);
-					if (res.return_code === '0000') {
-						// 默认图片
-						if (res.data.spec_default_pic) {
-							that.specDefaultPic = res.data.spec_default_pic;
-						}
-						// 基本信息
-						if (res.data.page_product_basic) {
-							that.imgList = res.data.page_product_basic.images;
-							that.name = res.data.page_product_basic.title;
-							that.image = res.data.page_product_basic.image_default_url;
-							that.favorite = res.data.page_product_basic.isFav;
-							that.goodsId = res.data.page_product_basic.goods_id;
-							that._formatPromotion(res.data.page_product_basic.promotion);
-							that._formatSpec(res.data.page_product_basic.spec);
-							that.getGoodsIntro(res.data.page_product_basic.goods_id);
-							
-						}
-						// 价格
-						if (res.data.product_price) {
-							that.price = res.data.product_price.price;
-							that.mktprice = res.data.product_price.mktprice;
-						}
-						// 库存
-						if (res.data.product_store) {
-							that.store = res.data.product_store.store;
-						}
-					} else {
-						console.log(res.return_msg);
-					}
-				}).catch(error => {
-					console.log(error);
-				});
-
-			},
-
-			/**
-			 * 商品详情
-			 */
-			getGoodsIntro (goodsId) {
-				let that = this;
-				that.$http.post(that.$api.goods.intro, {goods_id: goodsId}).then(res => {
-					if (res.return_code === '0000') {
-						let html = res.data.html;
-						// let newHtml = html.replace(/(<img)(.*?)(>)/g, function (...args) {
-						// 	return args[1] + args[2] + " style=\"width: 100%\"" + args[3];
-						// });
-						// let nodes = htmlParser(newHtml);
-						let nodes = htmlParser(html);
-						that.desc = nodes ? nodes : [];
-					} else {
-						console.log(res.return_msg);
-					}
-				}).catch(error => {
-					console.log(error);
-				});
-			},
-			/**
-			 * 规格弹窗开关
-			 */
-			toggleSpec() {
-				if(this.specClass === 'show'){
-					this.specClass = 'hide';
-					setTimeout(() => {
-						this.specClass = 'none';
-					}, 250);
-				}else if(this.specClass === 'none'){
-					this.specClass = 'show';
-				}
-			},
-			/**
-			 * 海报弹窗开关
-			 */
-			togglePoster() {
-				if(this.posterClass === 'show'){
-					this.posterClass = 'hide';
-					setTimeout(() => {
-						this.posterClass = 'none';
-					}, 250);
-				}else if(this.posterClass === 'none'){
-					this.posterClass = 'show';
-				}
-			},
-			/**
-			 * 选择规格
-			 */
-			selectSpec(spec){
-				let that = this;
-				if (spec.hasOwnProperty('product_id')) {
-					that.loadData(spec.product_id);
-				}
-			},
-			/**
-			 * 分享
-			 */
-			share(){
-				this.$refs.share.toggleMask();	
-			},
-			doShare (e) {
-				let that = this;
-				if (e.type === 2) {
-					console.log('生成海报');
-					that.togglePoster();
-				}
-			},
-			/**
-			 * 收藏
-			 */
-			toFavorite(){
-				let that = this;
-				if (that.requesting) {
-					return false;
-				}
-
-				if (!that.goodsId) {
-					return false
-				}
-
-				that.requesting = true;
-
-				let postUrl = that.favorite ? that.$api.user.removeFav : that.$api.user.addFav;
-
-				that.$http.post(
-					postUrl,
-					{gid: that.goodsId, type: 'goods'}
-				).then(res => {
-					that.requesting = false;
-					if (res.return_code === '0000') {
-						if (that.favorite) {
-							that.$toast('移除成功');
+							spec.goods[specId][specValue].selected = true;
 						} else {
-							that.$toast('收藏成功');
+							spec.goods[specId][specValue].selected = false;
 						}
-						that.favorite = !that.favorite;
-					} else {
-						console.log(res.error);
-						that.$toast('收藏失败');
+
+						specList.some((specItem, specIndex) => {
+							if (specItem.id === specId) {
+								specList[specIndex].values.push({ spec_id: specId, ...spec.goods[specId][specValue] });
+								return true;
+							}
+							return false;
+						})
 					}
-				}).catch(error => {
-					that.requesting = false;
-					console.log(error);
-					that.$toast('收藏失败');
-				});
-			},
-			/**
-			 * 立即购买
-			 */
-			buy(){
-				uni.navigateTo({
-					url: `/pages/order/createOrder`
-				})
-			},
-			/**
-			 * 加入购物车
-			 */
-			addCart (btype="") {
-				let that = this;
-				if (that.requesting) {
-					return false;
 				}
+			}
+			that.selectedSpecs = selectedSpec;
+			that.specList = specList;
+		},
+		/**
+		 * 获取商品信息
+		 */
+		loadData(productId) {
 
-				if (!that.productId || !that.goodsId) {
-					return false
-				}
+			let that = this;
 
-				that.requesting = true;
-
-				let data = {goods_id: that.goodsId, product_id: that.productId, num: 1, mini_cart: true};
-
-				if (btype === 'is_fastbuy') {
-					data.btype = 'is_fastbuy';
-				}
-
-				that.$http.post(
-					that.$api.cart.add,
-					data
-				).then(res => {
-					that.requesting = false;
-					if (res.return_code === '0000') {
-						that.$toast('添加成功');
-						if (btype === 'is_fastbuy') {
-							setTimeout(function () {
-								uni.navigateTo({
-									url: `/pages/order/createOrder?fastbuy=1`
-								})
-							}, 1000);
-						}
-					} else {
-						console.log(res.error);
-						that.$toast('添加失败');
+			that.$http.post(that.$api.goods.detail, { product_id: productId }).then(res => {
+				console.log(res);
+				if (res.return_code === '0000') {
+					// 默认图片
+					if (res.data.spec_default_pic) {
+						that.specDefaultPic = res.data.spec_default_pic;
 					}
-				}).catch(error => {
-					that.requesting = false;
-					console.log(error);
-					that.$toast('添加失败');
-				});
+					// 基本信息
+					if (res.data.page_product_basic) {
+						that.imgList = res.data.page_product_basic.images;
+						that.name = res.data.page_product_basic.title;
+						that.image = res.data.page_product_basic.image_default_url;
+						that.favorite = res.data.page_product_basic.isFav;
+						that.goodsId = res.data.page_product_basic.goods_id;
+						that._formatPromotion(res.data.page_product_basic.promotion);
+						that._formatSpec(res.data.page_product_basic.spec);
+						that.getGoodsIntro(res.data.page_product_basic.goods_id);
 
-			},
-			stopPrevent(){}
+					}
+					// 价格
+					if (res.data.product_price) {
+						that.price = res.data.product_price.price;
+						that.mktprice = res.data.product_price.mktprice;
+					}
+					// 库存
+					if (res.data.product_store) {
+						that.store = res.data.product_store.store;
+					}
+				} else {
+					console.log(res.return_msg);
+				}
+			}).catch(error => {
+				console.log(error);
+			});
+
 		},
 
-	}
+		/**
+		 * 商品详情
+		 */
+		getGoodsIntro(goodsId) {
+			let that = this;
+			that.$http.post(that.$api.goods.intro, { goods_id: goodsId }).then(res => {
+				if (res.return_code === '0000') {
+					let html = res.data.html;
+					// let newHtml = html.replace(/(<img)(.*?)(>)/g, function (...args) {
+					// 	return args[1] + args[2] + " style=\"width: 100%\"" + args[3];
+					// });
+					// let nodes = htmlParser(newHtml);
+					let nodes = htmlParser(html);
+					that.desc = nodes ? nodes : [];
+				} else {
+					console.log(res.return_msg);
+				}
+			}).catch(error => {
+				console.log(error);
+			});
+		},
+		/**
+		 * 规格弹窗开关
+		 */
+		toggleSpec() {
+			if (this.specClass === 'show') {
+				this.specClass = 'hide';
+				setTimeout(() => {
+					this.specClass = 'none';
+				}, 250);
+			} else if (this.specClass === 'none') {
+				this.specClass = 'show';
+			}
+		},
+		/**
+		 * 海报弹窗开关
+		 */
+		togglePoster() {
+			if (this.posterClass === 'show') {
+				this.posterClass = 'hide';
+				setTimeout(() => {
+					this.posterClass = 'none';
+				}, 250);
+			} else if (this.posterClass === 'none') {
+				this.posterClass = 'show';
+			}
+		},
+		/**
+		 * 选择规格
+		 */
+		selectSpec(spec) {
+			let that = this;
+			if (spec.hasOwnProperty('product_id')) {
+				that.loadData(spec.product_id);
+			}
+		},
+		/**
+		 * 分享
+		 */
+		share() {
+			this.$refs.share.toggleMask();
+		},
+		doShare(e) {
+			let that = this;
+			if (e.type === 2) {
+				console.log('生成海报');
+				that.togglePoster();
+				that.shareFc();
+			}
+		},
+		async shareFc() {
+			let that = this;
+			if (that.poster.path) {
+				return true;
+			}
+			try {
+				const d = await getSharePoster({
+					_this: that, //若在组件中使用 必传
+					type: "shareType",
+					formData: {
+						//访问接口获取背景图携带自定义数据
+					},
+					posterCanvasId: that.canvasId, //canvasId
+					delayTimeScale: 20, //延时系数
+					background: {
+						width: 1068,
+						height: 1800,
+						backgroundColor: '#ffffff'
+					},
+					drawArray: ({ bgObj, type, bgScale }) => {
+						const fontSize = bgObj.width * 0.08;
+						const padding = 40;
+						const lineHeight = bgObj.height * 0.04;
+						//可直接return数组，也可以return一个promise对象, 但最终resolve一个数组, 这样就可以方便实现后台可控绘制海报
+						return new Promise((rs, rj) => {
+							rs([
+							{
+								type: "image",
+								serialNum: 0,
+								id: 'goodsImage',
+								url: that.image,
+								dx: 0,
+								dy: 0,
+								infoCallBack(imageInfo) {
+									return {
+										dWidth: bgObj.width,
+										dHeight: bgObj.width
+									};
+								}
+							},
+							{
+								type: "text",
+								serialNum: 1,
+								id: 'price',
+								text: "￥" + that.price,
+								size: fontSize,
+								color: "#fa436a",
+								textAlign: "left",
+								textBaseline: "middle",
+								infoCallBack(textLength) {
+									return {
+										dx: padding,
+										dy: bgObj.width + fontSize / 2 + padding
+									};
+								}
+							},
+							{
+								type: "text",
+								serialNum: 2,
+								id: 'mktprice',
+							  text: "￥" + that.mktprice,
+							  size: fontSize / 3 * 2,
+							  color: "#606266",
+							  textAlign: "left",
+								textBaseline: "middle",
+								lineThrough: {},
+							  allInfoCallback({
+							    //v3.0.1 更新 可以获取drawArray中全部数据
+							    drawArray
+							  } = {}) {
+							    const objPirce = drawArray.find(item => item.id === "price");
+							    return new Promise((rs, rj) => {
+							      setTimeout(() => {
+							        rs({
+							          dx: objPirce.dx + objPirce.textLength + padding,
+							          dy: objPirce.dy
+							        });
+							      }, 1);
+							    });
+							  }
+							},
+							{
+								type: "text",
+								serialNum: 3,
+								id: 'goodsName',
+							  text: that.name,
+							  size: fontSize / 4 * 3,
+							  color: "#000000",
+							  textAlign: "left",
+								textBaseline: "middle",
+								lineFeed: {
+									maxWidth: bgObj.width - padding * 2,
+									lineHeight: fontSize + 10,
+									lineNum: 2
+								},
+							  allInfoCallback({
+							    //v3.0.1 更新 可以获取drawArray中全部数据
+							    drawArray
+							  } = {}) {
+							    const objPirce = drawArray.find(item => item.id === "price");
+							    return new Promise((rs, rj) => {
+							      setTimeout(() => {
+							        rs({
+							          dx: objPirce.dx,
+							          dy: objPirce.dy + objPirce.size + padding
+							        });
+							      }, 1);
+							    });
+							  }
+							},
+							{
+								type: "image",
+								serialNum: 4,
+								id: 'qrcodeImage',
+								url: '/static/temp/qrcode.png',
+								dx: 150,
+								dy: bgObj.height - 200 - padding,
+								dWidth: 200,
+								dHeight: 200
+							},
+							{
+								type: "text",
+								serialNum: 5,
+								id: 'qrcodeNotice',
+							  text: '长按识别 去逛逛',
+							  size: fontSize / 3 * 2,
+							  color: "#606266",
+							  textAlign: "left",
+								textBaseline: "middle",
+							  allInfoCallback({
+							    //v3.0.1 更新 可以获取drawArray中全部数据
+							    drawArray
+							  } = {}) {
+							    const objQrcode = drawArray.find(item => item.id === "qrcodeImage");
+							    return new Promise((rs, rj) => {
+							      setTimeout(() => {
+							        rs({
+							          dx: objQrcode.dx + 220,
+							          dy: objQrcode.dy + 100
+							        });
+							      }, 1);
+							    });
+							  }
+							}]);
+						});
+					},
+					setCanvasWH: ({ bgObj, type, bgScale }) => {
+						// 为动态设置画布宽高的方法，
+						that.poster = bgObj;
+					}
+				});
+				that.poster = Object.assign({}, that.poster, {path: d.poster.tempFilePath});
+			} catch (e) {
+				console.log(e);
+				uni.hideLoading();
+			}
+		},
+		savePoster() {
+			let that = this;
+      // #ifndef H5
+      uni.saveImageToPhotosAlbum({
+        filePath: this.poster.path,
+        success(res) {
+					that.$toast("保存成功");
+					that.togglePoster();
+        }
+      });
+      // #endif
+      // #ifdef H5
+      that.$toast("请长按图片保存");
+      // #endif
+    },
+		/**
+		 * 收藏
+		 */
+		toFavorite() {
+			let that = this;
+			if (that.requesting) {
+				return false;
+			}
+
+			if (!that.goodsId) {
+				return false
+			}
+
+			that.requesting = true;
+
+			let postUrl = that.favorite ? that.$api.user.removeFav : that.$api.user.addFav;
+
+			that.$http.post(
+				postUrl, { gid: that.goodsId, type: 'goods' }
+			).then(res => {
+				that.requesting = false;
+				if (res.return_code === '0000') {
+					if (that.favorite) {
+						that.$toast('移除成功');
+					} else {
+						that.$toast('收藏成功');
+					}
+					that.favorite = !that.favorite;
+				} else {
+					console.log(res.error);
+					that.$toast('收藏失败');
+				}
+			}).catch(error => {
+				that.requesting = false;
+				console.log(error);
+				that.$toast('收藏失败');
+			});
+		},
+		/**
+		 * 立即购买
+		 */
+		buy() {
+			uni.navigateTo({
+				url: `/pages/order/createOrder`
+			})
+		},
+		/**
+		 * 加入购物车
+		 */
+		addCart(btype = "") {
+			let that = this;
+			if (that.requesting) {
+				return false;
+			}
+
+			if (!that.productId || !that.goodsId) {
+				return false
+			}
+
+			that.requesting = true;
+
+			let data = { goods_id: that.goodsId, product_id: that.productId, num: 1, mini_cart: true };
+
+			if (btype === 'is_fastbuy') {
+				data.btype = 'is_fastbuy';
+			}
+
+			that.$http.post(
+				that.$api.cart.add,
+				data
+			).then(res => {
+				that.requesting = false;
+				if (res.return_code === '0000') {
+					that.$toast('添加成功');
+					if (btype === 'is_fastbuy') {
+						setTimeout(function () {
+							uni.navigateTo({
+								url: `/pages/order/createOrder?fastbuy=1`
+							})
+						}, 1000);
+					}
+				} else {
+					console.log(res.error);
+					that.$toast('添加失败');
+				}
+			}).catch(error => {
+				that.requesting = false;
+				console.log(error);
+				that.$toast('添加失败');
+			});
+
+		},
+		stopPrevent() {}
+	},
+
+}
 </script>
 
 <style lang='scss'>
