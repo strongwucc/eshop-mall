@@ -29,6 +29,15 @@ module.exports = {
     addrs: 'receiver', // 收货地址
     addAddr: 'addReceiver', // 添加收货地址
     removeAddr: 'delRec', // 删除收货地址
+    comments: 'comments', // 我的评论
+    asks: 'asks', // 我的咨询
+    noDiscuss: 'noDiscuss', // 未评论商品
+    toComment: 'toComment', // 评论
+    afterRec: 'afterRec', // 退换货记录
+    afterList: 'afterList', // 申请退换货列表
+    addRec: 'addRec', // 增加退换货记录
+    returnSave: 'returnSave', // 保存退换货记录
+    returnDetail: 'returnDetail', // 退换货详情
   },
   cart: {
     cart: 'cart', // 购物车信息

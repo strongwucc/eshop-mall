@@ -43,7 +43,7 @@ http.interceptor.request((config, cancel) => {
     cancel('token 不存在') // 接收一个参数，会传给catch((err) => {}) err.errMsg === 'token 不存在'
   }
   */
-  return config
+  return config;
 })
 
 http.interceptor.response((response) => {

@@ -44,7 +44,7 @@
           <text class="num">{{userInfo.advance || 0}}</text>
           <text>余额</text>
         </view>
-        <view class="tj-item"
+        <view
           class="tj-item"
           @click="navTo('/pages/user/coupons')"
           hover-class="common-hover"

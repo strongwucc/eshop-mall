@@ -1,390 +1,450 @@
 {
-	"pages": [
+  "pages": [
 
-		{
-			"path": "pages/index/index",
-			"style": {
-				// #ifdef MP 
-				"navigationBarTitleText": "Eshop 商城",
-				//"navigationStyle": "custom",
-				// #endif 
-				"app-plus": {
-					"titleNView": {
-						"type": "transparent",
-						"searchInput": {
-							"backgroundColor": "rgba(231, 231, 231,.7)",
-							"borderRadius": "16px",
-							"placeholder": "请输入地址 如：大钟寺",
-							"disabled": true,
-							"placeholderColor": "#606266"
-						},
-						"buttons": [{
-								"fontSrc": "/static/yticon.ttf",
-								"text": "\ue60d",
-								"fontSize": "26",
-								"color": "#303133",
-								"float": "left",
-								"background": "rgba(0,0,0,0)"
-							},
-							{
-								"fontSrc": "/static/yticon.ttf",
-								"text": "\ue744",
-								"fontSize": "27",
-								"color": "#303133",
-								"background": "rgba(0,0,0,0)",
-								"redDot": true
-							}
-						]
-					}
-				}
-			}
-		},
-		{
-			"path": "pages/product/product",
-			"style": {
-				"navigationBarTitleText": "详情展示",
-				"app-plus": {
-					"titleNView": {
-						"type": "transparent"
-					}
-				}
-			}
-		}, {
-			"path": "pages/set/set",
-			"style": {
-				"navigationBarTitleText": "设置"
-			}
-		}, {
-			"path": "pages/set/resetPwd",
-			"style": {
-				"navigationBarTitleText": "修改密码"
-			}
-		},
+    {
+      "path": "pages/index/index",
+      "style": {
+        // #ifdef MP 
+        "navigationBarTitleText": "Eshop 商城",
+        //"navigationStyle": "custom",
+        // #endif 
+        "app-plus": {
+          "titleNView": {
+            "type": "transparent",
+            "searchInput": {
+              "backgroundColor": "rgba(231, 231, 231,.7)",
+              "borderRadius": "16px",
+              "placeholder": "请输入地址 如：大钟寺",
+              "disabled": true,
+              "placeholderColor": "#606266"
+            },
+            "buttons": [{
+              "fontSrc": "/static/yticon.ttf",
+              "text": "\ue60d",
+              "fontSize": "26",
+              "color": "#303133",
+              "float": "left",
+              "background": "rgba(0,0,0,0)"
+            },
+            {
+              "fontSrc": "/static/yticon.ttf",
+              "text": "\ue744",
+              "fontSize": "27",
+              "color": "#303133",
+              "background": "rgba(0,0,0,0)",
+              "redDot": true
+            }]
+          }
+        }
+      }
+    },
+    {
+      "path": "pages/product/product",
+      "style": {
+        "navigationBarTitleText": "详情展示",
+        "app-plus": {
+          "titleNView": {
+            "type": "transparent"
+          }
+        }
+      }
+    }, {
+      "path": "pages/set/set",
+      "style": {
+        "navigationBarTitleText": "设置"
+      }
+    }, {
+      "path": "pages/set/resetPwd",
+      "style": {
+        "navigationBarTitleText": "修改密码"
+      }
+    },
 
-		{
-			"path": "pages/userinfo/userinfo",
-			"style": {
-				"navigationBarTitleText": "修改资料"
-			}
-		}, {
-			"path": "pages/cart/cart",
-			"style": {
-				"navigationBarTitleText": "购物车"
-			}
-		}, {
-			"path": "pages/public/login",
-			"style": {
-				"navigationBarTitleText": "",
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false,
-					"animationType": "slide-in-bottom"
-				}
-			}
-		}, {
-			"path": "pages/public/signup",
-			"style": {
-				"navigationBarTitleText": "",
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false,
-					"animationType": "slide-in-bottom"
-				}
-			}
-		}, {
-			"path": "pages/public/forgetStep1",
-			"style": {
-				"navigationBarTitleText": "忘记密码"
-			}
-		}, {
-			"path": "pages/public/forgetStep2",
-			"style": {
-				"navigationBarTitleText": "忘记密码"
-			}
-		}, {
-			"path": "pages/user/user",
-			"style": {
-				"navigationBarTitleText": "我的",
-				// #ifdef MP
-				"navigationStyle": "custom",
-				// #endif
-				"app-plus": {
-					"bounce": "none",
-					"titleNView": {
-						"type": "transparent",
-						"buttons": [{
-								"fontSrc": "/static/yticon.ttf",
-								"text": "\ue60f",
-								"fontSize": "24",
-								"color": "#303133",
-								"width": "46px",
-								"background": "rgba(0,0,0,0)"
-							},
-							{
-								"fontSrc": "/static/yticon.ttf",
-								"text": "\ue744",
-								"fontSize": "28",
-								"color": "#303133",
-								"background": "rgba(0,0,0,0)",
-								"redDot": true
-							}
-						]
-					}
-				}
-			}
-		}, {
-			"path": "pages/balance/records",
-			"style": {
-				"navigationBarTitleText": "我的余额",
-				"app-plus": {
-					"bounce": "none"
-				}
-			}
-		}, {
-			"path": "pages/balance/recharge",
-			"style": {
-				"navigationBarTitleText": "余额充值",
-				"app-plus": {
-					"bounce": "none"
-				}
-			}
-		}, {
-			"path": "pages/user/coupons",
-			"style": {
-				"navigationBarTitleText": "我的优惠券",
-				"app-plus": {
-					"bounce": "none"
-				}
-			}
-		}, {
-			"path": "pages/score/records",
-			"style": {
-				"navigationBarTitleText": "我的积分",
-				"app-plus": {
-					"bounce": "none"
-				}
-			}
-		}, {
-			"path": "pages/detail/detail",
-			"style": {
-				"navigationBarTitleText": "",
-				"app-plus": {
-					"titleNView": {
-						"type": "transparent"
-					}
-				}
-			}
-		}, {
-			"path": "pages/order/order",
-			"style": {
-				"navigationBarTitleText": "我的订单",
-				"app-plus": {
-					"bounce": "none"
-				}
-			}
-		}, {
-			"path": "pages/order/orderDetail",
-			"style": {
-				"navigationBarTitleText": "订单详情"
-			}
-		}, {
-			"path": "pages/money/money",
-			"style": {}
-		}, {
-			"path": "pages/order/createOrder",
-			"style": {
-				"navigationBarTitleText": "创建订单"
-			}
-		}, {
-			"path": "pages/address/address",
-			"style": {
-				"navigationBarTitleText": "收货地址"
-			}
-		}, {
-			"path": "pages/address/addressManage",
-			"style": {
-				"navigationBarTitleText": ""
-			}
-		}, {
-			"path": "pages/money/pay",
-			"style": {
-				"navigationBarTitleText": "支付"
-			}
-		}, {
-			"path": "pages/order/cancel",
-			"style": {
-				"navigationBarTitleText": "取消订单"
-			}
-		}, {
-			"path": "pages/collection/goods",
-			"style": {
-				"navigationBarTitleText": "我的收藏"
-			}
+    {
+      "path": "pages/userinfo/userinfo",
+      "style": {
+        "navigationBarTitleText": "修改资料"
+      }
+    }, {
+      "path": "pages/cart/cart",
+      "style": {
+        "navigationBarTitleText": "购物车"
+      }
+    }, {
+      "path": "pages/public/login",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationStyle": "custom",
+        "app-plus": {
+          "titleNView": false,
+          "animationType": "slide-in-bottom"
+        }
+      }
+    }, {
+      "path": "pages/public/signup",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationStyle": "custom",
+        "app-plus": {
+          "titleNView": false,
+          "animationType": "slide-in-bottom"
+        }
+      }
+    }, {
+      "path": "pages/public/forgetStep1",
+      "style": {
+        "navigationBarTitleText": "忘记密码"
+      }
+    }, {
+      "path": "pages/public/forgetStep2",
+      "style": {
+        "navigationBarTitleText": "忘记密码"
+      }
+    }, {
+      "path": "pages/user/user",
+      "style": {
+        "navigationBarTitleText": "我的",
+        // #ifdef MP
+        "navigationStyle": "custom",
+        // #endif
+        "app-plus": {
+          "bounce": "none",
+          "titleNView": {
+            "type": "transparent",
+            "buttons": [{
+              "fontSrc": "/static/yticon.ttf",
+              "text": "\ue60f",
+              "fontSize": "24",
+              "color": "#303133",
+              "width": "46px",
+              "background": "rgba(0,0,0,0)"
+            },
+            {
+              "fontSrc": "/static/yticon.ttf",
+              "text": "\ue744",
+              "fontSize": "28",
+              "color": "#303133",
+              "background": "rgba(0,0,0,0)",
+              "redDot": true
+            }]
+          }
+        }
+      }
+    }, {
+      "path": "pages/balance/records",
+      "style": {
+        "navigationBarTitleText": "我的余额",
+        "app-plus": {
+          "bounce": "none"
+        }
+      }
+    }, {
+      "path": "pages/balance/recharge",
+      "style": {
+        "navigationBarTitleText": "余额充值",
+        "app-plus": {
+          "bounce": "none"
+        }
+      }
+    }, {
+      "path": "pages/user/coupons",
+      "style": {
+        "navigationBarTitleText": "我的优惠券",
+        "app-plus": {
+          "bounce": "none"
+        }
+      }
+    }, {
+      "path": "pages/score/records",
+      "style": {
+        "navigationBarTitleText": "我的积分",
+        "app-plus": {
+          "bounce": "none"
+        }
+      }
+    }, {
+      "path": "pages/detail/detail",
+      "style": {
+        "navigationBarTitleText": "",
+        "app-plus": {
+          "titleNView": {
+            "type": "transparent"
+          }
+        }
+      }
+    }, {
+      "path": "pages/order/order",
+      "style": {
+        "navigationBarTitleText": "我的订单",
+        "app-plus": {
+          "bounce": "none"
+        }
+      }
+    }, {
+      "path": "pages/order/orderDetail",
+      "style": {
+        "navigationBarTitleText": "订单详情"
+      }
+    }, {
+      "path": "pages/money/money",
+      "style": {}
+    }, {
+      "path": "pages/order/createOrder",
+      "style": {
+        "navigationBarTitleText": "创建订单"
+      }
+    }, {
+      "path": "pages/address/address",
+      "style": {
+        "navigationBarTitleText": "收货地址"
+      }
+    }, {
+      "path": "pages/address/addressManage",
+      "style": {
+        "navigationBarTitleText": ""
+      }
+    }, {
+      "path": "pages/money/pay",
+      "style": {
+        "navigationBarTitleText": "支付"
+      }
+    }, {
+      "path": "pages/order/cancel",
+      "style": {
+        "navigationBarTitleText": "取消订单"
+      }
+    }, {
+      "path": "pages/collection/goods",
+      "style": {
+        "navigationBarTitleText": "我的收藏"
+      }
+    }, {
+      "path": "pages/comment/noDiscuss",
+      "style": {
+        "navigationBarTitleText": "待评价"
+      }
+    }, {
+      "path": "pages/comment/asks",
+      "style": {
+        "navigationBarTitleText": "我的咨询"
+      }
+    }, {
+      "path": "pages/comment/comments",
+      "style": {
+        "navigationBarTitleText": "我的评论"
+      }
+    }, {
+      "path": "pages/aftersale/afterList",
+      "style": {
+        "navigationBarTitleText": "售后申请"
+      }
+    }, {
+      "path": "pages/aftersale/afterRec",
+      "style": {
+        "navigationBarTitleText": "退换货记录"
+      }
+    }, {
+      "path": "pages/aftersale/addRec",
+      "style": {
+        "navigationBarTitleText": "退换货"
+      }
+    }, {
+      "path": "pages/aftersale/returnDetail",
+      "style": {
+        "navigationBarTitleText": "退换货详情"
+      }
+    },
+    {
+      "path": "pages/money/paySuccess",
+      "style": {
+        "navigationBarTitleText": "支付成功"
+      }
+    }, {
+      "path": "pages/notice/notice",
+      "style": {
+        "navigationBarTitleText": "通知"
+      }
+    }, {
+      "path": "pages/category/category",
+      "style": {
+        "navigationBarTitleText": "分类",
+        "app-plus": {
+          "bounce": "none"
+        }
+      }
+    }, {
+      "path": "pages/product/list",
+      "style": {
+        "enablePullDownRefresh": true,
+        "navigationBarTitleText": "商品列表"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "backgroundColor": "#f8f8f8"
+  },
+  "tabBar": {
+    "color": "#C0C4CC",
+    "selectedColor": "#fa436a",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [{
+      "pagePath": "pages/index/index",
+      "iconPath": "static/tab-home.png",
+      "selectedIconPath": "static/tab-home-current.png",
+      "text": "首页"
+    },
+    {
+      "pagePath": "pages/category/category",
+      "iconPath": "static/tab-cate.png",
+      "selectedIconPath": "static/tab-cate-current.png",
+      "text": "分类"
+    },
+    {
+      "pagePath": "pages/cart/cart",
+      "iconPath": "static/tab-cart.png",
+      "selectedIconPath": "static/tab-cart-current.png",
+      "text": "购物车"
+    },
+    {
+      "pagePath": "pages/user/user",
+      "iconPath": "static/tab-my.png",
+      "selectedIconPath": "static/tab-my-current.png",
+      "text": "我的"
+    }]
+  },
+  "condition": { //模式配置，仅开发期间生效
+    "current": 0, //当前激活的模式（list 的索引项）
+    "list": [{
+      "name": "首页", //模式名称
+      "path": "pages/index/index" //启动页面，必选
+    },
+    {
+      "name": "分类",
+      "path": "pages/category/category"
+    },
+    {
+      "name": "购物车",
+      "path": "pages/cart/cart"
+    },
+    {
+      "name": "结算",
+      "path": "pages/order/createOrder"
+    },
+    {
+      "name": "去支付",
+      "path": "pages/money/pay",
+      "query": "order_id=200317172798530"
+    },
+    {
+      "name": "收货地址",
+      "path": "pages/address/address"
+    },
+    {
+      "name": "新增收货地址",
+      "path": "pages/address/addressManage",
+      "query": "type=add&data="
+    },
+    {
+      "name": "我的",
+      "path": "pages/user/user"
+    },
+    {
+      "name": "我的余额",
+      "path": "pages/balance/records"
+    },
+    {
+      "name": "充值",
+      "path": "pages/balance/recharge"
+    },
+    {
+      "name": "我的优惠券",
+      "path": "pages/user/coupons"
+    },
+    {
+      "name": "我的积分",
+      "path": "pages/score/records"
+    },
+    {
+      "name": "我的订单",
+      "path": "pages/order/order",
+      "query": "state=0"
+    },
+    {
+      "name": "订单详情",
+      "path": "pages/order/orderDetail",
+      "query": "order_id=200317164303061"
+    },
+    {
+      "name": "取消订单",
+      "path": "pages/order/cancel",
+      "query": "order_id=0"
+    },
+    {
+      "name": "我的收藏",
+      "path": "pages/collection/goods"
 		},
 		{
-			"path": "pages/money/paySuccess",
-			"style": {
-				"navigationBarTitleText": "支付成功"
-			}
-		}, {
-			"path": "pages/notice/notice",
-			"style": {
-				"navigationBarTitleText": "通知"
-			}
-		}, {
-			"path": "pages/category/category",
-			"style": {
-				"navigationBarTitleText": "分类",
-				"app-plus": {
-					"bounce": "none"
-				}
-			}
-		}, {
-			"path": "pages/product/list",
-			"style": {
-				"enablePullDownRefresh": true,
-				"navigationBarTitleText": "商品列表"
-			}
-		}
-	],
-	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#FFFFFF",
-		"backgroundColor": "#f8f8f8"
-	},
-	"tabBar": {
-		"color": "#C0C4CC",
-		"selectedColor": "#fa436a",
-		"borderStyle": "black",
-		"backgroundColor": "#ffffff",
-		"list": [{
-				"pagePath": "pages/index/index",
-				"iconPath": "static/tab-home.png",
-				"selectedIconPath": "static/tab-home-current.png",
-				"text": "首页"
-			},
-			{
-				"pagePath": "pages/category/category",
-				"iconPath": "static/tab-cate.png",
-				"selectedIconPath": "static/tab-cate-current.png",
-				"text": "分类"
-			},
-			{
-				"pagePath": "pages/cart/cart",
-				"iconPath": "static/tab-cart.png",
-				"selectedIconPath": "static/tab-cart-current.png",
-				"text": "购物车"
-			},
-			{
-				"pagePath": "pages/user/user",
-				"iconPath": "static/tab-my.png",
-				"selectedIconPath": "static/tab-my-current.png",
-				"text": "我的"
-			}
-		]
-	},
-	"condition": { //模式配置，仅开发期间生效
-		"current": 0, //当前激活的模式（list 的索引项）
-		"list": [{
-				"name": "首页", //模式名称
-				"path": "pages/index/index" //启动页面，必选
-			},
-			{
-				"name": "分类",
-				"path": "pages/category/category"
-			},
-			{
-				"name": "购物车",
-				"path": "pages/cart/cart"
-			},
-			{
-				"name": "结算",
-				"path": "pages/order/createOrder"
-			},
-			{
-				"name": "去支付",
-				"path": "pages/money/pay",
-				"query": "order_id=200317172798530"
-			},
-			{
-				"name": "收货地址",
-				"path": "pages/address/address"
-			},
-			{
-				"name": "新增收货地址",
-				"path": "pages/address/addressManage",
-				"query": "type=add&data="
-			},
-			{
-				"name": "我的",
-				"path": "pages/user/user"
-			},
-			{
-				"name": "我的余额",
-				"path": "pages/balance/records"
-			},
-			{
-				"name": "充值",
-				"path": "pages/balance/recharge"
-			},
-			{
-				"name": "我的优惠券",
-				"path": "pages/user/coupons"
-			},
-			{
-				"name": "我的积分",
-				"path": "pages/score/records"
-			},
-			{
-				"name": "我的订单",
-				"path": "pages/order/order",
-				"query": "state=0"
-			},
-			{
-				"name": "订单详情",
-				"path": "pages/order/orderDetail",
-				"query": "order_id=200317164303061"
-			},
-			{
-				"name": "取消订单",
-				"path": "pages/order/cancel",
-				"query": "order_id=0"
-			},
-			{
-				"name": "我的收藏",
-				"path": "pages/collection/goods"
-			},
-			{
-				"name": "商品列表",
-				"path": "pages/product/list",
-				"query": "tid=4" //启动参数，在页面的onLoad函数里面得到。
-			},
-			{
-				"name": "商品详情",
-				"path": "pages/product/product",
-				"query": "id=241" //启动参数，在页面的onLoad函数里面得到。
-			},
-			{
-				"name": "登录",
-				"path": "pages/public/login"
-			},
-			{
-				"name": "注册",
-				"path": "pages/public/signup"
-			},
-			{
-				"name": "修改密码",
-				"path": "pages/set/resetPwd"
-			},
-			{
-				"name": "忘记密码1",
-				"path": "pages/public/forgetStep1"
-			},
-			{
-				"name": "忘记密码2",
-				"path": "pages/public/forgetStep2"
-			}
-		]
-	}
+      "name": "待评价",
+      "path": "pages/comment/noDiscuss"
+
+		},
+		{
+      "name": "我的咨询",
+      "path": "pages/comment/asks"
+		},
+		{
+      "name": "我的评论",
+      "path": "pages/comment/comments"
+		},
+		{
+      "name": "售后申请",
+      "path": "pages/aftersale/afterList"
+		},
+		{
+      "name": "退换货记录",
+      "path": "pages/aftersale/afterRec"
+		},
+		{
+      "name": "退换货",
+      "path": "pages/aftersale/addRec"
+		},
+		{
+      "name": "退换货详情",
+      "path": "pages/aftersale/returnDetail"
+    },
+    {
+      "name": "商品列表",
+      "path": "pages/product/list",
+      "query": "tid=4" //启动参数，在页面的onLoad函数里面得到。
+    },
+    {
+      "name": "商品详情",
+      "path": "pages/product/product",
+      "query": "id=241" //启动参数，在页面的onLoad函数里面得到。
+    },
+    {
+      "name": "登录",
+      "path": "pages/public/login"
+    },
+    {
+      "name": "注册",
+      "path": "pages/public/signup"
+    },
+    {
+      "name": "修改密码",
+      "path": "pages/set/resetPwd"
+    },
+    {
+      "name": "忘记密码1",
+      "path": "pages/public/forgetStep1"
+    },
+    {
+      "name": "忘记密码2",
+      "path": "pages/public/forgetStep2"
+    }]
+  }
 }
