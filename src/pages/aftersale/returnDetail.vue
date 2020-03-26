@@ -1,7 +1,16 @@
-<template></template>
+<template>
+  <view class="container"></view>
+</template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {};
+  },
+  onLoad(options) {},
+  onShow() {},
+  methods: {}
+};
 </script>
 
 <style lang="scss">
