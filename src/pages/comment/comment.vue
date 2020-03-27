@@ -36,7 +36,7 @@
       </view>
     </view>
     <view class="btn-padding"></view>
-    <view class="btn">发表评论</view>
+    <view class="btn" @click="submitComment">发表评论</view>
   </view>
 </template>
 
@@ -52,7 +52,8 @@ export default {
         price: 0
       },
       comment: '',
-      hiddenName: false
+      hiddenName: false,
+      requesting: false
     };
   },
   computed: {
@@ -94,6 +95,51 @@ export default {
       setTimeout(function () {
         that.comment = comment;
       }, 0);
+    },
+    submitComment () {
+      let that = this;
+      if (that.requesting === true) {
+        return false;
+      }
+
+      let postData = {
+        type: 'discuss',
+        goods_id: that.goodsData.goods_id,
+        product_id: that.goodsData.product_id,
+        order_id: that.goodsData.order_id,
+        goods_id: that.goodsData.goods_id,
+        comment: that.comment
+      };
+
+      that.goodsData.pointType.forEach(pointType => {
+        let key = `point_type[${pointType.type_id}][point]`;
+        postData[key] = pointType.value;
+      });
+
+      if (that.hiddenName) {
+        postData.hidden_name = 'YES';
+      }
+
+      that.$loading.show();
+
+      that.$http.post(that.$api.user.toComment, postData).then(res => {
+        that.$loading.hide();
+        if (res.return_code === '0000') {
+          that.$toast('评论成功');
+          that.$prevPage().refreshList(that.goodsData.goods_id);
+          setTimeout(function () {
+            uni.navigateBack();
+          }, 1000);
+        } else {
+          console.log(res.error);
+          that.$toast('评论失败');
+        }
+      }).catch(error => {
+        that.$loading.hide();
+        console.log(error);
+        that.$toast('评论失败');
+      });
+
     }
   }
 };

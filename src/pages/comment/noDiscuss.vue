@@ -40,7 +40,7 @@
               <view class="left"><image :src="'/static/missing-face.png'"></image></view>
               <view class="right">
                 <view class="author-comment">
-                  <view class="name">{{comment.author}}</view>
+                  <view class="name">{{comment.author | siteMobile}}</view>
                   <view class="stars"><uni-rate active-color="#fa436a" disabled="true" size="20" :value="comment.pointData.avg" max="5"></uni-rate></view>
                   <view class="content">{{comment.comment}}</view>
                   <view class="time">{{comment.time | formatTime}}</view>
@@ -237,6 +237,26 @@ export default {
 
       that.tabCurrentIndex = index;
     },
+    /**
+     * 评论之后的回调
+     */
+    refreshList(goodsId) {
+
+      let that = this;
+      
+      let selectedIndex = null;
+
+      if (that.discussGoods.some((goodsItem, goodsIndex) => {
+        if (goodsItem.goods_id === goodsId) {
+          selectedIndex = goodsIndex
+          return true;
+        }
+        return false;
+      })) {
+        that.discussGoods.splice(selectedIndex, 1);
+      }
+
+    }
   }
 };
 </script>
