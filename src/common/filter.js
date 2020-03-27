@@ -23,3 +23,7 @@ Vue.filter("formatMoney", function (value, pos=2) {
   }
   return s;
 });
+
+Vue.filter("siteMobile", function (value) {
+  return `${value.substring(0, 3)}****${value.substring(7)}`;
+});

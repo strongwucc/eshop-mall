@@ -33,7 +33,7 @@ if (process.env.NODE_ENV === 'development') {
   wxRedirect = ''
   aliRedirect = ''
 } else if (process.env.NODE_ENV === 'production') {
-  rootUrl = 'http://' + window.location.host + '/'
+  rootUrl = 'https://api.yaliantong.com/'
   baseUrl = rootUrl + 'index.php/openapi/wxapp_rpc/'
   imgBaseUrl = rootUrl + ''
   wxRedirect = ''

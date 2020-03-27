@@ -229,9 +229,9 @@
         "navigationBarTitleText": "我的咨询"
       }
     }, {
-      "path": "pages/comment/comments",
+      "path": "pages/comment/comment",
       "style": {
-        "navigationBarTitleText": "我的评论"
+        "navigationBarTitleText": "评论"
       }
     }, {
       "path": "pages/aftersale/afterList",
@@ -386,33 +386,33 @@
     {
       "name": "我的收藏",
       "path": "pages/collection/goods"
-		},
-		{
+    },
+    {
       "name": "待评价",
       "path": "pages/comment/noDiscuss"
 
-		},
-		{
+    },
+    {
       "name": "我的咨询",
       "path": "pages/comment/asks"
-		},
-		{
-      "name": "我的评论",
-      "path": "pages/comment/comments"
-		},
-		{
+    },
+    {
+      "name": "评论",
+      "path": "pages/comment/comment"
+    },
+    {
       "name": "售后申请",
       "path": "pages/aftersale/afterList"
-		},
-		{
+    },
+    {
       "name": "退换货记录",
       "path": "pages/aftersale/afterRec"
-		},
-		{
+    },
+    {
       "name": "退换货",
       "path": "pages/aftersale/addRec"
-		},
-		{
+    },
+    {
       "name": "退换货详情",
       "path": "pages/aftersale/returnDetail"
     },
