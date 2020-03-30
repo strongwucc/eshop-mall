@@ -94,7 +94,16 @@
         </view>
         <view
           class="order-item"
-          @click="navTo('/pages/order/order?state=4')"
+          @click="navTo('/pages/comment/noDiscuss')"
+          hover-class="common-hover"
+          :hover-stay-time="50"
+        >
+          <text class="yticon icon-comment"></text>
+          <text>待评论</text>
+        </view>
+        <view
+          class="order-item"
+          @click="navTo('/pages/aftersale/afterList')"
           hover-class="common-hover"
           :hover-stay-time="50"
         >

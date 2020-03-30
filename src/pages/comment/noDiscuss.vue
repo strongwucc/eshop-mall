@@ -122,6 +122,7 @@ export default {
               that.discussLoadingType = "noMore";
             } else {
               that.discussLoadingType = "more";
+              that.discussPage = that.discussPage + 1;
             }
 
             if (that.pointType.length === 0) {
@@ -178,6 +179,7 @@ export default {
               that.commentLoadingType = "noMore";
             } else {
               that.commentLoadingType = "more";
+              that.commentPage = that.commentPage + 1;
             }
             let comments = res.data.commentList.map(commentItem => {
               let commentData = {};

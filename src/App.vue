@@ -331,6 +331,10 @@ export default {
   content: "\e617";
 }
 
+.icon-image:before {
+  content: "\e689";
+}
+
 view,
 scroll-view,
 swiper,

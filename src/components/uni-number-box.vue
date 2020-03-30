@@ -133,9 +133,9 @@ export default {
 </script>
 <style>
 .uni-numbox {
-  position: absolute;
+  /* position: absolute;
   left: 30rpx;
-  bottom: 0;
+  bottom: 0; */
   display: flex;
   justify-content: flex-start;
   align-items: center;

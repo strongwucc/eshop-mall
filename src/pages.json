@@ -236,22 +236,17 @@
     }, {
       "path": "pages/aftersale/afterList",
       "style": {
-        "navigationBarTitleText": "售后申请"
-      }
-    }, {
-      "path": "pages/aftersale/afterRec",
-      "style": {
-        "navigationBarTitleText": "退换货记录"
+        "navigationBarTitleText": "售后/退换"
       }
     }, {
       "path": "pages/aftersale/addRec",
       "style": {
-        "navigationBarTitleText": "退换货"
+        "navigationBarTitleText": "申请售后"
       }
     }, {
       "path": "pages/aftersale/returnDetail",
       "style": {
-        "navigationBarTitleText": "退换货详情"
+        "navigationBarTitleText": "退换记录详情"
       }
     },
     {
@@ -401,19 +396,16 @@
       "path": "pages/comment/comment"
     },
     {
-      "name": "售后申请",
+      "name": "售后/退换",
       "path": "pages/aftersale/afterList"
     },
     {
-      "name": "退换货记录",
-      "path": "pages/aftersale/afterRec"
+      "name": "申请售后",
+      "path": "pages/aftersale/addRec",
+      "query": "orderId=200330110001456"
     },
     {
-      "name": "退换货",
-      "path": "pages/aftersale/addRec"
-    },
-    {
-      "name": "退换货详情",
+      "name": "退换记录详情",
       "path": "pages/aftersale/returnDetail"
     },
     {
