@@ -11,14 +11,14 @@
         </view>
       </view>
       <view class="vip-card-box">
-        <image class="card-bg" src="/static/vip-card-bg.png" mode=""></image>
-        <view class="b-btn">立即开通</view>
+        <!-- <image class="card-bg" src="/static/vip-card-bg.png" mode=""></image> -->
+        <!-- <view class="b-btn">立即开通</view> -->
         <view class="tit">
           <text class="yticon icon-iLinkapp-"></text>
           {{userInfo.levelname || ''}}
         </view>
-        <text class="e-m">Super Wu</text>
-        <text class="e-b">开通会员开发无bug 一测就上线</text>
+        <!-- <text class="e-m">Super Wu</text> -->
+        <!-- <text class="e-b">开通会员开发无bug 一测就上线</text> -->
       </view>
     </view>
 
@@ -304,7 +304,6 @@ export default {
   background: #fff;
   border-radius: 10rpx;
 }
-
 .user-section {
   height: 520rpx;
   padding: 100rpx 30rpx 0;
@@ -389,7 +388,6 @@ export default {
   margin-top: -150rpx;
   padding: 0 30rpx;
   position: relative;
-  background: #f5f5f5;
   padding-bottom: 20rpx;
   .arc {
     position: absolute;

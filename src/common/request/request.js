@@ -262,7 +262,8 @@ export default class Request {
     name,
     header,
     formData,
-    custom
+    custom,
+    getTask
   }) {
     return new Promise((resolve, reject) => {
       let next = true
@@ -318,7 +319,8 @@ export default class Request {
       if (!next) return
       delete _config.custom
       _config.url = Request.posUrl(_config.url) ? _config.url : (_config.baseUrl + _config.url)
-      uni.uploadFile(_config)
+      const uploadTask = uni.uploadFile(_config)
+      getTask(uploadTask, {})
     })
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <view class="uni-numbox">
+  <view class="uni-numbox" :style="{height: height + 'rpx', width: width + 'rpx'}">
     <view class="uni-numbox-minus" @click="_calcValue('subtract')">
       <text class="yticon icon--jianhao" :class="minDisabled?'uni-numbox-disabled': ''"></text>
     </view>
@@ -50,7 +50,15 @@ export default {
     disabled: {
       type: Boolean,
       default: false
-    }
+    },
+    width: {
+      type: Number,
+      default: 230
+    },
+    height: {
+      type: Number,
+      default: 70
+    },
   },
   data() {
     return {
@@ -139,19 +147,20 @@ export default {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  width: 230rpx;
-  height: 70rpx;
-  background: #f5f5f5;
+  /* width: 230rpx;
+  height: 70rpx; */
+  background: #f8f8f8;
 }
 
 .uni-numbox-minus,
 .uni-numbox-plus {
   margin: 0;
-  background-color: #f5f5f5;
+  background-color: #ffffff;
   width: 70rpx;
   height: 100%;
-  line-height: 70rpx;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
 }
 .uni-numbox-minus .yticon,
@@ -174,9 +183,9 @@ export default {
 
 .uni-numbox-value {
   position: relative;
-  background-color: #f5f5f5;
+  background-color: #f8f8f8;
   width: 90rpx;
-  height: 50rpx;
+  height: 100%;
   text-align: center;
   padding: 0;
   font-size: 30rpx;

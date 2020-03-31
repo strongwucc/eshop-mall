@@ -406,7 +406,8 @@
     },
     {
       "name": "退换记录详情",
-      "path": "pages/aftersale/returnDetail"
+      "path": "pages/aftersale/returnDetail",
+      "query": "returnId=20200331137015"
     },
     {
       "name": "商品列表",

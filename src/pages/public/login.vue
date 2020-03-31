@@ -72,7 +72,7 @@ export default {
     },
     forgetPwd () {
       uni.navigateTo({
-        url: '/pages/public/forgetPwd1'
+        url: '/pages/public/forgetStep1'
       })
     },
     /**
@@ -93,11 +93,13 @@ export default {
       }
 
       that.requesting = true;
+      that.$loading.show();
       that.$http.post(
         that.$api.auth.login,
         {uname: that.mobile, password: that.password}
       ).then(res => {
         that.requesting = false;
+        that.$loading.hide();
         if (res.return_code === '0000') {
           that.login(res.data.session_id);
           that.$toast('登录成功');
@@ -108,6 +110,7 @@ export default {
         }
       }).catch(error => {
         that.requesting = false;
+        that.$loading.hide();
         console.log(error);
         that.$toast('登录失败');
       });

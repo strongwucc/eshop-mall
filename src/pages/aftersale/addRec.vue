@@ -60,20 +60,22 @@
                 <text class="total">/100字</text>
               </view>
             </view>
-            <view class="image">
-              <text class="yticon icon-image"></text>
-              <text class="txt">上传图片</text>
+            <view class="image" @click="uploadImage">
+              <text class="yticon icon-image" v-show="!tempImagePath"></text>
+              <text class="txt" v-show="!tempImagePath">上传图片</text>
+              <image :src="tempImagePath" mode="aspectFit" v-show="tempImagePath"></image>
+              <text class="yticon icon-fork" v-show="tempImagePath" @click.stop="clearImagePath"></text>
             </view>
           </view>
         </scroll-view>
       </view>
       <view class="action">
         <view class="notice">
-          <text class="yticon icon-xuanzhong2"></text>
-          <text class="txt">同意</text>
+          <text class="yticon icon-xuanzhong2" :class="{active: isAgreeNotice}" @click="agreeNotice"></text>
+          <text class="txt" @click="agreeNotice">同意</text>
           <text class="content">《售后服务须知》</text>
         </view>
-        <view class="btn">提交申请</view>
+        <view class="btn" @click="submitApply">提交申请</view>
       </view>
     </view>
     <view class="goods-container" v-show="step === 2" :class="{show: showGoods, hide: !showGoods}">
@@ -122,7 +124,7 @@ export default {
   },
   data() {
     return {
-      step: 1,
+      step: 0,
       orderId: "",
       returnType: 1,
       order: {
@@ -131,7 +133,10 @@ export default {
       products: [],
       title: "",
       content: "",
-      showGoods: false
+      showGoods: false,
+      isAgreeNotice: false,
+      requesting: false,
+      tempImagePath: ''
     };
   },
   computed: {
@@ -151,17 +156,19 @@ export default {
   onLoad(options) {
     let that = this;
     that.orderId = options.orderId || "";
-  },
-  onShow() {
-    let that = this;
     that.loadAddData();
   },
+  onShow() {
+  },
   methods: {
+    /**
+     * 重置选择商品
+     */
     _resetProduct () {
       let that = this;
       let products = that.order.goods_list.map(goodsItem => {
-        let {product_id, image_url} = goodsItem;
-        return {product_id, image_url, quantity: 0};
+        let {product_id, bn, name, price, image_url} = goodsItem;
+        return {product_id, bn, name, price, image_url, quantity: 0};
       });
       that.products = products;
     },
@@ -194,6 +201,9 @@ export default {
       that.returnType = ~~returnType;
       that.step = 1;
     },
+    /**
+     * 去选择商品
+     */
     selectProduct () {
       let that = this;
       that.step = 2;
@@ -201,6 +211,9 @@ export default {
         that.showGoods = true;
       });
     },
+    /**
+     * 详细理由输入
+     */
     contentInput (e) {
       let that = this;
       let content = e.detail.value.substring(0, 100);
@@ -209,17 +222,154 @@ export default {
         that.content = content;
       }, 0);
     },
+    /**
+     * 数量输入
+     */
     numberChange (e) {
       let that = this;
-      that.products[e.index]['quantity'] = ~~ e.number;
-      console.log(e);
+      that.$set(that.products[e.index], 'quantity', ~~ e.number);
+
     },
+    /**
+     * 确定商品选择
+     */
     confirmProduct () {
       let that = this;
       that.step = 1;
       that.$nextTick(() => {
         that.showGoods = false;
       });
+    },
+    /**
+     * 同意
+     */
+    agreeNotice () {
+      let that = this;
+      that.isAgreeNotice = !that.isAgreeNotice;
+    },
+    /**
+     * 选择图片
+     */
+    uploadImage () {
+      let that = this;
+      if (that.requesting) {
+        return false;
+      }
+
+      that.requesting = true;
+
+      uni.chooseImage({
+        count: 1,
+        success: function (res) {
+          if (res.tempFilePaths.length > 0) {
+            that.tempImagePath = res.tempFilePaths[0];
+          }
+        },
+        complete: function (res) {
+          console.log(res);
+          that.requesting = false
+        }
+      });
+    },
+    /**
+     * 删除图片
+     */
+    clearImagePath () {
+      let that = this;
+      that.tempImagePath = '';
+    },
+    /**
+     * 提交申请
+     */
+    submitApply() {
+      let that = this;
+
+      if (that.requesting) {
+        return false;
+      }
+
+      if (that.totalCounter <= 0) {
+        that.$toast('请选择退换货商品');
+        return false;
+      }
+
+      if (that.title === "") {
+        that.$toast('请填写退换理由');
+        return false;
+      }
+
+      if (!that.isAgreeNotice) {
+        that.$toast('请同意售后服务须知');
+        return false;
+      }
+
+      let postData = {
+        order_id: that.orderId,
+        type: that.returnType,
+        title: that.title,
+        content: that.content,
+        agree: 'on'
+      }
+
+      that.products.forEach(product => {
+        if (product.quantity > 0) {
+          let bnKey, numsKey, nameKey, priceKey;
+          [bnKey, numsKey, nameKey, priceKey] = [`product_bn[${product.product_id}]`, `product_nums[${product.product_id}]`, `product_name[${product.product_id}]`, `product_price[${product.product_id}]`];
+          postData[bnKey] = product.bn;
+          postData[numsKey] = product.quantity;
+          postData[nameKey] = product.name;
+          postData[priceKey] = product.price;
+        }
+      })
+
+      that.requesting = true;
+      that.$loading.show();
+      that.$http.upload(that.$api.user.returnSave, {
+        params: {},
+        // #ifdef APP-PLUS
+        files: [],
+        // #endif
+        // #ifdef MP-ALIPAY
+        fileType: 'image',
+        // #endif
+        filePath: that.tempImagePath,
+        custom: {},
+        name: 'file',
+        header: {},
+        formData: postData,
+        getTask: (task, options) => {
+          task.onProgressUpdate((res) => {
+            console.log('上传进度' + res.progress);
+            console.log('已经上传的数据长度' + res.totalBytesSent);
+            console.log('预期需要上传的数据总长度' + res.totalBytesExpectedToSend);
+            // if (res.progress > 50) {
+            //   task.abort();
+            // }
+          });
+        }
+      }).then(res => {
+        let result = JSON.parse(res);
+        console.log(result);
+        that.$loading.hide();
+        if (result.return_code === '0000') {
+          that.$toast('提交成功！');
+          setTimeout(function () {
+            that.$prevPage().refreshFromAdd();
+            that.requesting = false;
+            uni.navigateBack();
+          }, 2000);
+        } else {
+          that.requesting = false;
+          console.log(result.error);
+          that.$toast('提交失败: ' + result.error);
+        }
+      }).catch(error => {
+        console.log(error);
+        that.$toast('提交失败！');
+        that.requesting = false;
+        that.$loading.hide();
+      });
+
     }
   }
 };
@@ -385,12 +535,30 @@ page {
       align-items: center;
       color: $font-color-light;
       border: 2rpx solid $page-color-base;
+      position: relative;
       .icon-image {
         font-size: 48rpx;
       }
       .txt {
         font-size: 24rpx;
         margin-top: 12rpx;
+      }
+      image {
+        width: 100%;
+        height: 100%;
+      }
+      .icon-fork {
+        width: 35rpx;
+        height: 35rpx;
+        line-height: 35rpx;
+        border-radius: 50%;
+        text-align: center;
+        position: absolute;
+        top: -30rpx;
+        right: -30rpx;
+        background: $font-color-light;
+        color: #ffffff;
+        font-size: 20rpx;
       }
     }
   }
@@ -411,6 +579,9 @@ page {
         font-size: 40rpx;
         color: $font-color-light;
         margin: 0 10rpx 0 20rpx;
+        &.active {
+          color: $base-color;
+        }
       }
       .content {
         margin-left: 10rpx;
@@ -468,7 +639,7 @@ page {
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        padding: 40rpx 30rpx 46rpx;
+        padding: 40rpx 30rpx 0;
         box-sizing: border-box;
         .left {
           flex: none;

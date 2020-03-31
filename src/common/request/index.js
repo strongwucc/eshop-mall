@@ -34,9 +34,15 @@ http.interceptor.request((config, cancel) => {
   } catch (e) {
     console.log(e);
   }
+
   if (token) {
-    config.data.session_id = token;
-    config.params.sess_id = token;
+    if (config.method === 'UPLOAD') {
+      config.formData.session_id = token;
+      config.url = config.url + '?sess_id=' + token;
+    } else {
+      config.data.session_id = token;
+      config.params.sess_id = token;
+    }
   }
   /*
   if (!token) { // 如果token不存在，调用cancel 会取消本次请求，但是该函数的catch() 仍会执行

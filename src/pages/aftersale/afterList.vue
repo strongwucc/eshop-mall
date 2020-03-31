@@ -36,7 +36,7 @@
       <swiper-item class="tab-content">
         <scroll-view class="list-scroll-content" scroll-y @scrolltolower="loadRecordData">
           <empty v-if="recordLoaded === true && records.length === 0"></empty>
-          <view class="record-item" v-for="(record, orderIndex) in records" :key="record.order_id">
+          <view class="record-item" v-for="(record, orderIndex) in records" :key="record.return_id">
             <view class="order-title">
               <text class="order-label txt-gray">订单号</text>
               <text class="order-no">{{record.order_id}}</text>
@@ -189,12 +189,21 @@ export default {
       });
     },
     returnDetail (returnId) {
+      console.log(returnId);
       if (!returnId) {
         return false;
       }
       uni.navigateTo({
         url: '/pages/aftersale/returnDetail?returnId=' + returnId
       });
+    },
+    refreshFromAdd () {
+      let that = this;
+      that.tabCurrentIndex = 1;
+      that.records = [];
+      that.pageRecord = 1;
+      that.recordLoadingType = "more";
+      that.recordLoaded = false;
     }
   }
 };
