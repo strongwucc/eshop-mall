@@ -31,19 +31,19 @@
 			</view>
 			<view class="bot-row">
 				<text>销量: {{sales}}</text>
-				<text>库存: {{sales}}</text>
+				<text>库存: {{store}}</text>
 				<text>浏览量: {{views}}</text>
 			</view>
 		</view>
 		
 		<!--  分享 -->
 		<view class="share-section" @click="share">
-			<view class="share-icon">
+			<!-- <view class="share-icon">
 				<text class="yticon icon-xingxing"></text>
 				 返
-			</view>
-			<text class="tit">该商品分享可领49减10红包</text>
-			<text class="yticon icon-bangzhu1"></text>
+			</view> -->
+			<!-- <text class="tit">该商品分享可领49减10红包</text>
+			<text class="yticon icon-bangzhu1"></text> -->
 			<view class="share-btn">
 				立即分享
 				<text class="yticon icon-you"></text>
@@ -61,11 +61,11 @@
 				</view>
 				<text class="yticon icon-you"></text>
 			</view>
-			<view class="c-row b-b">
+			<!-- <view class="c-row b-b">
 				<text class="tit">优惠券</text>
 				<text class="con t-r red">领取优惠券</text>
 				<text class="yticon icon-you"></text>
-			</view>
+			</view> -->
 			<view class="c-row b-b" v-if="promotion.order.length > 0 || promotion.goods.length > 0">
 				<text class="tit">促销活动</text>
 				<view class="con-list">
@@ -82,7 +82,7 @@
 		</view>
 		
 		<!-- 评价 -->
-		<view class="eva-section">
+		<!-- <view class="eva-section">
 			<view class="e-header">
 				<text class="tit">评价</text>
 				<text>(86)</text>
@@ -100,7 +100,7 @@
 					</view>
 				</view>
 			</view>
-		</view>
+		</view> -->
 		
 		<view class="detail-desc">
 			<view class="d-header">
@@ -118,15 +118,22 @@
 			<navigator url="/pages/cart/cart" open-type="switchTab" class="p-b-btn">
 				<text class="yticon icon-gouwuche"></text>
 				<text>购物车</text>
+				<text class="dot">{{~~cartInfo.itemsQuantity > 99 ? '99+' : ~~cartInfo.itemsQuantity}}</text>
 			</navigator>
 			<view class="p-b-btn" :class="{active: favorite}" @click="toFavorite">
 				<text class="yticon icon-shoucang"></text>
 				<text>收藏</text>
 			</view>
-			
-			<view class="action-btn-group">
-				<button type="primary" class=" action-btn no-border buy-now-btn" @click="addCart('is_fastbuy')">立即购买</button>
-				<button type="primary" class=" action-btn no-border add-cart-btn" @click="addCart">加入购物车</button>
+
+			<view class="disabled" v-if="!marketable">
+				商品已下架
+			</view>
+			<view class="disabled" v-else-if="store <= 0">
+				商品缺货中
+			</view>
+			<view class="action-btn-group" v-else>
+				<button type="primary" class=" action-btn no-border buy-now-btn" @click="toggleSpec(true)">立即购买</button>
+				<button type="primary" class=" action-btn no-border add-cart-btn" @click="toggleSpec(false)">加入购物车</button>
 			</view>
 		</view>
 		
@@ -168,7 +175,7 @@
 						</text>
 					</view>
 				</view>
-				<button class="btn" @click="toggleSpec">完成</button>
+				<button class="btn" @click.stop="addCart">确定</button>
 			</view>
 		</view>
 		<!-- 海报-模态层弹窗 -->
@@ -203,7 +210,7 @@
 import share from '@/components/share';
 import htmlParser from '@/common/html-parser'
 import { getSharePoster } from "@/common/poster/poster";
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 export default {
 	components: {
 		share
@@ -248,13 +255,15 @@ export default {
 			specList: [], // 规格列表
 			specDefaultPic: '', // 规格默认图片
 			requesting: false, // 是否正在请求
+			isFastbuy: false,
+			marketable: true
 		};
 	},
 	computed: {
-		...mapState(['hasLogin']),
+		...mapState(['hasLogin', 'cartInfo']),
 		discount() {
 			let that = this;
-			return Math.round(that.price / that.mktprice * 100) / 10;
+			return Math.round(that.price / that.mktprice * 100) / 10 || 0;
 		}
 	},
 	onLoad(options) {
@@ -272,7 +281,7 @@ export default {
 		that.videoContext = uni.createVideoContext('productVideo');
 	},
 	methods: {
-
+		...mapMutations(['setCart']),
 		/**
 		 * 格式化活动数据
 		 */
@@ -366,6 +375,9 @@ export default {
 						that.image = res.data.page_product_basic.image_default_url;
 						that.favorite = res.data.page_product_basic.isFav;
 						that.goodsId = res.data.page_product_basic.goods_id;
+						that.sales = ~~res.data.page_product_basic.buy_count;
+						that.views = ~~res.data.page_product_basic.view_count;
+						that.marketable = res.data.page_product_basic.product_marketable === 'true' ? true : false;
 						that._formatPromotion(res.data.page_product_basic.promotion);
 						that._formatSpec(res.data.page_product_basic.spec);
 						that.getGoodsIntro(res.data.page_product_basic.goods_id);
@@ -422,7 +434,8 @@ export default {
 		/**
 		 * 规格弹窗开关
 		 */
-		toggleSpec() {
+		toggleSpec(isFastbuy=false) {
+			this.isFastbuy = isFastbuy === true;
 			if (this.specClass === 'show') {
 				this.specClass = 'hide';
 				setTimeout(() => {
@@ -717,8 +730,10 @@ export default {
 		/**
 		 * 加入购物车
 		 */
-		addCart(btype = "") {
+		addCart() {
 			let that = this;
+
+			that.toggleSpec(that.isFastbuy);
 
 			// 判断是否登录
 			if (!that.hasLogin) {
@@ -736,22 +751,28 @@ export default {
 				return false
 			}
 
-			that.requesting = true;
-
 			let data = { goods_id: that.goodsId, product_id: that.productId, num: 1, mini_cart: true };
 
-			if (btype === 'is_fastbuy') {
+			if (that.isFastbuy) {
 				data.btype = 'is_fastbuy';
 			}
+
+			that.requesting = true;
+			that.$loading.show();
 
 			that.$http.post(
 				that.$api.cart.add,
 				data
 			).then(res => {
-				that.requesting = false;
+				that.$loading.hide();
 				if (res.return_code === '0000') {
 					that.$toast('添加成功');
-					if (btype === 'is_fastbuy') {
+					that.requesting = false;
+					that.setCart({
+						itemsQuantity: res.data.cartNumber,
+						itemsCount: res.data.cartCount
+					});
+					if (that.isFastbuy) {
 						setTimeout(function () {
 							uni.navigateTo({
 								url: `/pages/order/createOrder?fastbuy=1`
@@ -759,11 +780,13 @@ export default {
 						}, 1000);
 					}
 				} else {
+					that.requesting = false;
 					console.log(res.error);
-					that.$toast('添加失败');
+					that.$toast(res.error);
 				}
 			}).catch(error => {
 				that.requesting = false;
+				that.$loading.hide();
 				console.log(error);
 				that.$toast('添加失败');
 			});
@@ -1084,8 +1107,14 @@ export default {
 	
 	/* 规格选择弹窗 */
 	.attr-content{
+		box-sizing: border-box;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		align-items: center;
 		padding: 10rpx 30rpx;
 		.a-t{
+			width: 100%;
 			display: flex;
 			image{
 				width: 170rpx;
@@ -1112,6 +1141,7 @@ export default {
 			}
 		}
 		.attr-list{
+			width: 100%;
 			display: flex;
 			flex-direction: column;
 			font-size: $font-base + 2rpx;
@@ -1141,6 +1171,9 @@ export default {
 				background: #fbebee;
 				color: $uni-color-primary;
 			}
+		}
+		.btn {
+			width: 100%;
 		}
 	}
 	
@@ -1270,7 +1303,7 @@ export default {
 		bottom:30rpx;
 		z-index: 95;
 		display: flex;
-		justify-content: center;
+		justify-content: flex-start;
 		align-items: center;
 		width: 690rpx;
 		height: 100rpx;
@@ -1279,6 +1312,8 @@ export default {
 		border-radius: 16rpx;
 		
 		.p-b-btn{
+			position: relative;
+			flex: none;
 			display:flex;
 			flex-direction: column;
 			align-items: center;
@@ -1302,8 +1337,23 @@ export default {
 			.icon-shoucang{
 				font-size: 46rpx;
 			}
+			.dot {
+				background-color: $base-color;
+				position: absolute;
+				top: -6rpx;
+				right: -6rpx;
+				color: #ffffff;
+				font-size: 16rpx;
+				width: 44rpx;
+				height: 24rpx;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				border-radius: 24rpx
+			}
 		}
 		.action-btn-group{
+			flex: auto;
 			display: flex;
 			height: 76rpx;
 			border-radius: 100px;
@@ -1311,7 +1361,7 @@ export default {
 			box-shadow: 0 20rpx 40rpx -16rpx #fa436a;
 			box-shadow: 1px 2px 5px rgba(219, 63, 96, 0.4);
 			background: linear-gradient(to right, #ffac30,#fa436a,#F56C6C);
-			margin-left: 20rpx;
+			margin: 0 20rpx;
 			position:relative;
 			&:after{
 				content: '';
@@ -1334,6 +1384,12 @@ export default {
 				border-radius: 0;
 				background: transparent;
 			}
+		}
+		.disabled {
+			flex: auto;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 		}
 	}
 	

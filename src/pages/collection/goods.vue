@@ -7,7 +7,7 @@
           <view class="name">{{goodsItem.name}}</view>
           <view class="price">￥{{goodsItem.price | formatMoney}}</view>
           <view class="action">
-            <button @click="cancelFav(goodsIndex)">取消收藏</button>
+            <button @click.stop="cancelFav(goodsIndex)">取消收藏</button>
           </view>
         </view>
       </view>

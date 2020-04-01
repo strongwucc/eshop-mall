@@ -3,7 +3,7 @@
 		<!-- 小程序头部兼容 -->
 		<!-- #ifdef MP -->
 		<view class="mp-search-box">
-			<input class="ser-input" type="text" value="输入关键字搜索" disabled />
+			<input class="ser-input" type="text" :class="{active: searchDisabled}" v-model="searchContent" placeholder="输入关键字搜索" @focus="activeSearch" @blur="disabledSearch" confirm-type="search" @confirm="goSearch" />
 		</view>
 		<!-- #endif -->
 		
@@ -250,7 +250,9 @@
 				swiperCurrent: 0,
 				swiperLength: 0,
 				carouselList: [],
-				goodsList: []
+				goodsList: [],
+				searchDisabled: false,
+				searchContent: '',
 			};
 		},
 
@@ -258,6 +260,24 @@
 			this.loadData();
 		},
 		methods: {
+			activeSearch () {
+				let that = this;
+				that.searchDisabled = true;
+			},
+			disabledSearch () {
+				let that = this;
+				that.searchDisabled = false;
+			},
+			goSearch () {
+				let that = this;
+				if (!that.searchContent) {
+					that.$toast('输入关键字搜索');
+					return false;
+				}
+				uni.navigateTo({
+					url: `/pages/product/list?s=${that.searchContent}`
+				})
+			},
 			/**
 			 * 请求静态数据只是为了代码不那么乱
 			 * 分次请求未作整合
@@ -337,6 +357,9 @@
 			color:$font-color-base;
 			border-radius: 20px;
 			background: rgba(255,255,255,.6);
+		}
+		.active {
+			background: rgba(255,255,255,1);
 		}
 	}
 	page{

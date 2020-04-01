@@ -63,7 +63,7 @@ export default {
       that.requesting = true;
 
       that.$http
-        .post(that.$api.user.resetPassWord, {
+        .post(that.$api.auth.resetPassWord, {
           account: that.account,
           key: that.key,
           login_password: that.newPwd,
@@ -73,7 +73,7 @@ export default {
           if (res.return_code === "0000") {
             that.$toast("重置密码成功");
             setTimeout(function() {
-              uni.navigateTo({
+              uni.redirectTo({
                 url: "/pages/public/login"
               });
             }, 1000);

@@ -53,7 +53,7 @@
 		</view>
 
 		<!-- 支付方式 -->
-		<view class="yt-list">
+		<!-- <view class="yt-list">
 			<view class="yt-list-cell b-b" @click="togglePaymentsMask('show')">
 				<text class="cell-tit clamp">支付方式</text>
 				<text class="cell-tip" :class="{disabled: selectedPayment.selected === false}">
@@ -61,7 +61,7 @@
 				</text>
 				<text class="yticon icon-you"></text>
 			</view>
-		</view>
+		</view> -->
 
 		<!-- 优惠明细 -->
 		<view class="yt-list">
@@ -310,7 +310,8 @@ export default {
 		 */
 		selectedScore () {
 			let that = this;
-			let score = {txt: `可用${that.realUsagePoint}积分`, selected: false};
+			let total = that.realUsagePoint || 0;
+			let score = {txt: `可用${total}积分`, selected: false};
 			if (that.usedPoint > 0) {
 				score.txt = that.usedPoint * that.discountRate >= that.maxDiscountValue ? `-￥${that.maxDiscountValue}元` : `-￥${that.usedPoint * that.discountRate}元`;
 				score.selected = true;
@@ -567,6 +568,12 @@ export default {
 		 * 显示优惠券面板
 		 */
 		toggleCouponMask(type){
+
+			if (type === 'show' && this.couponList.length === 0) {
+				this.$toast('暂无可用优惠券');
+				return false;
+			}
+
 			let timer = type === 'show' ? 10 : 300;
 			let	state = type === 'show' ? 1 : 0;
 			this.couponMaskState = 2;
@@ -600,7 +607,8 @@ export default {
 		 * 显示积分面板
 		 */
 		toggleScoreMask (type) {
-			if (this.realUsagePoint <= 0) {
+			if (~~this.realUsagePoint <= 0) {
+				this.$toast('暂无可用积分');
 				return false;
 			}
 			let timer = type === 'show' ? 10 : 300;
@@ -680,19 +688,27 @@ export default {
 			let pay_app_id = '';
 
 			if (!that.payments.some(payment => {
-				if (payment.selected === true) {
-					pay_app_id = payment.app_id;
-					return true;
-				}
-				return false;
+				pay_app_id = payment.app_id;
+				return true;
 			})) {
 				that.$toast('请先选择支付方式');
 				return false;
 			}
 
+			// if (!that.payments.some(payment => {
+			// 	if (payment.selected === true) {
+			// 		pay_app_id = payment.app_id;
+			// 		return true;
+			// 	}
+			// 	return false;
+			// })) {
+			// 	that.$toast('请先选择支付方式');
+			// 	return false;
+			// }
+
 			that.requesting = true;
 
-			let data = { pay_app_id: pay_app_id, shipping_id: shipping_id, addr_id: that.addr.addr_id, dis_point: that.usedPoint };
+			let data = { pay_app_id: pay_app_id, shipping_id: shipping_id, addr_id: that.addr.addr_id, dis_point: that.usedPoint, memo: that.desc };
 			if (that.fastbuy) {
 				data.isfastbuy = true;
 			}

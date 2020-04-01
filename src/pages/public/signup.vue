@@ -67,7 +67,7 @@ export default {
       license: "off",
       mobileIsOk: false,
       showTimer: false,
-      seconds: 10,
+      seconds: 120,
       timer: null,
       requesting: false
     };

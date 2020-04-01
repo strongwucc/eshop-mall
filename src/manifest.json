@@ -58,7 +58,7 @@
     "usingComponents": true,
     "appid": "wx857cde03de16ba15",
     "setting": {
-      "urlCheck": false
+      "urlCheck": true
     }
   },
   /* h5配置 */

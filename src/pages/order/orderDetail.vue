@@ -33,7 +33,7 @@
         <text class="label">下单时间：</text>
         <text class="txt">{{orderInfo.createtime | formatTime}}</text>
       </view>
-      <view class="info-item">
+      <view class="info-item" v-if="orderInfo.pay_status > 0">
         <text class="label">支付方式：</text>
         <text class="txt">{{orderInfo.payment.app_name}}</text>
       </view>
@@ -46,8 +46,8 @@
         <text class="txt">{{orderInfo.shipping.shipping_name || ''}}</text>
       </view>
       <view class="info-item">
-        <text class="label">期望配送时间：</text>
-        <text class="txt">{{orderInfo.consignee.r_time || ''}}</text>
+        <text class="label">订单备注：</text>
+        <text class="txt">{{orderInfo.memo || ''}}</text>
       </view>
     </view>
     <view class="amount-info">
@@ -279,9 +279,13 @@ export default {
       box-sizing: border-box;
       display: flex;
       justify-content: flex-start;
-      align-items: center;
+      align-items: flex-start;
       .label {
+        flex: none;
         font-weight: bold;
+      }
+      .txt {
+        flex: auto;
       }
       &:last-child {
         padding-bottom: 30rpx;;

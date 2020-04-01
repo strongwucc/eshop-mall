@@ -62,14 +62,14 @@
                 @click="deleteCartItem(index)"
                 @change="changeSwipe"
               >
-                <view class="left">
+                <view class="left" @click="navToDetailPage(item.obj_items.products[0].product_id)">
                   <image :src="item.obj_items.products[0].image_url" mode="aspectFill" class="loaded" lazy-load></image>
                 </view>
                 <view class="right">
                   <view class="name">{{item.obj_items.products[0].name}}</view>
                   <view class="spec">{{item.obj_items.products[0].spec_info}}</view>
                   <view class="price-nums">
-                    <text class="price">¥{{item.subtotal | formatMoney}}</text>
+                    <text class="price">¥{{item.obj_items.products[0].price.buy_price | formatMoney}}</text>
                     <uni-number-box
                       class="cart-number"
                       :height="56"
@@ -81,6 +81,7 @@
                       :isMin="item.quantity === 1"
                       :index="index"
                       @eventChange="numberChange"
+                      @click.stop=""
                     ></uni-number-box>
                   </view>
                 </view>
@@ -108,7 +109,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 import uniNumberBox from "@/components/uni-number-box.vue";
 import uniSwipeAction from "@/components/uni-swipe-action/uni-swipe-action.vue";
 import uniSwipeActionItem from "@/components/uni-swipe-action-item/uni-swipe-action-item.vue";
@@ -150,6 +151,9 @@ export default {
     };
   },
   onLoad() {
+    // this.loadData();
+  },
+  onShow () {
     this.loadData();
   },
   watch: {},
@@ -157,6 +161,7 @@ export default {
     ...mapState(["hasLogin"])
   },
   methods: {
+    ...mapMutations(['setCart']),
     /**
      * 获取购物车数据
      */
@@ -167,6 +172,10 @@ export default {
         .then(res => {
           if (res.return_code === "0000") {
             that.cartInfo = res.data.aCart;
+            that.setCart({
+              itemsQuantity: res.data.aCart.items_quantity,
+              itemsCount: res.data.aCart.items_count
+            });
             that.useRule = res.data.use_rule || [];
             that.unuseRule = res.data.unuse_rule || [];
           } else {
@@ -184,6 +193,14 @@ export default {
       uni.navigateTo({
         url: "/pages/index/index"
       });
+    },
+    /**
+     * 详情
+     */
+    navToDetailPage(product_id){
+      uni.navigateTo({
+        url: `/pages/product/product?id=${product_id}`
+      })
     },
     changeSwipe(open) {
       console.log("当前开启状态：" + open);

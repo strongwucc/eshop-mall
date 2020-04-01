@@ -8,6 +8,7 @@ const store = new Vuex.Store({
 		hasLogin: false,
 		token: '',
 		userInfo: {},
+		cartInfo: {},
 	},
 	mutations: {
 		login(state, token) {
@@ -23,6 +24,13 @@ const store = new Vuex.Store({
 			uni.setStorage({
 				key: 'userInfo',
 				data: JSON.stringify(userInfo)
+			});
+		},
+		setCart(state, cartInfo) {
+			state.cartInfo = cartInfo;
+			uni.setStorage({
+				key: 'cartInfo',
+				data: JSON.stringify(cartInfo)
 			});
 		},
 		logout(state) {

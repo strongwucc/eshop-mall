@@ -14,7 +14,7 @@
 					<text :class="{active: priceOrder === 2 && filterIndex === 2}" class="yticon icon-shang xia"></text>
 				</view>
 			</view>
-			<text class="cate-item yticon icon-fenlei1" @click="toggleCateMask('show')"></text>
+			<text class="cate-item yticon icon-fenlei1" v-if="showCategory" @click="toggleCateMask('show')"></text>
 		</view>
 		<view class="goods-list">
 			<view 
@@ -68,9 +68,11 @@
 				loadingType: 'more', //加载更多状态
 				filterIndex: 0, 
 				cateId: 0, //已选三级分类id
+				searchContent: '',
 				priceOrder: 0, //1 价格从低到高 2价格从高到低
 				cateList: [],
-				goodsList: []
+				goodsList: [],
+				showCategory: false
 			};
 		},
 		
@@ -78,8 +80,13 @@
 			// #ifdef H5
 			this.headerTop = document.getElementsByTagName('uni-page-head')[0].offsetHeight+'px';
 			// #endif
-			this.cateId = options.tid;
-			this.loadCateList(options.fid,options.sid);
+			this.cateId = options.tid || 0;
+			this.searchContent = options.s || '';
+			
+			if (options.fid && options.sid) {
+				this.showCategory = true;
+				this.loadCateList(options.fid,options.sid);
+			}
 			this.loadData();
 		},
 		onPageScroll(e){
@@ -119,30 +126,45 @@
 			/**
 			 * 格式化分类数据
 			 */
-			_formatCategory (data) {
+			_formatCategory(data) {
+			  let that = this;
+			  let firstList = [];
+			  let secondList = [];
+			  let thirdList = [];
 
-				let that = this;
-				let secondList = [];
-				let thirdList = [];
+			  data.forEach(element => {
+			    if (that._strCount(',', element.cat_path) === 1) {
+			      firstList.push(element);
+			    } else if (that._strCount(',', element.cat_path) === 2) {
+			      secondList.push(element);
+			    } else if (that._strCount(',', element.cat_path) === 3) {
+			      thirdList.push(element);
+			    }
+			  });
 
-				data.forEach(element => {
-					if (that._strCount(',', element.cat_path) === 2) {
-						secondList.push(element);
-					} else if (that._strCount(',', element.cat_path) === 3) {
-						thirdList.push(element);
-					}
-				});
+			  if (that.cateId) {
+			    secondList.forEach((secondItem, secondIndex) => {
+			      secondList[secondIndex]['children'] = [];
+			      thirdList.forEach((thirdItem, thirdIndex) => {
+			        if (secondItem.cat_id === thirdItem.parent_id) {
+			          secondList[secondIndex]['children'].push(thirdItem);
+			        }
+			      })
+			    })
 
-				secondList.forEach((secondItem, secondIndex) => {
-					secondList[secondIndex]['children'] = [];
-					thirdList.forEach((thirdItem, thirdIndex) => {
-						if (secondItem.cat_id === thirdItem.parent_id) {
-							secondList[secondIndex]['children'].push(thirdItem);
-						}
-					})
-				})
+			    that.cateList = secondList;
+			  } else {
+			    firstList.forEach((firstItem, firstIndex) => {
+			      firstList[firstIndex]['children'] = [];
+			      secondList.forEach((secondItem, secondIndex) => {
+			        if (firstItem.cat_id === secondItem.parent_id) {
+			          firstList[firstIndex]['children'].push(secondItem);
+			        }
+			      })
+			    })
 
-				that.cateList = secondList;
+			    that.cateList = firstList;
+			  }
 
 			},
 
@@ -150,9 +172,10 @@
 			loadCateList(fid, sid){
 				
 				let that = this;
+				fid = fid || 0;
+				sid = sid || 0;
 
 				that.$http.post(that.$api.goods.category).then(res => {
-					console.log(res);
 					if (res.return_code === '0000') {
 						let usedData = [];
 						res.data.forEach(dataItem => {
@@ -185,10 +208,19 @@
 					that.loadingType = 'more'
 				}
 				
-				let postData = {cat_id: that.cateId};
+				let postData = {};
+
+				if (that.cateId) {
+					postData.cat_id = that.cateId;
+				}
+
+				if (that.searchContent) {
+					postData.scontent = `n,${that.searchContent}`;
+				}
+
 				// 排序处理
 				if (that.filterIndex === 1) {
-					postData.orderBy = 'buy_w_count asc';
+					postData.orderBy = 'buy_count desc';
 				}
 				if (that.filterIndex === 2) {
 					if (that.priceOrder === 1) {
@@ -280,6 +312,10 @@
 			 * 详情
 			 */
 			navToDetailPage(item){
+				if (!item.products.product_id) {
+					this.$toast('商品不存在或已下架');
+					return false;
+				}
 				let id = item.products.product_id;
 				uni.navigateTo({
 					url: `/pages/product/product?id=${id}`

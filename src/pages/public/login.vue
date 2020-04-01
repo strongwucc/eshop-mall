@@ -67,13 +67,13 @@ export default {
     },
     toRegist() {
       uni.navigateTo({
-        url: '/pages/public/signup'
-      })
+        url: "/pages/public/signup"
+      });
     },
-    forgetPwd () {
-      uni.navigateTo({
-        url: '/pages/public/forgetStep1'
-      })
+    forgetPwd() {
+      uni.redirectTo({
+        url: "/pages/public/forgetStep1"
+      });
     },
     /**
      * 登录
@@ -84,36 +84,39 @@ export default {
         return false;
       }
       if (/^1[0-9]{10,10}$/.test(that.mobile) === false) {
-        that.$toast('请输入正确的手机号');
+        that.$toast("请输入正确的手机号");
         return false;
       }
       if (!that.password) {
-        that.$toast('请输入密码');
+        that.$toast("请输入密码");
         return false;
       }
 
       that.requesting = true;
       that.$loading.show();
-      that.$http.post(
-        that.$api.auth.login,
-        {uname: that.mobile, password: that.password}
-      ).then(res => {
-        that.requesting = false;
-        that.$loading.hide();
-        if (res.return_code === '0000') {
-          that.login(res.data.session_id);
-          that.$toast('登录成功');
-          that.navBack();
-        } else {
-          console.log(res);
-          that.$toast(res.error);
-        }
-      }).catch(error => {
-        that.requesting = false;
-        that.$loading.hide();
-        console.log(error);
-        that.$toast('登录失败');
-      });
+      that.$http
+        .post(that.$api.auth.login, {
+          uname: that.mobile,
+          password: that.password
+        })
+        .then(res => {
+          that.requesting = false;
+          that.$loading.hide();
+          if (res.return_code === "0000") {
+            that.login(res.data.session_id);
+            that.$toast("登录成功");
+            that.navBack();
+          } else {
+            console.log(res);
+            that.$toast(res.error);
+          }
+        })
+        .catch(error => {
+          that.requesting = false;
+          that.$loading.hide();
+          console.log(error);
+          that.$toast("登录失败");
+        });
     }
   }
 };

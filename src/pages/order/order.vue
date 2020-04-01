@@ -57,8 +57,8 @@
               <text class="price">{{item.total_amount | formatMoney}}</text>
             </view>
             <view class="action-box b-t" v-if="item.status === 'active' && item.pay_status === '0'">
-              <button class="action-btn" @click="cancelOrder(item)">取消订单</button>
-              <button class="action-btn recom" @click="pay(item)">立即支付</button>
+              <button class="action-btn" @click.stop="cancelOrder(item)">取消订单</button>
+              <button class="action-btn recom" @click.stop="pay(item)">立即支付</button>
             </view>
           </view>
 
@@ -168,7 +168,6 @@ export default {
 			filter = Object.assign(filter, {page: currentPage});
 
 			that.$http.post(that.$api.user.orders, filter).then(res => {
-				console.log(res);
 				if (res.return_code === '0000') {
 					res.data.orders.forEach(item => {
 						item = Object.assign(item, that.orderStateExp(item.status,item.pay_status, item.ship_status));
@@ -186,9 +185,11 @@ export default {
 					that.$set(navItem, "loaded", true);
 
 				} else {
+          navItem.loadingType = "noMore";
 					console.log(res);
 				}
 			}).catch(error => {
+        navItem.loadingType = "noMore";
 				console.log(error);
 			});
     },

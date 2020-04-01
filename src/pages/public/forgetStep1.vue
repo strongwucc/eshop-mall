@@ -27,7 +27,7 @@ export default {
       code: "",
       mobileIsOk: false,
       showTimer: false,
-      seconds: 10,
+      seconds: 120,
       timer: null,
       requesting: false
     };
@@ -112,7 +112,7 @@ export default {
           that.requesting = false;
           if (res.return_code === "0000") {
             console.log(res.data);
-            uni.navigateTo({
+            uni.redirectTo({
               url: `/pages/public/forgetStep2?account=${res.data.account}&key=${res.data.key}`
             });
           } else {
