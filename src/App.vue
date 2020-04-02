@@ -335,6 +335,18 @@ export default {
   content: "\e689";
 }
 
+.icon-qianbao:before {
+  content: "\e6c9";
+}
+
+.icon-qunzu:before {
+  content: "\e625";
+}
+
+.icon-kefu:before {
+  content: "\e644";
+}
+
 view,
 scroll-view,
 swiper,

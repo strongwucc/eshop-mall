@@ -100,6 +100,14 @@ export default {
         },
         {
           state: 2,
+          text: "待发货",
+					loadingType: "more",
+					filter: {pay_status: 'undeliver'},
+					currentPage: 1,
+          orderList: []
+        },
+        {
+          state: 3,
           text: "待收货",
 					loadingType: "more",
 					filter: {pay_status: 'unreceived'},
@@ -107,7 +115,7 @@ export default {
           orderList: []
         },
         {
-          state: 3,
+          state: 4,
           text: "已完成",
 					loadingType: "more",
 					filter: {pay_status: 'finished'},
@@ -115,7 +123,7 @@ export default {
           orderList: []
         },
         {
-          state: 4,
+          state: 5,
           text: "已作废",
 					loadingType: "more",
 					filter: {pay_status: 'dead'},

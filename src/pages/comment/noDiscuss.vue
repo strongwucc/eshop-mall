@@ -91,7 +91,10 @@ export default {
       commentLoaded: false
     };
   },
-  onLoad(options) {},
+  onLoad(options) {
+    let that = this;
+    that.tabCurrentIndex = options.tab || 0;
+  },
   onShow() {
     let that = this;
     that.loadDiscuss();

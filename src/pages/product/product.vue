@@ -202,7 +202,7 @@
 			:shareList="shareList"
 			@shareClick="doShare"
 		></share>
-		<canvas class="hideCanvas" canvas-id="default_PosterCanvasId" :style="{width: (poster.width||0) + 'px', height: (poster.height||0) + 'px'}"></canvas>
+		<canvas :class="{hideCanvas: hideCanvas}" canvas-id="default_PosterCanvasId" :style="{width: (poster.width||0) + 'px', height: (poster.height||0) + 'px'}"></canvas>
 	</view>
 </template>
 
@@ -224,6 +224,7 @@ export default {
 			specClass: 'none',
 			selectedSpecs: [], // 已选中规格
 			posterClass: 'none',
+			hideCanvas: false,
 			canvasId: "default_PosterCanvasId",
 			poster: {
 				path: ''
@@ -640,8 +641,10 @@ export default {
 						that.poster = bgObj;
 					}
 				});
+				that.hideCanvas = true;
 				that.poster = Object.assign({}, that.poster, {path: d.poster.tempFilePath});
 			} catch (e) {
+				that.hideCanvas = true;
 				console.log(e);
 				uni.hideLoading();
 			}
@@ -1391,6 +1394,10 @@ export default {
 			justify-content: center;
 			align-items: center;
 		}
+	}
+
+	.hideCanvas {
+		display: none;
 	}
 	
 </style>

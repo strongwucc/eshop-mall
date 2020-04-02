@@ -1,7 +1,6 @@
 <template>
   <view class="container">
     <view class="user-section">
-      <image class="bg" src="/static/user-bg.jpg"></image>
       <view class="user-info-box">
         <view class="portrait-box">
           <image class="portrait" :src="userInfo.avatar || '/static/missing-face.png'"></image>
@@ -9,16 +8,15 @@
         <view class="info-box">
           <text class="username">{{userInfo.uname || '游客'}}</text>
         </view>
+        <view class="setting" @click="navTo('/pages/set/set')">
+          <text class="yticon icon-shezhi"></text>
+        </view>
       </view>
       <view class="vip-card-box">
-        <!-- <image class="card-bg" src="/static/vip-card-bg.png" mode=""></image> -->
-        <!-- <view class="b-btn">立即开通</view> -->
         <view class="tit">
           <text class="yticon icon-iLinkapp-"></text>
           {{userInfo.levelname || ''}}
         </view>
-        <!-- <text class="e-m">Super Wu</text> -->
-        <!-- <text class="e-b">开通会员开发无bug 一测就上线</text> -->
       </view>
     </view>
 
@@ -65,77 +63,129 @@
       </view>
       <!-- 订单 -->
       <view class="order-section">
-        <view
-          class="order-item"
-          @click="navTo('/pages/order/order?state=0')"
-          hover-class="common-hover"
-          :hover-stay-time="50"
-        >
-          <text class="yticon icon-shouye"></text>
-          <text>全部订单</text>
+        <view class="order-title" @click="navTo('/pages/order/order?state=0')">
+          <text class="big">我的订单</text>
+          <text class="small">全部订单</text>
+          <text class="yticon icon-you"></text>
         </view>
-        <view
-          class="order-item"
-          @click="navTo('/pages/order/order?state=1')"
-          hover-class="common-hover"
-          :hover-stay-time="50"
-        >
-          <text class="yticon icon-daifukuan"></text>
-          <text>待付款</text>
-        </view>
-        <view
-          class="order-item"
-          @click="navTo('/pages/order/order?state=2')"
-          hover-class="common-hover"
-          :hover-stay-time="50"
-        >
-          <text class="yticon icon-yishouhuo"></text>
-          <text>待收货</text>
-        </view>
-        <view
-          class="order-item"
-          @click="navTo('/pages/comment/noDiscuss')"
-          hover-class="common-hover"
-          :hover-stay-time="50"
-        >
-          <text class="yticon icon-comment"></text>
-          <text>待评论</text>
-        </view>
-        <view
-          class="order-item"
-          @click="navTo('/pages/aftersale/afterList')"
-          hover-class="common-hover"
-          :hover-stay-time="50"
-        >
-          <text class="yticon icon-shouhoutuikuan"></text>
-          <text>退款/售后</text>
+        <view class="order-content">
+          <view
+            class="order-item"
+            @click="navTo('/pages/order/order?state=1')"
+            hover-class="common-hover"
+            :hover-stay-time="50"
+          >
+            <text class="yticon icon-daifukuan"></text>
+            <text>待付款</text>
+          </view>
+          <view
+            class="order-item"
+            @click="navTo('/pages/order/order?state=2')"
+            hover-class="common-hover"
+            :hover-stay-time="50"
+          >
+            <text class="yticon icon-daifukuan"></text>
+            <text>待发货</text>
+          </view>
+          <view
+            class="order-item"
+            @click="navTo('/pages/order/order?state=3')"
+            hover-class="common-hover"
+            :hover-stay-time="50"
+          >
+            <text class="yticon icon-yishouhuo"></text>
+            <text>待收货</text>
+          </view>
+          <view
+            class="order-item"
+            @click="navTo('/pages/comment/noDiscuss')"
+            hover-class="common-hover"
+            :hover-stay-time="50"
+          >
+            <text class="yticon icon-comment"></text>
+            <text>待评论</text>
+          </view>
+          <view
+            class="order-item"
+            @click="navTo('/pages/aftersale/afterList')"
+            hover-class="common-hover"
+            :hover-stay-time="50"
+          >
+            <text class="yticon icon-shouhoutuikuan"></text>
+            <text>退款/售后</text>
+          </view>
         </view>
       </view>
-      <!-- 浏览历史 -->
-      <view class="history-section icon">
-        <!-- <view class="sec-header">
-          <text class="yticon icon-lishijilu"></text>
-          <text>浏览历史</text>
+      <view class="order-section">
+        <view class="order-title">
+          <text class="big">其他服务</text>
+          <text class="small"></text>
         </view>
-        <scroll-view scroll-x class="h-list">
-          <image @click="navTo('/pages/product/product')" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553105186633&di=c121a29beece4e14269948d990f9e720&imgtype=0&src=http%3A%2F%2Fimg004.hc360.cn%2Fm8%2FM04%2FDE%2FDE%2FwKhQplZ-QteEBvsbAAAAADUkobU751.jpg" mode="aspectFill"></image>
-          <image @click="navTo('/pages/product/product')" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553105231218&di=09534b9833b5243296630e6d5b728eff&imgtype=0&src=http%3A%2F%2Fimg002.hc360.cn%2Fm1%2FM05%2FD1%2FAC%2FwKhQcFQ3iN2EQTo8AAAAAHQU6_8355.jpg" mode="aspectFill"></image>
-          <image @click="navTo('/pages/product/product')" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553105320890&di=c743386be51f2c4c0fd4b75754d14f3c&imgtype=0&src=http%3A%2F%2Fimg007.hc360.cn%2Fhb%2FMTQ1OTg4ODY0MDA3Ny05OTQ4ODY1NDQ%3D.jpg" mode="aspectFill"></image>
-          <image @click="navTo('/pages/product/product')" src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2691146630,2165926318&fm=26&gp=0.jpg" mode="aspectFill"></image>
-          <image @click="navTo('/pages/product/product')" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553105443324&di=8141bf13f3f208c61524d67f9bb83942&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01ac9a5548d29b0000019ae98e6d98.jpg" mode="aspectFill"></image>
-          <image @click="navTo('/pages/product/product')" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=191678693,2701202375&fm=26&gp=0.jpg" mode="aspectFill"></image>
-        </scroll-view>
-        <list-cell icon="icon-iconfontweixin" iconColor="#e07472" title="我的钱包" tips="您的会员还有3天过期"></list-cell> -->
-        <list-cell
-          icon="icon-dizhi"
-          iconColor="#5fcda2"
-          title="地址管理"
-          @eventClick="navTo('/pages/address/address')"
-        ></list-cell>
-        <!-- <list-cell icon="icon-share" iconColor="#9789f7" title="分享" tips="邀请好友赢10万大礼"></list-cell> -->
-        <!-- <list-cell icon="icon-pinglun-copy" iconColor="#ee883b" title="晒单" tips="晒单抢红包"></list-cell> -->
-        <list-cell icon="icon-shoucang_xuanzhongzhuangtai" iconColor="#54b4ef" title="我的收藏" @eventClick="navTo('/pages/collection/goods')"></list-cell>
-        <list-cell icon="icon-shezhi1" iconColor="#e07472" title="设置" border @eventClick="navTo('/pages/set/set')"></list-cell>
+        <view class="order-content others">
+          <view
+            class="order-item"
+            @click="navTo('/pages/balance/records')"
+            hover-class="common-hover"
+            :hover-stay-time="50"
+          >
+            <text class="yticon icon-qianbao"></text>
+            <text>会员充值</text>
+          </view>
+          <view
+            class="order-item"
+            @click="navTo('/pages/comment/noDiscuss?tab=1')"
+            hover-class="common-hover"
+            :hover-stay-time="50"
+          >
+            <text class="yticon icon-pingjia"></text>
+            <text>我的评价</text>
+          </view>
+          <view
+            class="order-item"
+            @click="navTo('/pages/collection/goods')"
+            hover-class="common-hover"
+            :hover-stay-time="50"
+          >
+            <text class="yticon icon-shoucang2"></text>
+            <text>我的收藏</text>
+          </view>
+          <view
+            class="order-item"
+            @click="navTo('')"
+            hover-class="common-hover"
+            :hover-stay-time="50"
+          >
+            <text class="yticon icon-qunzu"></text>
+            <text>个人分销</text>
+          </view>
+          <view
+            class="order-item"
+            @click="navTo('/pages/address/address')"
+            hover-class="common-hover"
+            :hover-stay-time="50"
+          >
+            <text class="yticon icon-dizhi"></text>
+            <text>地址管理</text>
+          </view>
+          <view
+            class="order-item"
+            @click="navTo('')"
+            hover-class="common-hover"
+            :hover-stay-time="50"
+          >
+            <text class="yticon icon-kefu"></text>
+            <text>联系客服</text>
+          </view>
+          <view
+            class="order-item"
+            @click="navTo('')"
+            hover-class="common-hover"
+            :hover-stay-time="50"
+          >
+            <text class="yticon icon-bangzhu"></text>
+            <text>帮助中心</text>
+          </view>
+        </view>
       </view>
     </view>
   </view>
@@ -291,6 +341,13 @@ export default {
 };
 </script>  
 <style lang='scss'>
+page {
+  height: 100%;
+}
+.container {
+  height: 100%;
+  background: $page-color-base;
+}
 %flex-center {
   display: flex;
   flex-direction: column;
@@ -321,19 +378,36 @@ export default {
 .user-info-box {
   height: 180rpx;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   position: relative;
   z-index: 1;
-  .portrait {
-    width: 130rpx;
-    height: 130rpx;
-    border: 5rpx solid #fff;
-    border-radius: 50%;
+  .portrait-box {
+    flex: none;
+    .portrait {
+      width: 130rpx;
+      height: 130rpx;
+      border: 5rpx solid #fff;
+      border-radius: 50%;
+    }
   }
-  .username {
-    font-size: $font-lg + 6rpx;
-    color: $font-color-dark;
-    margin-left: 20rpx;
+  .info-box {
+    flex: auto;
+    .username {
+      font-size: $font-lg + 6rpx;
+      color: $font-color-dark;
+      margin-left: 20rpx;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
+  }
+  
+  .setting {
+    flex: none;
+    .icon-shezhi {
+      font-size: 48rpx;
+    }
   }
 }
 
@@ -413,54 +487,63 @@ export default {
   }
 }
 .order-section {
-  @extend %section;
-  padding: 28rpx 0;
   margin-top: 20rpx;
-  .order-item {
-    @extend %flex-center;
-    width: 120rpx;
-    height: 120rpx;
-    border-radius: 10rpx;
-    font-size: $font-sm;
-    color: $font-color-dark;
-  }
-  .yticon {
-    font-size: 48rpx;
-    margin-bottom: 18rpx;
-    color: #fa436a;
-  }
-  .icon-shouhoutuikuan {
-    font-size: 44rpx;
-  }
-}
-.history-section {
-  padding: 30rpx 0 0;
-  margin-top: 20rpx;
-  background: #fff;
-  border-radius: 10rpx;
-  .sec-header {
-    display: flex;
-    align-items: center;
-    font-size: $font-base;
-    color: $font-color-dark;
-    line-height: 40rpx;
-    margin-left: 30rpx;
-    .yticon {
-      font-size: 44rpx;
-      color: #5eba8f;
-      margin-right: 16rpx;
-      line-height: 40rpx;
+  .order-title {
+    @extend %section;
+    padding: 28rpx;
+    box-sizing: border-box;
+    justify-content: space-between;
+    text {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .big {
+      font-size: 32rpx;
+      font-weight: bold;
+      flex: none;
+    }
+    .small {
+      font-size: 24rpx;
+      color: $font-color-light;
+      flex: auto;
+      justify-content: flex-end;
+      margin-right: 18rpx;
+    }
+    .icon-you {
+      color: $font-color-light;
+      flex: none;
+      margin-top: 8rpx;
     }
   }
-  .h-list {
-    white-space: nowrap;
-    padding: 30rpx 30rpx 0;
-    image {
-      display: inline-block;
-      width: 160rpx;
-      height: 160rpx;
-      margin-right: 20rpx;
+  .order-content {
+    @extend %section;
+    padding: 28rpx 0;
+    // margin-top: 20rpx;
+    .order-item {
+      @extend %flex-center;
+      width: 120rpx;
+      height: 120rpx;
       border-radius: 10rpx;
+      font-size: $font-sm;
+      color: $font-color-dark;
+    }
+    .yticon {
+      font-size: 48rpx;
+      margin-bottom: 18rpx;
+      color: #fa436a;
+    }
+    .icon-shouhoutuikuan {
+      font-size: 44rpx;
+    }
+    &.others {
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      padding: 28rpx;
+      box-sizing: border-box;
+      .order-item {
+        margin-right: 35rpx;
+      }
     }
   }
 }
