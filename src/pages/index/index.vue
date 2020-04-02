@@ -258,6 +258,7 @@
 
 		onLoad() {
 			this.loadData();
+			this.loadHomePageData();
 		},
 		methods: {
 			activeSearch () {
@@ -277,6 +278,14 @@
 				uni.navigateTo({
 					url: `/pages/product/list?s=${that.searchContent}`
 				})
+			},
+			loadHomePageData () {
+				let that = this;
+				that.$http.post(that.$api.index.index).then(res => {
+					console.log(res);
+				}).catch(error => {
+					console.log(error);
+				});
 			},
 			/**
 			 * 请求静态数据只是为了代码不那么乱

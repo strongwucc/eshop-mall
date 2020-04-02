@@ -29,14 +29,24 @@ export default {
 </script>
 
 <style lang='scss'>
+// @font-face {
+//   font-family: "yticon";
+//   src: url("static/iconfont.eot");
+//   src: url("static/iconfont.eot?#iefix") format("embedded-opentype"),
+//     url("static/iconfont.woff2") format("woff2"),
+//     url("static/iconfont.woff") format("woff"),
+//     url("static/iconfont.ttf") format("truetype"),
+//     url("static/iconfont.svg#yticon") format("svg");
+// }
 @font-face {
-  font-family: "yticon";
-  src: url("static/iconfont.eot");
-  src: url("static/iconfont.eot?#iefix") format("embedded-opentype"),
-    url("static/iconfont.woff2") format("woff2"),
-    url("static/iconfont.woff") format("woff"),
-    url("static/iconfont.ttf") format("truetype"),
-    url("static/iconfont.svg#yticon") format("svg");
+  font-family: "yticon"; /* project id 1708016 */
+  src: url("//at.alicdn.com/t/font_1708016_u9k1i2k9h9f.eot");
+  src: url("//at.alicdn.com/t/font_1708016_u9k1i2k9h9f.eot?#iefix")
+      format("embedded-opentype"),
+    url("//at.alicdn.com/t/font_1708016_u9k1i2k9h9f.woff2") format("woff2"),
+    url("//at.alicdn.com/t/font_1708016_u9k1i2k9h9f.woff") format("woff"),
+    url("//at.alicdn.com/t/font_1708016_u9k1i2k9h9f.ttf") format("truetype"),
+    url("//at.alicdn.com/t/font_1708016_u9k1i2k9h9f.svg#iconfont") format("svg");
 }
 
 .yticon {
@@ -345,6 +355,14 @@ export default {
 
 .icon-kefu:before {
   content: "\e644";
+}
+
+.icon-daifahuo:before {
+  content: "\e64b";
+}
+
+.icon-daishouhuo:before {
+  content: "\e64c";
 }
 
 view,

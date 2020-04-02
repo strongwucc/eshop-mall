@@ -3,13 +3,14 @@
     <view class="user-section">
       <view class="user-info-box">
         <view class="portrait-box">
-          <image class="portrait" :src="userInfo.avatar || '/static/missing-face.png'"></image>
+          <image class="portrait" :src="userInfo.avatar || '/static/avatar_default@2x.png'"></image>
         </view>
         <view class="info-box">
           <text class="username">{{userInfo.uname || '游客'}}</text>
         </view>
         <view class="setting" @click="navTo('/pages/set/set')">
-          <text class="yticon icon-shezhi"></text>
+          <!-- <text class="yticon icon-shezhi"></text> -->
+          <image src="/static/icon_set@2x.png"></image>
         </view>
       </view>
       <view class="vip-card-box">
@@ -39,7 +40,7 @@
           hover-class="common-hover"
           :hover-stay-time="50"
         >
-          <text class="num">{{userInfo.advance || 0}}</text>
+          <text class="num">{{userInfo.advance | formatMoney}}</text>
           <text>余额</text>
         </view>
         <view
@@ -75,8 +76,9 @@
             hover-class="common-hover"
             :hover-stay-time="50"
           >
-            <text class="yticon icon-daifukuan"></text>
-            <text>待付款</text>
+            <!-- <text class="yticon icon-daifukuan"></text> -->
+            <image src="/static/member_icon_daifukuan@2x.png"></image>
+            <text class="txt">待付款</text>
           </view>
           <view
             class="order-item"
@@ -84,8 +86,9 @@
             hover-class="common-hover"
             :hover-stay-time="50"
           >
-            <text class="yticon icon-daifukuan"></text>
-            <text>待发货</text>
+            <!-- <text class="yticon icon-daifahuo"></text> -->
+            <image src="/static/member_icon_daifahuo@2x.png"></image>
+            <text class="txt">待发货</text>
           </view>
           <view
             class="order-item"
@@ -93,8 +96,9 @@
             hover-class="common-hover"
             :hover-stay-time="50"
           >
-            <text class="yticon icon-yishouhuo"></text>
-            <text>待收货</text>
+            <!-- <text class="yticon icon-daishouhuo"></text> -->
+            <image src="/static/member_icon_daishouhuo@2x.png"></image>
+            <text class="txt">待收货</text>
           </view>
           <view
             class="order-item"
@@ -102,8 +106,9 @@
             hover-class="common-hover"
             :hover-stay-time="50"
           >
-            <text class="yticon icon-comment"></text>
-            <text>待评论</text>
+            <!-- <text class="yticon icon-comment"></text> -->
+            <image src="/static/member_icon_daipingjia@2x.png"></image>
+            <text class="txt">待评论</text>
           </view>
           <view
             class="order-item"
@@ -111,8 +116,9 @@
             hover-class="common-hover"
             :hover-stay-time="50"
           >
-            <text class="yticon icon-shouhoutuikuan"></text>
-            <text>退款/售后</text>
+            <!-- <text class="yticon icon-shouhoutuikuan"></text> -->
+            <image src="/static/member_icon_tuihuanhuo@2x.png"></image>
+            <text class="txt">退款/售后</text>
           </view>
         </view>
       </view>
@@ -128,8 +134,9 @@
             hover-class="common-hover"
             :hover-stay-time="50"
           >
-            <text class="yticon icon-qianbao"></text>
-            <text>会员充值</text>
+            <!-- <text class="yticon icon-qianbao"></text> -->
+            <image src="/static/member_icon_chongzhi@2x.png"></image>
+            <text class="txt">会员充值</text>
           </view>
           <view
             class="order-item"
@@ -137,8 +144,9 @@
             hover-class="common-hover"
             :hover-stay-time="50"
           >
-            <text class="yticon icon-pingjia"></text>
-            <text>我的评价</text>
+            <!-- <text class="yticon icon-pingjia"></text> -->
+            <image src="/static/member_icon_pingjia@2x.png"></image>
+            <text class="txt">我的评价</text>
           </view>
           <view
             class="order-item"
@@ -146,8 +154,9 @@
             hover-class="common-hover"
             :hover-stay-time="50"
           >
-            <text class="yticon icon-shoucang2"></text>
-            <text>我的收藏</text>
+            <!-- <text class="yticon icon-shoucang2"></text> -->
+            <image src="/static/member_icon_shoucang@2x.png"></image>
+            <text class="txt">我的收藏</text>
           </view>
           <view
             class="order-item"
@@ -155,8 +164,9 @@
             hover-class="common-hover"
             :hover-stay-time="50"
           >
-            <text class="yticon icon-qunzu"></text>
-            <text>个人分销</text>
+            <!-- <text class="yticon icon-qunzu"></text> -->
+            <image src="/static/my_icon_fenxiao@2x.png"></image>
+            <text class="txt">个人分销</text>
           </view>
           <view
             class="order-item"
@@ -164,8 +174,9 @@
             hover-class="common-hover"
             :hover-stay-time="50"
           >
-            <text class="yticon icon-dizhi"></text>
-            <text>地址管理</text>
+            <!-- <text class="yticon icon-dizhi"></text> -->
+            <image src="/static/my_icon_address@2x.png"></image>
+            <text class="txt">地址管理</text>
           </view>
           <view
             class="order-item"
@@ -173,8 +184,9 @@
             hover-class="common-hover"
             :hover-stay-time="50"
           >
-            <text class="yticon icon-kefu"></text>
-            <text>联系客服</text>
+            <!-- <text class="yticon icon-kefu"></text> -->
+            <image src="/static/member_icon_fuwu@2x.png"></image>
+            <text class="txt">联系客服</text>
           </view>
           <view
             class="order-item"
@@ -182,8 +194,9 @@
             hover-class="common-hover"
             :hover-stay-time="50"
           >
-            <text class="yticon icon-bangzhu"></text>
-            <text>帮助中心</text>
+            <!-- <text class="yticon icon-bangzhu"></text> -->
+            <image src="/static/my_icon_help@2x.png"></image>
+            <text class="txt">帮助中心</text>
           </view>
         </view>
       </view>
@@ -359,7 +372,7 @@ page {
   justify-content: space-around;
   align-content: center;
   background: #fff;
-  border-radius: 10rpx;
+  // border-radius: 10rpx;
 }
 .user-section {
   height: 520rpx;
@@ -407,6 +420,10 @@ page {
     flex: none;
     .icon-shezhi {
       font-size: 48rpx;
+    }
+    image {
+      width: 48rpx;
+      height: 48rpx;
     }
   }
 }
@@ -527,6 +544,13 @@ page {
       border-radius: 10rpx;
       font-size: $font-sm;
       color: $font-color-dark;
+      image {
+        width: 56rpx;
+        height: 56rpx;
+      }
+      .txt {
+        margin-top: 10rpx;
+      }
     }
     .yticon {
       font-size: 48rpx;
@@ -542,7 +566,7 @@ page {
       padding: 28rpx;
       box-sizing: border-box;
       .order-item {
-        margin-right: 35rpx;
+        margin-right: 40rpx;
       }
     }
   }
