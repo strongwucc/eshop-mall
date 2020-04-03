@@ -563,7 +563,7 @@ page {
     &.others {
       flex-wrap: wrap;
       justify-content: flex-start;
-      padding: 28rpx;
+      padding: 28rpx 0 28rpx 28rpx;
       box-sizing: border-box;
       .order-item {
         margin-right: 40rpx;

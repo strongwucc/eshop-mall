@@ -17,7 +17,7 @@
         <view class="navigator" @click="navToLogin">去登陆></view>
       </view>
     </view>
-    <template v-else>
+    <template v-else-if="loaded && (cartInfo.items_count > 0)">
       <view class="unempty">
         <!-- 促销信息 -->
         <view class="promotion" v-if="unuseRule.length > 0 || useRule.length > 0">

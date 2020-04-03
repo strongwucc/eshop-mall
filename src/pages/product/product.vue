@@ -281,6 +281,19 @@ export default {
 		let that = this;
 		that.videoContext = uni.createVideoContext('productVideo');
 	},
+	onShareAppMessage (res) {
+		let that = this;
+		return {
+			title: that.name,
+			path: '/pages/product/product?id=' + that.productId,
+			success: function () {
+				console.log('成功');
+			},
+			fail: function () {
+				console.log('失败');
+			}
+		};
+	},
 	methods: {
 		...mapMutations(['setCart']),
 		/**

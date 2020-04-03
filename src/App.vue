@@ -31,22 +31,25 @@ export default {
 <style lang='scss'>
 // @font-face {
 //   font-family: "yticon";
-//   src: url("static/iconfont.eot");
-//   src: url("static/iconfont.eot?#iefix") format("embedded-opentype"),
-//     url("static/iconfont.woff2") format("woff2"),
-//     url("static/iconfont.woff") format("woff"),
-//     url("static/iconfont.ttf") format("truetype"),
-//     url("static/iconfont.svg#yticon") format("svg");
+//   src: url("~@/static/iconfont.eot");
+//   src: url("~@/static/iconfont.eot?#iefix") format("embedded-opentype"),
+//     url("~@/static/iconfont.woff2") format("woff2"),
+//     url("~@/static/iconfont.woff") format("woff"),
+//     url("~@/static/iconfont.ttf") format("truetype"),
+//     url("~@/static/iconfont.svg#yticon") format("svg");
 // }
 @font-face {
   font-family: "yticon"; /* project id 1708016 */
-  src: url("//at.alicdn.com/t/font_1708016_u9k1i2k9h9f.eot");
-  src: url("//at.alicdn.com/t/font_1708016_u9k1i2k9h9f.eot?#iefix")
+  src: url("https://at.alicdn.com/t/font_1708016_u9k1i2k9h9f.eot");
+  src: url("https://at.alicdn.com/t/font_1708016_u9k1i2k9h9f.eot?#iefix")
       format("embedded-opentype"),
-    url("//at.alicdn.com/t/font_1708016_u9k1i2k9h9f.woff2") format("woff2"),
-    url("//at.alicdn.com/t/font_1708016_u9k1i2k9h9f.woff") format("woff"),
-    url("//at.alicdn.com/t/font_1708016_u9k1i2k9h9f.ttf") format("truetype"),
-    url("//at.alicdn.com/t/font_1708016_u9k1i2k9h9f.svg#iconfont") format("svg");
+    url("https://at.alicdn.com/t/font_1708016_u9k1i2k9h9f.woff2")
+      format("woff2"),
+    url("https://at.alicdn.com/t/font_1708016_u9k1i2k9h9f.woff") format("woff"),
+    url("https://at.alicdn.com/t/font_1708016_u9k1i2k9h9f.ttf")
+      format("truetype"),
+    url("https://at.alicdn.com/t/font_1708016_u9k1i2k9h9f.svg#iconfont")
+      format("svg");
 }
 
 .yticon {
@@ -363,6 +366,12 @@ export default {
 
 .icon-daishouhuo:before {
   content: "\e64c";
+}
+
+page {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, segoe ui, Roboto,
+    Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji,
+    segoe ui symbol;
 }
 
 view,
