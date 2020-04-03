@@ -25,7 +25,7 @@
 				<view class="image-wrapper">
 					<image :src="item.image_default_url" mode="aspectFill"></image>
 				</view>
-				<text class="title clamp">{{item.name}}</text>
+				<text class="title">{{item.name}}</text>
 				<view class="price-box">
 					<text class="price">{{item.price | formatMoney}}</text>
 					<text>已售 {{item.buy_w_count}}</text>
@@ -466,36 +466,50 @@
 	/* 商品列表 */
 	.goods-list{
 		display:flex;
+		justify-content: flex-start;
 		flex-wrap:wrap;
-		padding: 0 30rpx;
-		background: #fff;
+		padding-left: 30rpx;
+		background: $page-color-base;
 		.goods-item{
+			background-color: #ffffff;
 			display:flex;
 			flex-direction: column;
-			width: 48%;
-			padding-bottom: 40rpx;
+			padding: 30rpx;
+			box-sizing: border-box;
+			font-size: 28rpx;
+			border-radius: 24rpx;
+			margin-top: 20rpx;
+			&:nth-child(1), &:nth-child(2) {
+				margin-top: 0;
+			}
 			&:nth-child(2n+1){
-				margin-right: 4%;
+				margin-right: 20rpx;
 			}
 		}
 		.image-wrapper{
-			width: 100%;
-			height: 330rpx;
-			border-radius: 3px;
-			overflow: hidden;
 			image{
-				width: 100%;
-				height: 100%;
+				border-radius: 16rpx;
+				width: 284rpx;
+				height: 284rpx;
 				opacity: 1;
 			}
 		}
-		.title{
-			font-size: $font-lg;
-			color: $font-color-dark;
-			line-height: 80rpx;
+		.title {
+		  font-size: $font-lg;
+		  color: $font-color-dark;
+		  width: 284rpx;
+		  height: 82rpx;
+		  line-height: 41rpx;
+		  overflow: hidden;
+		  margin-top: 20rpx;
+		  text-overflow: ellipsis;
+		  display: -webkit-box;
+		  -webkit-line-clamp: 2;
+		  -webkit-box-orient: vertical;
 		}
 		.price-box{
 			display: flex;
+			margin-top: 30rpx;
 			align-items: center;
 			justify-content: space-between;
 			padding-right: 10rpx;
