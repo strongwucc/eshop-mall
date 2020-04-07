@@ -66,8 +66,8 @@
                   <image :src="item.obj_items.products[0].image_url" mode="aspectFill" class="loaded" lazy-load></image>
                 </view>
                 <view class="right">
-                  <view class="name">{{item.obj_items.products[0].name}}</view>
-                  <view class="spec">{{item.obj_items.products[0].spec_info}}</view>
+                  <view class="name">{{item.obj_items.products[0].name || ''}}</view>
+                  <view class="spec">{{item.obj_items.products[0].spec_info || ''}}</view>
                   <view class="price-nums">
                     <text class="price">¥{{item.obj_items.products[0].price.buy_price | formatMoney}}</text>
                     <uni-number-box
@@ -495,6 +495,11 @@ page {
           .name {
             height: 76rpx;
             overflow: hidden;
+            line-height: 38rpx;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
           }
           .spec {
             margin-top: 10rpx;

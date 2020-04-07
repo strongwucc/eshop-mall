@@ -488,7 +488,7 @@
 		}
 		.image-wrapper{
 			image{
-				border-radius: 16rpx;
+				// border-radius: 16rpx;
 				width: 284rpx;
 				height: 284rpx;
 				opacity: 1;
