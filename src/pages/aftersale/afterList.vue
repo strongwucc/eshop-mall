@@ -97,13 +97,15 @@ export default {
         .then(res => {
           that.orderLoaded = true;
           if (res.return_code === "0000") {
-            if (~~res.data.pager.current === ~~res.data.pager.total) {
+            if (~~res.data.pager.current >= ~~res.data.pager.total) {
               that.orderLoadingType = "noMore";
             } else {
               that.orderLoadingType = "more";
               that.pageOrder = that.pageOrder + 1;
             }
-            that.orders = that.orders.concat(res.data.orders);
+            if (res.data.orders) {
+              that.orders = that.orders.concat(res.data.orders);
+            }
           } else {
             console.log(res);
             that.orderLoadingType = "more";
@@ -125,13 +127,15 @@ export default {
         .then(res => {
           that.recordLoaded = true;
           if (res.return_code === "0000") {
-            if (~~res.data.pager.current === ~~res.data.pager.total) {
+            if (~~res.data.pager.current >= ~~res.data.pager.total) {
               that.recordLoadingType = "noMore";
             } else {
               that.recordLoadingType = "more";
               that.pageRecord = that.pageRecord + 1;
             }
-            that.records = that.records.concat(res.data.return_list);
+            if (res.data.return_list) {
+              that.records = that.records.concat(res.data.return_list);
+            }
           } else {
             console.log(res);
             that.recordLoadingType = "more";

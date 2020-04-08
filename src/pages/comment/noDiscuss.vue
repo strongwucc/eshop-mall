@@ -37,7 +37,7 @@
           <empty v-if="commentLoaded === true && comments.length === 0"></empty>
           <view class="comment-item" v-else v-for="(comment, commentIndex) in comments" :key="comment.comment_id">
             <view class="comment">
-              <view class="left"><image :src="'/static/missing-face.png'"></image></view>
+              <view class="left"><image :src="'/static/avatar_default@2x.png'"></image></view>
               <view class="right">
                 <view class="author-comment">
                   <view class="name">{{comment.author | siteMobile}}</view>
@@ -93,7 +93,7 @@ export default {
   },
   onLoad(options) {
     let that = this;
-    that.tabCurrentIndex = options.tab || 0;
+    that.tabCurrentIndex = ~~ options.tab || 0;
   },
   onShow() {
     let that = this;
@@ -121,33 +121,35 @@ export default {
         .then(res => {
           that.discussLoaded = true;
           if (res.return_code === "0000") {
-            if (~~res.data.pager.current === ~~res.data.pager.total) {
+            if (~~res.data.pager.current >= ~~res.data.pager.total) {
               that.discussLoadingType = "noMore";
             } else {
               that.discussLoadingType = "more";
               that.discussPage = that.discussPage + 1;
             }
 
-            if (that.pointType.length === 0) {
+            if (that.pointType.length === 0 && res.data.comment_goods_type) {
               that.pointType = res.data.comment_goods_type.map(typeItem => {
                 let {type_id, name} = typeItem;
                 return {type_id, name, value: 5};
               });
             }
 
-            let discussData = res.data.goods.map(goodsItem => {
-              let orderData = {};
-              res.data.list.some(orderItem => {
-                if (goodsItem.goods_id === orderItem.goods_id) {
-                  orderData = orderItem;
-                  return true;
-                }
-                return false;
-              })
-              return Object.assign(goodsItem, orderData);
-            });
+            if (res.data.goods) {
+              let discussData = res.data.goods.map(goodsItem => {
+                let orderData = {};
+                res.data.list.some(orderItem => {
+                  if (goodsItem.goods_id === orderItem.goods_id) {
+                    orderData = orderItem;
+                    return true;
+                  }
+                  return false;
+                })
+                return Object.assign(goodsItem, orderData);
+              });
 
-            that.discussGoods = that.discussGoods.concat(discussData);
+              that.discussGoods = that.discussGoods.concat(discussData);
+            }
           } else {
             console.log(res);
             that.discussLoadingType = "more";
@@ -178,19 +180,22 @@ export default {
         .then(res => {
           that.commentLoaded = true;
           if (res.return_code === "0000") {
-            if (~~res.data.pager.current === ~~res.data.pager.total) {
+            if (~~res.data.pager.current >= ~~res.data.pager.total) {
               that.commentLoadingType = "noMore";
             } else {
               that.commentLoadingType = "more";
               that.commentPage = that.commentPage + 1;
             }
-            let comments = res.data.commentList.map(commentItem => {
-              let commentData = {};
-              let goodsData = res.data.goodsList[commentItem.type_id] || {};
-              let pointData = res.data.goods_point[commentItem.type_id] || {};
-              return Object.assign(commentItem, {goodsData,pointData});
-            });
-            that.comments = that.comments.concat(comments);
+
+            if (res.data.commentList) {
+              let comments = res.data.commentList.map(commentItem => {
+                let commentData = {};
+                let goodsData = res.data.goodsList[commentItem.type_id] || {};
+                let pointData = res.data.goods_point[commentItem.type_id] || {};
+                return Object.assign(commentItem, {goodsData,pointData});
+              });
+              that.comments = that.comments.concat(comments);
+            }
           } else {
             console.log(res);
             that.commentLoadingType = "more";

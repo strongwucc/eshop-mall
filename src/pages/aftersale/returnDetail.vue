@@ -80,11 +80,13 @@ export default {
     },
     _getName (name) {
       let reg = new RegExp("(.+)\\(", "i");
-      return reg.exec(name)[1] || '';
+      let res = reg.exec(name);
+      return res ? res[1] : '';
     },
     _getSpecFromName (name) {
       let reg = new RegExp("\\((.+)\\)", "i");
-      return reg.exec(name)[1] || '';
+      let res = reg.exec(name);
+      return res ? res[1] : '';
     },
     loadDetail () {
       let that = this;

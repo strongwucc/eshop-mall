@@ -102,6 +102,11 @@ export default {
         return false;
       }
 
+      if (that.comment === '') {
+        that.$toast('评论内容不能为空');
+        return false;
+      }
+
       let postData = {
         type: 'discuss',
         goods_id: that.goodsData.goods_id,
@@ -132,7 +137,7 @@ export default {
           }, 1000);
         } else {
           console.log(res.error);
-          that.$toast('评论失败');
+          that.$toast(res.error);
         }
       }).catch(error => {
         uni.hideLoading();
@@ -225,6 +230,7 @@ export default {
       flex: none;
       &.icon-xuanzhong2 {
         font-size: 48rpx;
+        color: $font-color-disabled;
         &.active {
           color: $uni-color-primary;
         }
