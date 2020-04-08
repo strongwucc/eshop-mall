@@ -27,7 +27,7 @@
 
 		<view class="categorys">
 			<view class="category-item" v-for="(category, categoryIndex) in categorys" :key="category.catId" @click="navToGoodsList(category.catId)">
-				<image src="/static/temp/icon-jiadian@2x.png"></image>
+				<image :src="category.logo"></image>
 				<text>{{category.title}}</text>
 			</view>
 		</view>
@@ -146,9 +146,7 @@ export default {
           that.categorys.length === 0
         ) {
           let categorys = item.data.map(cateItem => {
-            let catIdRegx = new RegExp("gallery-(\\d+)\\.html", "gi");
-            let catId = catIdRegx.exec(cateItem.link)[1] || 0;
-            return { catId: catId, title: cateItem.title };
+            return { catId: cateItem.cat_id, title: cateItem.title, logo: cateItem.logo };
           });
           that.categorys = [].concat(categorys);
         } else if (item.widgets_type === "index_goods") {
@@ -177,10 +175,12 @@ export default {
       });
     },
     loadHomePageData() {
-      let that = this;
+			let that = this;
+			that.$loading.show();
       that.$http
         .post(that.$api.index.index)
         .then(res => {
+					that.$loading.hide();
           if (res.return_code === "0000") {
             that._formatData(res.data);
           } else {
@@ -188,6 +188,7 @@ export default {
           }
         })
         .catch(error => {
+					that.$loading.hide();
           console.log(error);
         });
 		},
@@ -283,7 +284,7 @@ page {
 }
 
 .categorys {
-	padding: 40rpx 0 40rpx 47rpx;
+	padding: 9rpx 0 40rpx 47rpx;
 	box-sizing: border-box;
 	display: flex;
 	justify-content: flex-start;
@@ -295,7 +296,7 @@ page {
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		margin-right: 44rpx;
+		margin: 50rpx 44rpx 0 0;
 		image {
 			width: 96rpx;
 			height: 114rpx;

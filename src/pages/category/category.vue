@@ -11,7 +11,7 @@
 					<view class="t-list">
 						<template v-if="secondItem.children.length > 0">
 							<view @click="navToList(thirdItem.parent_id, thirdItem.cat_id)" v-if="thirdItem.parent_id === secondItem.cat_id" class="t-item" v-for="thirdItem in secondItem.children" :key="thirdItem.cat_id">
-								<image :src="'/static/temp/cate2.jpg'"></image>
+								<image :src="thirdItem.logo"></image>
 								<text>{{thirdItem.cat_name}}</text>
 							</view>
 						</template>
