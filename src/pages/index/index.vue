@@ -16,7 +16,7 @@
     <!-- #endif -->
 
     <view class="slide">
-      <swiper class="slide-swiper" :autoplay="false" :interval="2000" :previous-margin="'30rpx'" :next-margin="'30rpx'" :current="slideCurrentIndex">
+      <swiper class="slide-swiper" :autoplay="true" :interval="2000" :previous-margin="'30rpx'" :next-margin="'30rpx'" :current="slideCurrentIndex">
 				<swiper-item class="slide-swiper-item" v-for="(slide, slideIndex) in slides" :key="slide.id">
 					<text class="image-padding"></text>
 					<image :src="slide.link"></image>
@@ -176,11 +176,11 @@ export default {
     },
     loadHomePageData() {
 			let that = this;
-			that.$loading.show();
+			uni.showLoading();
       that.$http
         .post(that.$api.index.index)
         .then(res => {
-					that.$loading.hide();
+					uni.hideLoading();
           if (res.return_code === "0000") {
             that._formatData(res.data);
           } else {
@@ -188,7 +188,7 @@ export default {
           }
         })
         .catch(error => {
-					that.$loading.hide();
+					uni.hideLoading();
           console.log(error);
         });
 		},
@@ -284,7 +284,7 @@ page {
 }
 
 .categorys {
-	padding: 9rpx 0 40rpx 47rpx;
+	padding: 9rpx 0 40rpx 40rpx;
 	box-sizing: border-box;
 	display: flex;
 	justify-content: flex-start;
@@ -296,7 +296,7 @@ page {
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		margin: 50rpx 44rpx 0 0;
+		margin: 50rpx 40rpx 0 0;
 		image {
 			width: 96rpx;
 			height: 114rpx;

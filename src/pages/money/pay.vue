@@ -117,12 +117,9 @@ export default {
 
       if (app_id === orderInfo.payinfo.pay_app_id) {
         return false;
-			}
+      }
 
-			if (
-        app_id === "deposit" &&
-        that.orderInfo.cur_amount > that.deposit
-      ) {
+      if (app_id === "deposit" && that.orderInfo.cur_amount > that.deposit) {
         that.$toast("可用余额不足！");
         return false;
       }
@@ -183,13 +180,13 @@ export default {
         pay_app_id: that.orderInfo.payinfo.pay_app_id
       };
 
-			that.paying = true
-			that.$loading.show();
+      that.paying = true;
+      uni.showLoading();
       that.$http
         .post(that.$api.user.doPayment, payData)
         .then(res => {
-					that.paying = false
-					that.$loading.hide();
+      		that.paying = false
+      		uni.hideLoading();
           console.log(res);
           if (res.return_code === "0000") {
             uni.redirectTo({
@@ -201,9 +198,9 @@ export default {
           }
         })
         .catch(error => {
-					console.log(error);
-					that.paying = false
-					that.$loading.hide();
+      		console.log(error);
+      		that.paying = false
+      		uni.hideLoading();
           that.$toast("支付失败");
         });
     }

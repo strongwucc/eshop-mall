@@ -774,13 +774,13 @@ export default {
 			}
 
 			that.requesting = true;
-			that.$loading.show();
+			uni.showLoading();
 
 			that.$http.post(
 				that.$api.cart.add,
 				data
 			).then(res => {
-				that.$loading.hide();
+				uni.hideLoading();
 				if (res.return_code === '0000') {
 					that.$toast('添加成功');
 					that.requesting = false;
@@ -802,7 +802,7 @@ export default {
 				}
 			}).catch(error => {
 				that.requesting = false;
-				that.$loading.hide();
+				uni.hideLoading();
 				console.log(error);
 				that.$toast('添加失败');
 			});

@@ -323,7 +323,7 @@ export default {
       })
 
       that.requesting = true;
-      that.$loading.show();
+      uni.showLoading();
       that.$http.upload(that.$api.user.returnSave, {
         params: {},
         // #ifdef APP-PLUS
@@ -350,7 +350,7 @@ export default {
       }).then(res => {
         let result = JSON.parse(res);
         console.log(result);
-        that.$loading.hide();
+        uni.hideLoading();
         if (result.return_code === '0000') {
           that.$toast('提交成功！');
           setTimeout(function () {
@@ -367,7 +367,7 @@ export default {
         console.log(error);
         that.$toast('提交失败！');
         that.requesting = false;
-        that.$loading.hide();
+        uni.hideLoading();
       });
 
     }

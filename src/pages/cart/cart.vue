@@ -284,9 +284,9 @@ export default {
       let [cartType, goodsId, productId] = cartIdent.split("_");
 
       if (newStore - oldStore === 1) {
-        that.$loading.show();
+        uni.showLoading();
         let addRes = await that.addCart(goodsId, productId);
-        that.$loading.hide();
+        uni.hideLoading();
         if (addRes.return_code !== "0000") {
           that.$toast(addRes.error);
         } else {
@@ -294,9 +294,9 @@ export default {
         }
       } else if (newStore !== oldStore) {
         console.log("from: ", oldStore, ", to: ", newStore);
-        that.$loading.show();
+        uni.showLoading();
         let updateRes = await that.updateCart(cartIdent, newStore);
-        that.$loading.hide();
+        uni.hideLoading();
         if (updateRes.return_code === "0000") {
           that.loadData();
         } else {
@@ -318,11 +318,11 @@ export default {
             let quantity = goodsData[index].quantity;
             let cartIdent = goodsData[index].obj_ident;
             let [cartType, goodsId, productId] = cartIdent.split("_");
-            that.$loading.show();
+            uni.showLoading();
             that
               .removeCart(cartIdent, quantity)
               .then(removeRes => {
-                that.$loading.hide();
+                uni.hideLoading();
                 if (removeRes.return_code === "0000") {
                   that.cartInfo.object.goods.splice(index, 1);
                   if (removeRes.data.is_empty) {

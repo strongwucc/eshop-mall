@@ -23,7 +23,8 @@ let aliRedirect = ''
 
 if (process.env.NODE_ENV === 'development') {
   // #ifndef H5
-  rootUrl = 'http://192.168.1.24/ecstore/'
+  // rootUrl = 'http://192.168.1.24/ecstore/'
+  rootUrl = 'https://api.yaliantong.com/'
   // #endif
   // #ifdef H5
   rootUrl = '/ecstore/'

@@ -120,10 +120,10 @@ export default {
         postData.hidden_name = 'YES';
       }
 
-      that.$loading.show();
+      uni.showLoading();
 
       that.$http.post(that.$api.user.toComment, postData).then(res => {
-        that.$loading.hide();
+        uni.hideLoading();
         if (res.return_code === '0000') {
           that.$toast('评论成功');
           that.$prevPage().refreshList(that.goodsData.goods_id);
@@ -135,7 +135,7 @@ export default {
           that.$toast('评论失败');
         }
       }).catch(error => {
-        that.$loading.hide();
+        uni.hideLoading();
         console.log(error);
         that.$toast('评论失败');
       });
