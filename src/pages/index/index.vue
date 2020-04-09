@@ -36,7 +36,7 @@
 			<image src="/static/temp/adv_banner@2x.png"></image>
 		</view>
 
-		<view class="index-goods" v-for="(data, dataIndex) in indexGoods" :key="dataIndex">
+		<view class="index-goods" :class="{'first-index-goods': dataIndex === 0}" v-for="(data, dataIndex) in indexGoods" :key="dataIndex">
 			<view class="title">{{data.title}}</view>
 			<scroll-view class="goods" scroll-x enable-flex="true">
 				<view class="goods-item" v-for="(goods, goodsIndex) in data.goods" :key="goods.goodsId" @click="navToDetailPage(goods)">
@@ -226,6 +226,7 @@ export default {
 <style lang="scss">
 /* #ifdef MP */
 .mp-search-box {
+	background-color: #ffffff;
   width: 100%;
   padding: 22rpx 29rpx 21rpx 30rpx;
   box-sizing: border-box;
@@ -253,12 +254,19 @@ export default {
 /* #endif */
 
 page {
-  background-color: #ffffff;
   min-height: 100%;
 }
 
 .container {
-  background-color: #ffffff;
+  background-color: $page-color-base;
+}
+
+.slide,
+.categorys,
+.adv,
+.index-goods,
+.tabs {
+	background-color: #ffffff;
 }
 
 .slide {
@@ -305,6 +313,7 @@ page {
 }
 
 .adv {
+	margin-top: 20rpx;
 	image {
 		width: 100%;
 		height: 214rpx;
@@ -357,7 +366,12 @@ page {
 	}
 }
 
+.first-index-goods {
+	margin-top: 20rpx;
+}
+
 .tabs {
+	margin-top: 20rpx;
 	padding: 0 46rpx;
 	box-sizing: border-box;
 	.navs {
@@ -393,6 +407,7 @@ page {
 		}
 	}
 	.content {
+		margin-top: 20rpx;
 		flex: auto;
 		width: 100%;
 		.tab-swiper {
@@ -419,6 +434,7 @@ page {
 						image {
 							width: 312rpx;
 							height: 312rpx;
+							border-radius: 12rpx;
 						}
 					}
 					.name {
