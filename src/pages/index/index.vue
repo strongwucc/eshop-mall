@@ -130,15 +130,15 @@ export default {
         } else if (item.widgets_type === "index_tab_goods") {
           if (item.widgets === "cuxiao_goods") {
 						let cuxiaoGoods = Object.values(item.data.goodsRows);
-						that.tabList[0].height = Math.ceil(cuxiaoGoods.length / 2) * 560 + 'rpx';
+						that.tabList[0].height = Math.ceil(cuxiaoGoods.length / 2) * 583 + 20 + 'rpx';
             that.tabList[0].goodsList = [].concat(cuxiaoGoods);
           } else if (item.widgets === "new_goods") {
 						let newGoods = Object.values(item.data.goodsRows);
-						that.tabList[1].height = Math.ceil(newGoods.length / 2) * 560 + 'rpx';
+						that.tabList[1].height = Math.ceil(newGoods.length / 2) * 583 + 20 + 'rpx';
             that.tabList[1].goodsList = [].concat(newGoods);
           } else if (item.widgets === "hot_goods") {
 						let hotGoods = Object.values(item.data.goodsRows);
-						that.tabList[2].height = Math.ceil(hotGoods.length / 2) * 560 + 'rpx';
+						that.tabList[2].height = Math.ceil(hotGoods.length / 2) * 583 + 20 + 'rpx';
             that.tabList[2].goodsList = [].concat(hotGoods);
           }
         } else if (
@@ -264,8 +264,7 @@ page {
 .slide,
 .categorys,
 .adv,
-.index-goods,
-.tabs {
+.index-goods {
 	background-color: #ffffff;
 }
 
@@ -281,7 +280,7 @@ page {
 			image {
 				flex: auto;
 				height: 100%;
-				border-radius: 10rpx;
+				border-radius: 16rpx;
 			}
 			text {
 				flex: none;
@@ -326,7 +325,7 @@ page {
 	font-size: 24rpx;
 	.title {
 		font-size: 32rpx;
-		font-weight: 600;
+		font-weight: bold;
 		padding: 27rpx 0;
 		box-sizing: border-box;
 	}
@@ -372,7 +371,7 @@ page {
 
 .tabs {
 	margin-top: 20rpx;
-	padding: 0 46rpx;
+	padding: 0 31rpx;
 	box-sizing: border-box;
 	.navs {
 		width: 100%;
@@ -387,7 +386,7 @@ page {
 			align-items: center;
 			&.current {
 			  font-size: 32rpx;
-			  font-weight: 500;
+			  font-weight: bold;
 				text {
 					display: flex;
 					flex-direction: column;
@@ -401,7 +400,7 @@ page {
 			    height: 8rpx;
 			    background: linear-gradient(270deg, rgba(255, 131, 106, 1) 0%, rgba(255, 96, 96, 1) 100%);
 					border-radius: 4rpx;
-					margin-top: 3rpx;
+					margin-top: 6rpx;
 			  }
 			}
 		}
@@ -416,14 +415,21 @@ page {
 				display: flex;
 				justify-content: flex-start;
 				align-items: flex-start;
+				align-content: flex-start;
 				flex-wrap: wrap;
 				.goods-item {
-					font-size: 24rpx;
-					width: 312rpx;
+					background-color: #ffffff;
+					border-radius:16px 16px 0px 0px;
+					overflow: hidden;
+					padding-bottom: 30rpx;
+					box-sizing: border-box;
+					font-size: 28rpx;
+					width: 335rpx;
 					display: flex;
 					flex-direction: column;
 					justify-content: flex-start;
 					align-items: center;
+					margin-top: 22rpx;
 					&:nth-child(2n-1) {
 						margin-right: 20rpx;
 					}
@@ -432,14 +438,13 @@ page {
 					}
 					.image {
 						image {
-							width: 312rpx;
-							height: 312rpx;
-							border-radius: 12rpx;
+							width: 335rpx;
+							height: 335rpx;
 						}
 					}
 					.name {
 						margin-top: 30rpx;
-						width: 312rpx;
+						width: 335rpx;
 						height: 70rpx;
 						line-height: 35rpx;
 						overflow: hidden;
@@ -451,7 +456,7 @@ page {
 					.price {
 						margin-top: 40rpx;
 						.sale {
-							font-size: 32rpx;
+							font-size: 38rpx;
 							color: $base-color;
 						}
 						.market {

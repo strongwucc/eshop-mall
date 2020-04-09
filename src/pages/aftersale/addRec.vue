@@ -298,6 +298,11 @@ export default {
         return false;
       }
 
+      if (that.tempImagePath === "") {
+        that.$toast('请上传一张图片');
+        return false;
+      }
+
       if (!that.isAgreeNotice) {
         that.$toast('请同意售后服务须知');
         return false;

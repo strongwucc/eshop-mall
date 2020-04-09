@@ -369,9 +369,9 @@ export default {
 }
 
 page {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, segoe ui, Roboto,
-    Helvetica, Arial, sans-serif, apple color emoji, segoe ui emoji,
-    segoe ui symbol;
+  font-family: "PingFang SC", system-ui, -apple-system, BlinkMacSystemFont,
+    segoe ui, Roboto, Helvetica, Arial, sans-serif, apple color emoji,
+    segoe ui emoji, segoe ui symbol;
 }
 
 view,
