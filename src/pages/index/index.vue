@@ -35,7 +35,7 @@
 
 		<view class="index-goods" :class="{'first-index-goods': dataIndex === 0}" v-for="(data, dataIndex) in indexGoods" :key="dataIndex">
 			<view class="title">{{data.title}}</view>
-			<scroll-view class="goods" scroll-x="true" enable-flex="true" scroll-left="120">
+			<scroll-view class="goods" scroll-x="true">
 				<block v-for="(goods, goodsIndex) in data.goods" :key="goods.goodsId">
 					<view class="goods-item" @click="navToDetailPage(goods)">
 						<image :src="goods.goodsPic || ''" lazy-load="true" mode="aspectFit"></image>
