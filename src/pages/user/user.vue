@@ -530,7 +530,7 @@ page {
     .icon-you {
       color: $font-color-light;
       flex: none;
-      margin-top: 8rpx;
+      // margin-top: 8rpx;
     }
   }
   .order-content {

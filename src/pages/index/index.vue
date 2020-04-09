@@ -1,8 +1,6 @@
 <template>
   <view class="container">
-    <!-- 小程序头部兼容 -->
-    <!-- #ifdef MP -->
-    <view class="mp-search-box">
+    <view id="mp-search-box" class="mp-search-box sticky-box">
       <text class="yticon icon-sousuo"></text>
       <input
         class="ser-input"
@@ -13,7 +11,6 @@
         @confirm="goSearch"
       />
     </view>
-    <!-- #endif -->
 
     <view class="slide">
       <swiper class="slide-swiper" :autoplay="true" :interval="2000" :previous-margin="'30rpx'" :next-margin="'30rpx'" :current="slideCurrentIndex">
@@ -38,17 +35,19 @@
 
 		<view class="index-goods" :class="{'first-index-goods': dataIndex === 0}" v-for="(data, dataIndex) in indexGoods" :key="dataIndex">
 			<view class="title">{{data.title}}</view>
-			<scroll-view class="goods" scroll-x enable-flex="true">
-				<view class="goods-item" v-for="(goods, goodsIndex) in data.goods" :key="goods.goodsId" @click="navToDetailPage(goods)">
-					<image :src="goods.goodsPic || ''" lazy-load="true" mode="aspectFit"></image>
-					<text class="name">{{goods.goodsName || ''}}</text>
-					<text class="price">￥{{goods.goodsSalePrice | formatMoney}}</text>
-				</view>
+			<scroll-view class="goods" scroll-x="true" enable-flex="true" scroll-left="120">
+				<block v-for="(goods, goodsIndex) in data.goods" :key="goods.goodsId">
+					<view class="goods-item" @click="navToDetailPage(goods)">
+						<image :src="goods.goodsPic || ''" lazy-load="true" mode="aspectFit"></image>
+						<text class="name">{{goods.goodsName || ''}}</text>
+						<text class="price">￥{{goods.goodsSalePrice | formatMoney}}</text>
+					</view>
+				</block>
 			</scroll-view>
 		</view>
 
 		<view class="tabs">
-			<view class="navs">
+			<view id="tab-nav-box" class="navs sticky-box" :class="{'in-top': tabInTop}">
 				<view class="nav-item" v-for="(tab, tabIndex) in tabList" :key="tab.state" :class="{current: tabCurrentIndex === tab.state}" @click="clickTab(tab.state)">
 					<text>{{tab.text}}</text>
 				</view>
@@ -78,12 +77,14 @@
 export default {
   data() {
     return {
+			searchHeight: 0,
 			searchContent: "",
 			slideCurrentIndex: 0,
       slides: [],
       categorys: [],
 			indexGoods: [],
 			tabCurrentIndex: 0,
+			tabInTop: false,
 			tabList: [
 				{
           state: 0,
@@ -115,7 +116,31 @@ export default {
 
   onLoad() {
     this.loadHomePageData();
-  },
+	},
+	onShow () {
+		let that = this;
+		let query = uni.createSelectorQuery();
+		query.select('#mp-search-box').boundingClientRect();
+		query.exec(function(res){
+			if (res && res[0]) {
+				that.searchHeight = res[0].height;
+			}
+		});
+	},
+	onPageScroll : function(e) {
+		let that = this;
+		let query = uni.createSelectorQuery();
+		query.select('#tab-nav-box').boundingClientRect();
+		query.exec(function(res){
+			if (res && res[0]) {
+				if (~~res[0].top === ~~that.searchHeight) {
+					that.tabInTop = true;
+				} else {
+					that.tabInTop = false;
+				}
+			}
+		});
+	},
   methods: {
     _formatData(data) {
       if (data === null || typeof data[Symbol.iterator] !== "function") {
@@ -130,15 +155,15 @@ export default {
         } else if (item.widgets_type === "index_tab_goods") {
           if (item.widgets === "cuxiao_goods") {
 						let cuxiaoGoods = Object.values(item.data.goodsRows);
-						that.tabList[0].height = Math.ceil(cuxiaoGoods.length / 2) * 583 + 20 + 'rpx';
+						that.tabList[0].height = Math.ceil(cuxiaoGoods.length / 2) * 585 + 20 + 'rpx';
             that.tabList[0].goodsList = [].concat(cuxiaoGoods);
           } else if (item.widgets === "new_goods") {
 						let newGoods = Object.values(item.data.goodsRows);
-						that.tabList[1].height = Math.ceil(newGoods.length / 2) * 583 + 20 + 'rpx';
+						that.tabList[1].height = Math.ceil(newGoods.length / 2) * 585 + 20 + 'rpx';
             that.tabList[1].goodsList = [].concat(newGoods);
           } else if (item.widgets === "hot_goods") {
 						let hotGoods = Object.values(item.data.goodsRows);
-						that.tabList[2].height = Math.ceil(hotGoods.length / 2) * 583 + 20 + 'rpx';
+						that.tabList[2].height = Math.ceil(hotGoods.length / 2) * 585 + 20 + 'rpx';
             that.tabList[2].goodsList = [].concat(hotGoods);
           }
         } else if (
@@ -200,7 +225,7 @@ export default {
 		// tab 点击
     clickTab(tabCurrentIndex) {
 			let that = this;
-      that.tabCurrentIndex = tabCurrentIndex;
+			that.tabCurrentIndex = tabCurrentIndex;
     },
     navToGoodsList(tid) {
       uni.navigateTo({
@@ -224,7 +249,6 @@ export default {
 </script>
 
 <style lang="scss">
-/* #ifdef MP */
 .mp-search-box {
 	background-color: #ffffff;
   width: 100%;
@@ -251,7 +275,6 @@ export default {
     padding-left: 67rpx;
   }
 }
-/* #endif */
 
 page {
   min-height: 100%;
@@ -266,6 +289,16 @@ page {
 .adv,
 .index-goods {
 	background-color: #ffffff;
+}
+
+.sticky-box {
+	/* #ifndef APP-PLUS-NVUE */
+	display: flex;
+	position: -webkit-sticky;
+	/* #endif */
+	position: sticky;
+	top: var(--window-top);
+	z-index: 99;
 }
 
 .slide {
@@ -291,10 +324,10 @@ page {
 }
 
 .categorys {
-	padding: 9rpx 0 40rpx 40rpx;
+	padding: 9rpx 0 40rpx 0;
 	box-sizing: border-box;
 	display: flex;
-	justify-content: flex-start;
+	justify-content: center;
 	flex-wrap: wrap;
 	.category-item {
 		font-size: 24rpx;
@@ -303,7 +336,10 @@ page {
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		margin: 50rpx 40rpx 0 0;
+		margin: 50rpx 44rpx 0 0;
+		&:nth-child(5n) {
+			margin-right: 0;
+		}
 		image {
 			width: 96rpx;
 			height: 114rpx;
@@ -312,7 +348,6 @@ page {
 }
 
 .adv {
-	margin-top: 20rpx;
 	image {
 		width: 100%;
 		height: 214rpx;
@@ -320,7 +355,7 @@ page {
 }
 
 .index-goods {
-	padding: 0 0 67rpx 31rpx;
+	padding: 0 0 40rpx 30rpx;
 	box-sizing: border-box;
 	font-size: 24rpx;
 	.title {
@@ -331,15 +366,10 @@ page {
 	}
 	.goods {
 		margin-top: 13rpx;
-		display: flex;
-		justify-content: flex-start;
-		align-items: flex-start;
-		padding-right: 20rpx;
+		white-space: nowrap; // 滚动必须加的属性
 		.goods-item {
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
+			width: 176rpx;
+			display: inline-block;
 			margin-right: 20rpx;
 			image {
 				width: 176rpx;
@@ -347,6 +377,7 @@ page {
 				border-radius: 12rpx;
 			}
 			.name {
+				white-space: normal;
 				margin-top: 20rpx;
 				width: 176rpx;
 			  overflow: hidden;
@@ -356,37 +387,40 @@ page {
 				-webkit-box-orient: vertical;
 			}
 			.price {
-				width: 100%;
+				display: inline-block;
+				font-size: 28rpx;
 				text-align: left;
 				margin-top: 15rpx;
 				color: $base-color;
+				width: 100%;
 			}
 		}
 	}
 }
 
-.first-index-goods {
-	margin-top: 20rpx;
-}
-
 .tabs {
 	margin-top: 20rpx;
-	padding: 0 31rpx;
-	box-sizing: border-box;
 	.navs {
 		width: 100%;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 		font-size: 28rpx;
+		background-color: $page-color-base;
+		&.in-top {
+			background-color: #ffffff;
+		}
+		top: calc(106rpx + var(--window-top));
 		.nav-item {
+			flex: auto;
 			height: 85rpx;
 			display: flex;
 			justify-content: center;
 			align-items: center;
 			&.current {
 			  font-size: 32rpx;
-			  font-weight: bold;
+				font-weight: bold;
+				position: relative;
 				text {
 					display: flex;
 					flex-direction: column;
@@ -395,6 +429,11 @@ page {
 				}
 			  text::after {
 					content: '';
+					position: absolute;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					margin: auto;
 					display: inline-block;
 			    width: 30rpx;
 			    height: 8rpx;
@@ -406,6 +445,8 @@ page {
 		}
 	}
 	.content {
+		padding: 0 31rpx;
+		box-sizing: border-box;
 		margin-top: 20rpx;
 		flex: auto;
 		width: 100%;
@@ -419,7 +460,7 @@ page {
 				flex-wrap: wrap;
 				.goods-item {
 					background-color: #ffffff;
-					border-radius:16px 16px 0px 0px;
+					border-radius:16rpx;
 					overflow: hidden;
 					padding-bottom: 30rpx;
 					box-sizing: border-box;
@@ -444,6 +485,8 @@ page {
 					}
 					.name {
 						margin-top: 30rpx;
+						padding: 0 44rpx 0 30rpx;
+						box-sizing: border-box;
 						width: 335rpx;
 						height: 70rpx;
 						line-height: 35rpx;
@@ -455,8 +498,10 @@ page {
 					}
 					.price {
 						margin-top: 40rpx;
+						padding-left: 20rpx;
+						box-sizing: border-box;
 						.sale {
-							font-size: 38rpx;
+							font-size: 36rpx;
 							color: $base-color;
 						}
 						.market {

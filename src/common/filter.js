@@ -14,13 +14,13 @@ Vue.filter("formatMoney", function (value, pos=2) {
   f = Math.round(value * Math.pow(10, pos)) / Math.pow(10, pos);
   let s = f.toString();
   let rs = s.indexOf('.');
-  if (rs < 0) {
-    rs = s.length;
-    s += '.';
-  }
-  while (s.length <= rs + 2) {
-    s += '0';
-  }
+  // if (rs < 0) {
+  //   rs = s.length;
+  //   s += '.';
+  // }
+  // while (s.length <= rs + 2) {
+  //   s += '0';
+  // }
   return s;
 });
 
