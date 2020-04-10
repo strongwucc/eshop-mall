@@ -369,6 +369,7 @@ export default {
 }
 
 page {
+  height: 100%;
   font-family: "PingFang SC", system-ui, -apple-system, BlinkMacSystemFont,
     segoe ui, Roboto, Helvetica, Arial, sans-serif, apple color emoji,
     segoe ui emoji, segoe ui symbol;

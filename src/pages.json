@@ -228,6 +228,36 @@
         // "enablePullDownRefresh": true,
         "navigationBarTitleText": "商品列表"
       }
+    }, {
+      "path": "pages/distribution/index",
+      "style": {
+        "navigationBarTitleText": "个人分销"
+      }
+    }, {
+      "path": "pages/distribution/deposit",
+      "style": {
+        "navigationBarTitleText": "提现"
+      }
+    }, {
+      "path": "pages/distribution/depositStatus",
+      "style": {
+        "navigationBarTitleText": "提现"
+      }
+    }, {
+      "path": "pages/distribution/records",
+      "style": {
+        "navigationBarTitleText": "收支明细"
+      }
+    }, {
+      "path": "pages/distribution/orders",
+      "style": {
+        "navigationBarTitleText": "订单查询"
+      }
+    }, {
+      "path": "pages/distribution/goods",
+      "style": {
+        "navigationBarTitleText": "分享商品"
+      }
     }
   ],
   "globalStyle": {
@@ -393,6 +423,30 @@
     {
       "name": "忘记密码2",
       "path": "pages/public/forgetStep2"
+    },
+    {
+      "name": "个人分销",
+      "path": "pages/distribution/index"
+    },
+    {
+      "name": "提现",
+      "path": "pages/distribution/deposit"
+    },
+    {
+      "name": "提现状态",
+      "path": "pages/distribution/depositStatus"
+    },
+    {
+      "name": "收支明细",
+      "path": "pages/distribution/records"
+    },
+    {
+      "name": "订单查询",
+      "path": "pages/distribution/orders"
+    },
+    {
+      "name": "分享商品",
+      "path": "pages/distribution/goods"
     }]
   }
 }
