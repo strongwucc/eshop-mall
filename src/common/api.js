@@ -38,6 +38,8 @@ module.exports = {
     addRec: 'addRec', // 增加退换货记录
     returnSave: 'returnSave', // 保存退换货记录
     returnDetail: 'returnDetail', // 退换货详情
+    couponExchange: 'couponExchange', // 可兑换优惠券
+    exchange: 'exchange', // 兑换优惠券
   },
   cart: {
     cart: 'cart', // 购物车信息

@@ -396,7 +396,17 @@ export default {
 				if (res.return_code === '0000') {
 					that.cartInfo = res.data.aCart;
 					that.orderDetail = res.data.order_detail;
-					that.couponList = res.data.coupon_lists;
+					that.couponList = res.data.coupon_lists.map(couponItem => {
+						if (res.data.aCart.object.coupon.some(usedItem => {
+							if (usedItem.coupon === couponItem.memc_code) {
+								return true;
+							}
+							return false;
+						})) {
+							couponItem.selected = true;
+						}
+						return couponItem;
+					});
 					that.realUsagePoint = res.data.real_usage_point;
 					that.discountRate = res.data.discount_rate;
 					that.maxDiscountValue = res.data.max_discount_value;
@@ -479,6 +489,37 @@ export default {
 
 		},
 		/**
+		 * 取消使用优惠券
+		 */
+		removeCoupon(code, couponIndex) {
+			let that = this;
+		  if (that.requesting) {
+		    return false;
+		  }
+
+		  that.requesting = true;
+
+		  that.$http.post(
+				that.$api.cart.remove,
+				{ cpn_ident: 'coupon_' + code, response_type: true, type: 'coupon' }
+		  ).then(res => {
+		    that.requesting = false;
+		    if (res.return_code === '0000') {
+					that.$toast('取消成功');
+					that.couponList[couponIndex].selected = false;
+					that.getTotal();
+					that.toggleCouponMask();
+		    } else {
+		      console.log(res);
+		      that.$toast('取消失败');
+		    }
+		  }).catch(error => {
+		    that.requesting = false;
+		    console.log(error);
+		    that.$toast('取消失败');
+		  });
+		},
+		/**
 		 * 使用积分
 		 */
 		useScore (e) {
@@ -533,15 +574,13 @@ export default {
 
 			let pay_app_id = '';
 
-			if (!that.payments.some(payment => {
+			that.payments.some(payment => {
 				if (payment.selected === true) {
 					pay_app_id = payment.app_id;
 					return true;
 				}
 				return false;
-			})) {
-				return false;
-			}
+			});
 
 			let data = { pay_app_id: pay_app_id, shipping_id: shipping_id, area_id: area_id, dis_point: that.usedPoint };
 

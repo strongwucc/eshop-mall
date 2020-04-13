@@ -258,6 +258,21 @@
       "style": {
         "navigationBarTitleText": "分享商品"
       }
+    }, {
+      "path": "pages/search/index",
+      "style": {
+        "navigationBarTitleText": "搜索"
+      }
+    }, {
+      "path": "pages/coupon/index",
+      "style": {
+        "navigationBarTitleText": "领券中心"
+      }
+    }, {
+      "path": "pages/coupon/exchange",
+      "style": {
+        "navigationBarTitleText": "积分兑换"
+      }
     }
   ],
   "globalStyle": {
@@ -447,6 +462,18 @@
     {
       "name": "分享商品",
       "path": "pages/distribution/goods"
+    },
+    {
+      "name": "搜索",
+      "path": "pages/search/index"
+    },
+    {
+      "name": "领券中心",
+      "path": "pages/coupon/index"
+    },
+    {
+      "name": "积分兑换",
+      "path": "pages/coupon/exchange"
     }]
   }
 }

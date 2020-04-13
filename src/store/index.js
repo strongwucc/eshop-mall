@@ -4,50 +4,66 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-	state: {
-		hasLogin: false,
-		token: '',
-		userInfo: {},
-		cartInfo: {},
-	},
-	mutations: {
-		login(state, token) {
-			state.hasLogin = true;
-			state.token = token;
-			uni.setStorage({//缓存用户登陆状态
-			    key: 'token',  
-			    data: token  
-			});
+  state: {
+    hasLogin: false,
+    token: '',
+    userInfo: {},
+    cartInfo: {},
+		searchKeys: [],
+		historySearchKeys: [],
+  },
+  mutations: {
+    login(state, token) {
+      state.hasLogin = true;
+      state.token = token;
+      uni.setStorage({ //缓存用户登陆状态
+        key: 'token',
+        data: token
+      });
+    },
+    setUser(state, userInfo) {
+      state.userInfo = userInfo;
+      uni.setStorage({
+        key: 'userInfo',
+        data: JSON.stringify(userInfo)
+      });
+    },
+    setCart(state, cartInfo) {
+      state.cartInfo = cartInfo;
+      uni.setStorage({
+        key: 'cartInfo',
+        data: JSON.stringify(cartInfo)
+      });
+    },
+    logout(state) {
+      state.hasLogin = false;
+      state.token = '';
+      state.userInfo = {};
+      uni.removeStorage({
+        key: 'userInfo'
+      });
+      uni.removeStorage({
+        key: 'token'
+      });
+    },
+    setSearchKeys(state, searchKeys) {
+      state.searchKeys = searchKeys;
+      uni.setStorage({
+        key: 'searchKeys',
+        data: JSON.stringify(searchKeys)
+      });
 		},
-		setUser(state, userInfo) {
-			state.userInfo = userInfo;
-			uni.setStorage({
-				key: 'userInfo',
-				data: JSON.stringify(userInfo)
-			});
-		},
-		setCart(state, cartInfo) {
-			state.cartInfo = cartInfo;
-			uni.setStorage({
-				key: 'cartInfo',
-				data: JSON.stringify(cartInfo)
-			});
-		},
-		logout(state) {
-			state.hasLogin = false;
-			state.token = '';
-			state.userInfo = {};
-			uni.removeStorage({  
-				key: 'userInfo'  
-			});
-			uni.removeStorage({  
-				key: 'token'  
-			});
-		}
-	},
-	actions: {
-	
-	}
+		setHistorySearchKeys(state, searchKeys) {
+      state.historySearchKeys = searchKeys;
+      uni.setStorage({
+        key: 'historySearchKeys',
+        data: JSON.stringify(searchKeys)
+      });
+    }
+  },
+  actions: {
+
+  }
 })
 
 export default store

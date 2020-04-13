@@ -139,6 +139,7 @@
 </script>
 
 <script>
+import { mapMutations } from 'vuex';
 export default {
   data() {
     return {
@@ -178,13 +179,13 @@ export default {
       ]
     };
   },
-
   onLoad() {
     this.loadHomePageData();
   },
   onShow() {
   },
   methods: {
+    ...mapMutations(['setSearchKeys']),
     _formatData(data) {
       if (data === null || typeof data[Symbol.iterator] !== "function") {
         return false;
@@ -228,6 +229,10 @@ export default {
           let title = item.params.block_name;
           let goods = Object.values(item.data.goodsRows);
           that.indexGoods.push({ title, goods });
+        } else if (item.widgets_type === 'search') {
+          if (item.data.search) {
+            that.setSearchKeys(item.data.search);
+          }
         }
 			});
 			
