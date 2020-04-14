@@ -104,6 +104,7 @@
         </view>
         <view class="right" @click="createOrder">去结算({{cartInfo.items_quantity || 0}})</view>
       </view>
+      <view class="cart-padding"></view>
     </template>
   </view>
 </template>
@@ -256,7 +257,7 @@ export default {
       let that = this;
 
       let data = {
-        obj_type: "goods",
+        type: "goods",
         goods_ident: goodsIdent,
         goods_id: goodsIdent.split("_")[1],
         response_type: true
@@ -336,12 +337,21 @@ export default {
                       discount_amount: 0.0,
                       promotion_subtotal: 0.0
                     });
+                    that.setCart({
+                      itemsQuantity: 0,
+                      itemsCount: 0
+                    });
                   } else {
                     that.cartInfo = Object.assign(
                       {},
                       that.cartInfo,
-                      removeRes.data.sub_total
+                      removeRes.data.sub_total,
+                      {items_quantity: that.cartInfo.items_quantity - quantity}
                     );
+                    that.setCart({
+                      itemsQuantity: that.cartInfo.items_quantity,
+                      itemsCount: that.cartInfo.items_count
+                    });
                   }
                 } else {
                   that.$toast(removeRes.error);
@@ -573,6 +583,11 @@ page {
       color: #ffffff;
       font-size: 32rpx;
     }
+  }
+
+  .cart-padding {
+    height: 106rpx;
+    width: 100%;
   }
 }
 </style>

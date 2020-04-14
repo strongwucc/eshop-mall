@@ -25,7 +25,6 @@ export default {
       that.$http
         .post(that.$api.user.couponExchange)
         .then(res => {
-          console.log(res);
           if (res.return_code === "0000") {
             that.usage = ~~res.data.site_point_usage;
             that.coupons = that.coupons.concat(res.data.list);

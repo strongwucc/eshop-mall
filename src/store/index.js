@@ -39,8 +39,12 @@ const store = new Vuex.Store({
       state.hasLogin = false;
       state.token = '';
       state.userInfo = {};
+      state.cartInfo = {};
       uni.removeStorage({
         key: 'userInfo'
+      });
+      uni.removeStorage({
+        key: 'cartInfo'
       });
       uni.removeStorage({
         key: 'token'

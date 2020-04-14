@@ -21,6 +21,11 @@
         }
       }
     }, {
+      "path": "pages/product/comment",
+      "style": {
+        "navigationBarTitleText": "商品评论"
+      }
+    }, {
       "path": "pages/set/set",
       "style": {
         "navigationBarTitleText": "设置"
@@ -418,6 +423,11 @@
       "name": "商品详情",
       "path": "pages/product/product",
       "query": "id=241" //启动参数，在页面的onLoad函数里面得到。
+    },
+    {
+      "name": "商品评论",
+      "path": "pages/product/comment",
+      "query": "gid=21"
     },
     {
       "name": "登录",

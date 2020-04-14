@@ -204,6 +204,7 @@
 					if (~~loading !== 1) {
 						that.refresherTriggered = true;
 					}
+					that.page = 1;
 					that.loadingType = 'more'
 				}
 				

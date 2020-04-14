@@ -56,6 +56,7 @@ module.exports = {
     gallery: 'gallery', // 商品列表（根据分类）
     detail: 'goodsDetail', // 商品信息
     intro: 'goodsDetailIntro', // 商品详细介绍
+    comments: 'goodsComments', // 商品评论
   },
   ectools: {
     searchArea: 'getAreaSelect', // 收货地区
