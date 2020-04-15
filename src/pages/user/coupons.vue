@@ -6,7 +6,8 @@
         <view class="up">
           <view class="left">
             <text class="name">{{coupon.coupons_info.cpns_name || ''}}</text>
-            <text class="notice">优惠券码： <text class="red">{{coupon.memc_code || ''}}</text></text>
+            <!-- <text class="notice">优惠券码： <text class="red">{{coupon.memc_code || ''}}</text></text> -->
+            <text class="notice">全网通用</text>
             <text class="time">有效期至：{{coupon.time.to_time|formatTime(1)}}</text>
           </view>
           <view class="right">
@@ -15,7 +16,23 @@
             <view class="btn disabled" v-else-if="coupon.memc_used_times > 0">已使用</view>
           </view>
         </view>
-        <view class="down"></view>
+        <view class="down">
+          <view class="title">
+            <text class="txt">查看详情</text>
+            <text class="yticon icon-shang" v-show="coupon.showDetail" @click="toggleShowDetail(couponIndex)"></text>
+            <text class="yticon icon-xia" v-show="!coupon.showDetail" @click="toggleShowDetail(couponIndex)"></text>
+          </view>
+          <view class="detail" v-show="coupon.showDetail">
+            <view class="detail-item">
+              <text class="label">券号：</text>
+              <text class="value">{{coupon.memc_code || ''}}</text>
+            </view>
+            <view class="detail-item description">
+              <text class="label">说明：</text>
+              <text class="value">{{coupon.coupons_info.rule.description || ''}}</text>
+            </view>
+          </view>
+        </view>
       </view>
       <uni-load-more :status="loadingType"></uni-load-more>
     </scroll-view>
@@ -80,6 +97,14 @@ export default {
       uni.switchTab({
         url: '/pages/index/index'
       });
+    },
+    toggleShowDetail (couponIndex) {
+      let that = this;
+      if (that.coupons[couponIndex]) {
+        let changeItem = that.coupons[couponIndex];
+        changeItem.showDetail = changeItem.showDetail ? false : true;
+        that.coupons.splice(couponIndex, 1, changeItem);
+      }
     }
   }
 };
@@ -106,14 +131,30 @@ page {
       font-size: 24rpx;
       background-color: #ffffff;
       width: 100%;
-      padding: 30rpx 20rpx 12rpx 30rpx;
+      padding: 30rpx 20rpx 0rpx 30rpx;
       box-sizing: border-box;
       border-radius: 16rpx;
       margin-bottom: 20rpx;
+      font-size: 24rpx;
+      color: $font-color-disabled;
       .up { 
         display: flex;
         justify-content: space-around;
         align-items: center;
+        padding-bottom: 28rpx;
+        box-sizing: border-box;
+        position: relative;
+        &::after {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          height: 1px;
+          content: '';
+          -webkit-transform: scaleY(.3);
+          transform: scaleY(.3);
+          border-top: 1px solid $font-color-disabled;
+        }
         .left {
           flex: auto;
           display: flex;
@@ -125,6 +166,7 @@ page {
             text-align: left;
           }
           .name {
+            color: $font-color-dark;
             font-size: 32rpx;
             font-weight: bold;
           }
@@ -152,6 +194,38 @@ page {
             @extend %flex-center;
             &.disabled {
               background-color: $font-color-disabled;
+            }
+          }
+        }
+      }
+      .down {
+        .title {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 20rpx 0;
+          box-sizing: border-box;
+        }
+        .detail {
+          padding: 10rpx 0 40rpx;
+          box-sizing: border-box;
+          font-size: 20rpx;
+          .detail-item {
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            .label {
+              flex: none;
+              white-space: nowrap;
+              font-weight: 500;
+              color: $font-color-gray;
+            }
+            .value {
+              flex: auto;
+            }
+            &.description {
+              margin-top: 10rpx;
             }
           }
         }
