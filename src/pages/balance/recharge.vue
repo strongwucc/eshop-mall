@@ -2,7 +2,7 @@
   <view class="container">
     <view class="header">
       <view class="title">您当前余额</view>
-      <view class="advance">￥{{userInfo.advance || 0}}</view>
+      <view class="advance">￥{{(userInfo.advance || 0) | formatMoney}}</view>
     </view>
     <view class="content">
       <view class="title">充值</view>

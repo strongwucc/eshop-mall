@@ -3,15 +3,19 @@
     <scroll-view class="list-scroll-content" scroll-y @scrolltolower="loadCoupons">
       <empty v-if="loaded === true && coupons.length === 0"></empty>
       <view class="coupon-item" v-for="(coupon, couponIndex) in coupons" :key="coupon.cpns_id">
-        <view class="left">
-          <text class="title">{{coupon.coupons_info.cpns_name}}</text>
-          <text class="code">优惠券码：{{coupon.memc_code}}</text>
-          <text class="time">有效期至：{{coupon.time.to_time|formatTime(1)}}</text>
+        <view class="up">
+          <view class="left">
+            <text class="name">{{coupon.coupons_info.cpns_name || ''}}</text>
+            <text class="notice">优惠券码： <text class="red">{{coupon.memc_code || ''}}</text></text>
+            <text class="time">有效期至：{{coupon.time.to_time|formatTime(1)}}</text>
+          </view>
+          <view class="right">
+            <view class="btn disabled" v-if="coupon.time.to_time < now">已过期</view>
+            <view class="btn" @click="useCoupon" v-else-if="~~coupon.memc_used_times === 0">去使用</view>
+            <view class="btn disabled" v-else-if="coupon.memc_used_times > 0">已使用</view>
+          </view>
         </view>
-        <view class="right">
-          <text class="unused" v-if="coupon.memc_used_times === '0'" >可使用</text>
-          <text class="used" v-else>已使用</text>
-        </view>
+        <view class="down"></view>
       </view>
       <uni-load-more :status="loadingType"></uni-load-more>
     </scroll-view>
@@ -31,7 +35,8 @@ export default {
       coupons: [],
       page: 1,
       loadingType: "more",
-      loaded: false
+      loaded: false,
+      now: Date.parse(new Date()).toString().substring(0, 10)
     };
   },
   onLoad(options) {},
@@ -69,6 +74,12 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    useCoupon () {
+      let that = this;
+      uni.switchTab({
+        url: '/pages/index/index'
+      });
     }
   }
 };
@@ -78,6 +89,12 @@ export default {
 page {
   height: 100%;
 }
+%flex-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .container {
   height: 100%;
   padding: 20rpx;
@@ -86,39 +103,57 @@ page {
   .list-scroll-content {
     height: 100%;
     .coupon-item {
-      background: #ffffff;
-      margin-bottom: 20rpx;
-      padding: 20rpx;
+      font-size: 24rpx;
+      background-color: #ffffff;
+      width: 100%;
+      padding: 30rpx 20rpx 12rpx 30rpx;
       box-sizing: border-box;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      .left {
-        flex: auto;
+      border-radius: 16rpx;
+      margin-bottom: 20rpx;
+      .up { 
         display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
+        justify-content: space-around;
         align-items: center;
-        text {
-          width: 100%;
-          height: 60rpx;
-          line-height: 60rpx;
-          text-align: left;
-          &.title {
+        .left {
+          flex: auto;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: flex-start;
+          >text {
+            width: 100%;
+            text-align: left;
+          }
+          .name {
+            font-size: 32rpx;
             font-weight: bold;
           }
+          .notice {
+            margin-top: 20rpx;
+            // color: $base-color;
+            .red {
+              // color: $base-color;
+            }
+          }
+          .time {
+            margin-top: 10rpx;
+          }
         }
-      }
-      .right {
-        flex: none;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        .unused {
-          color: $uni-color-success;
-        }
-        .used {
-          color: $font-color-disabled;
+        .right {
+          flex: none;
+          padding: 0 10rpx;
+          box-sizing: border-box;
+          .btn {
+            width: 140rpx;
+            height: 52rpx;
+            background: $base-color;
+            border-radius: 60rpx;
+            color: #ffffff;
+            @extend %flex-center;
+            &.disabled {
+              background-color: $font-color-disabled;
+            }
+          }
         }
       }
     }

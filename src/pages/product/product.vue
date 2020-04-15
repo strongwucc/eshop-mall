@@ -89,11 +89,11 @@
 				<text class="tip">商品评分 {{discuss.goods_point.avg_num}}分</text>
 				<text class="yticon icon-you"></text>
 			</view> 
-			<view class="eva-box" v-if="discuss.list.discuss.length > 0">
+			<view class="eva-box" v-if="discuss.list && discuss.list.discuss.length > 0">
 				<image class="portrait" src="/static/avatar_default@2x.png" mode="aspectFill"></image>
 				<view class="right">
-					<text class="name">{{discuss.list.discuss[0].author}}</text>
-					<text class="con">{{discuss.list.discuss[0].comment}}</text>
+					<text class="name">{{discuss.list.discuss[0].author || ''}}</text>
+					<text class="con">{{discuss.list.discuss[0].comment || ''}}</text>
 					<view class="bot">
 						<!-- <text class="attr">购买类型：XL 红色</text> -->
 						<text class="time">{{discuss.list.discuss[0].time | formatTime}}</text>
@@ -258,7 +258,11 @@ export default {
 			requesting: false, // 是否正在请求
 			isFastbuy: false,
 			marketable: true,
-			discuss: {},
+			discuss: {
+				list: {
+					discuss: []
+				}
+			},
 		};
 	},
 	computed: {
@@ -307,6 +311,9 @@ export default {
 				'goods': []
 			};
 			for (let proKey in promotion) {
+				if (!newPromotion.hasOwnProperty(proKey)) {
+					continue;
+				}
 				let proItem = promotion[proKey];
 				for (let itemKey in proItem) {
 					proItem[itemKey].id = itemKey;
@@ -385,21 +392,22 @@ export default {
 					}
 					// 基本信息
 					if (res.data.page_product_basic) {
-						that.imgList = res.data.page_product_basic.images;
 						that.name = res.data.page_product_basic.title;
 						that.image = res.data.page_product_basic.image_default_url;
+						that.imgList = res.data.page_product_basic.images || [{image_id: 1, image_url: that.image}];
 						that.favorite = res.data.page_product_basic.isFav;
 						that.goodsId = res.data.page_product_basic.goods_id;
 						that.sales = ~~res.data.page_product_basic.buy_count;
 						that.views = ~~res.data.page_product_basic.view_count;
 						that.marketable = res.data.page_product_basic.product_marketable === 'true' ? true : false;
-						that.discuss = res.data.discuss;
+						that.discuss = res.data.discuss || {};
 						that._formatPromotion(res.data.page_product_basic.promotion);
 						that._formatSpec(res.data.page_product_basic.spec);
 						that.getGoodsIntro(res.data.page_product_basic.goods_id);
 
 					}
 					// 价格
+					console.log(res.data.product_price);
 					if (res.data.product_price) {
 						that.price = res.data.product_price.price;
 						that.mktprice = res.data.product_price.mktprice;

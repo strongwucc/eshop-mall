@@ -129,10 +129,10 @@ page {
       width: 160rpx;
       height: 56rpx;
       line-height: 56rpx;
-      background: rgba(255, 255, 255, 1);
+      background:rgba(104,62,32,1);
       border-radius: 30rpx;
       font-size: 28rpx;
-      color: $base-color;
+      color:rgba(242,242,242,1);
       align-self: flex-end;
       margin: 40rpx 40rpx 0 0;
     }
