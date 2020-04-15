@@ -1,13 +1,19 @@
 <template>
   <view class="container">
     <view class="header">
-      <view class="explain" @click="toggleRuleMask">积分说明</view>
-      <view class="score">{{total}}</view>
+      <!-- <view class="explain" @click="toggleRuleMask">积分说明</view> -->
+      <view class="btn" @click="exchangeCoupon">积分兑换</view>
       <view class="label">
+        <!-- <text class="line"></text> -->
+        <text class="txt">我的积分</text>
+        <!-- <text class="line"></text> -->
+      </view>
+      <view class="score">{{total}}</view>
+      <!-- <view class="label">
         <text class="line"></text>
         <text class="txt">我的积分</text>
         <text class="line"></text>
-      </view>
+      </view> -->
     </view>
     <view class="title">积分交易明细</view>
     <view class="records">
@@ -109,7 +115,13 @@ export default {
       }, 200);
 
     },
-    stopPrevent () {}
+    stopPrevent () {},
+    exchangeCoupon () {
+      let that = this;
+      uni.navigateTo({
+        url: '/pages/coupon/exchange'
+      });
+    }
   },
 
 }
@@ -130,35 +142,55 @@ page {
   align-items: center;
   .header {
     flex: none;
-    width: 100%;
-    height: 360rpx;
-    background:linear-gradient(360deg,$uni-color-primary 0%,$uni-color-error 100%);
+    width: 690rpx;
+    height: 300rpx;
+    margin: 30rpx auto;
+    background: $base-color;
+    box-shadow: 0px 12rpx 30rpx $base-color;
+    border-radius: 32rpx;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
     text-align: center;
     .explain {
       align-self: flex-end;
       padding: 21rpx 26rpx;
       box-sizing: border-box;
     }
+    .btn {
+      width:160rpx;
+      height:56rpx;
+      line-height: 56rpx;
+      background:rgba(255,255,255,1);
+      border-radius:30rpx;
+      font-size:28rpx;
+      color:$base-color;
+      align-self: flex-end;
+      margin: 40rpx 40rpx 0 0;
+    }
+    .score,
+    .label {
+      margin-left: 62rpx;
+    }
     .score {
       font-size: 76rpx;
-      margin-top: 65rpx;
+      margin-top: 24rpx;
+      color: #ffffff;
     }
     .label {
-      margin-top: 15rpx;
+      // margin-top: 15rpx;
       display: flex;
       justify-content: center;
       align-items: center;
+      color:rgba(255,255,255,.7);
       .txt {
         margin: 0 11rpx;
       }
       .line {
         width:34rpx;
         height:1px;
-        background:$font-color-dark;
+        background:$page-color-base;
       }
     }
   }

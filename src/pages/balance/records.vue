@@ -1,17 +1,23 @@
 <template>
   <view class="container">
     <view class="header">
-      <view class="money">￥{{(total || 0.00) | formatMoney}}</view>
+      <view class="btn" @click="recharge">充值</view>
       <view class="label">
-        <text class="line"></text>
-        <text class="txt">我的余额</text>
-        <text class="line"></text>
+        <!-- <text class="line"></text> -->
+        <text class="txt">余额（元）</text>
+        <!-- <text class="line"></text> -->
       </view>
-      <view class="btn">立即充值</view>
+      <view class="money">￥{{(total || 0.00) | formatMoney}}</view>
     </view>
     <view class="title">余额交易明细</view>
     <view class="records">
-      <scroll-view class="records-scroll" :scroll-y="true" :lower-threshold="1" @scrolltolower="getRecords" v-if="records.length > 0">
+      <scroll-view
+        class="records-scroll"
+        :scroll-y="true"
+        :lower-threshold="1"
+        @scrolltolower="getRecords"
+        v-if="records.length > 0"
+      >
         <view class="record-item" v-for="(item, itemIndex) in records" :key="item.log_id">
           <view class="left">
             <view class="title">{{item.message}}</view>
@@ -30,25 +36,21 @@
 
 <script>
 export default {
-  
-  data () {
+  data() {
     return {
-      total: 0.00,
+      total: 0.0,
       records: [],
       currentPage: 1,
       totalPage: 0,
-      hasMore: true,
-    }
+      hasMore: true
+    };
   },
 
-  computed: {
-  },
+  computed: {},
 
-  onLoad (options) {
+  onLoad(options) {},
 
-  },
-
-  onShow () {
+  onShow() {
     let that = this;
     that.getRecords();
   },
@@ -62,26 +64,34 @@ export default {
       if (that.hasMore === false) {
         return false;
       }
-      that.$http.post(that.$api.user.balance, {page: that.currentPage}).then(res => {
-        if (res.return_code === '0000') {
-          that.records = that.records.concat(res.data.advlogs);
-          that.total = res.data.total;
-          that.totalPage = res.data.pager.total;
-          if (res.data.pager.current >= res.data.pager.total) {
-            that.hasMore = false;
+      that.$http
+        .post(that.$api.user.balance, { page: that.currentPage })
+        .then(res => {
+          if (res.return_code === "0000") {
+            that.records = that.records.concat(res.data.advlogs);
+            that.total = res.data.total;
+            that.totalPage = res.data.pager.total;
+            if (res.data.pager.current >= res.data.pager.total) {
+              that.hasMore = false;
+            } else {
+              that.currentPage = ~~res.data.pager.current + 1;
+            }
           } else {
-            that.currentPage = ~~ res.data.pager.current + 1;
+            console.log(res);
           }
-        } else {
-          console.log(res);
-        }
-      }).catch(error => {
-        console.log(error);
-      });
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
-  },
-
-}
+    recharge () {
+      let that = this;
+      uni.navigateTo({
+        url: '/pages/balance/recharge'
+      });
+    }
+  }
+};
 </script>
 
 <style lang="scss">
@@ -99,43 +109,59 @@ page {
   align-items: center;
   .header {
     flex: none;
-    width: 100%;
-    height: 360rpx;
-    background:linear-gradient(360deg,$uni-color-primary 0%,$uni-color-error 100%);
+    width: 690rpx;
+    height: 300rpx;
+    margin: 30rpx auto;
+    background: rgba(225, 166, 112, 1);
+    box-shadow: 0 12rpx 30rpx rgba(225, 166, 112, 0.4);
+    border-radius: 32rpx;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
     text-align: center;
+    .explain {
+      align-self: flex-end;
+      padding: 21rpx 26rpx;
+      box-sizing: border-box;
+    }
+    .btn {
+      width: 160rpx;
+      height: 56rpx;
+      line-height: 56rpx;
+      background: rgba(255, 255, 255, 1);
+      border-radius: 30rpx;
+      font-size: 28rpx;
+      color: $base-color;
+      align-self: flex-end;
+      margin: 40rpx 40rpx 0 0;
+    }
+    .money,
+    .label {
+      margin-left: 62rpx;
+    }
     .money {
       font-size: 76rpx;
-      padding: 61rpx 0 0;
+      margin-top: 24rpx;
+      color: #ffffff;
     }
     .label {
-      margin-top: 15rpx;
+      // margin-top: 15rpx;
       display: flex;
       justify-content: center;
       align-items: center;
+      color: rgba(255, 255, 255, 0.7);
       .txt {
         margin: 0 11rpx;
       }
       .line {
-        width:34rpx;
-        height:1px;
-        background:$font-color-dark;
+        width: 34rpx;
+        height: 1px;
+        background: $page-color-base;
       }
     }
-    .btn {
-      margin-top: 33rpx;
-      width: 240rpx;
-      height: 70rpx;
-      line-height: 70rpx;
-      background: $font-color-dark;
-      border-radius: 8rpx;
-      color: $page-color-light;
-    }
   }
-  >.title {
+  > .title {
     flex: none;
     height: 80rpx;
     width: 100%;
@@ -165,17 +191,17 @@ page {
           align-items: left;
           justify-content: center;
           .title {
-            font-size:30rpx;
+            font-size: 30rpx;
           }
           .time {
-            font-size:22rpx;
+            font-size: 22rpx;
             color: $font-color-disabled;
             margin-top: 10rpx;
           }
         }
         .right {
           font-size: 38rpx;
-          color: $uni-color-primary;
+          color: rgba(225,166,112,1);
         }
       }
     }
@@ -187,6 +213,5 @@ page {
       color: $font-color-disabled;
     }
   }
-
 }
 </style>
