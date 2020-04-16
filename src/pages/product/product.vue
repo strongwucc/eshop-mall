@@ -263,6 +263,8 @@ export default {
 					discuss: []
 				}
 			},
+			shareQrcode: '',
+			qrcodeRequesting: false,
 		};
 	},
 	computed: {
@@ -519,6 +521,16 @@ export default {
 				return true;
 			}
 			try {
+				uni.showLoading({
+					title: '正在获取小程序码'
+				})
+				let qrcodeImg = await that.getProductQrcode();
+				if (qrcodeImg === false) {
+					uni.hideLoading();
+					that.$toast('获取小程序码失败');
+					throw '获取小程序码失败';
+				}
+				that.shareQrcode = qrcodeImg;
 				const d = await getSharePoster({
 					_this: that, //若在组件中使用 必传
 					type: "shareType",
@@ -627,7 +639,7 @@ export default {
 								type: "image",
 								serialNum: 4,
 								id: 'qrcodeImage',
-								url: '/static/temp/qrcode.png',
+								url: that.shareQrcode,
 								dx: 150,
 								dy: bgObj.height - 200 - padding,
 								dWidth: 200,
@@ -671,6 +683,27 @@ export default {
 				console.log(e);
 				uni.hideLoading();
 			}
+		},
+		async getProductQrcode () {
+			let that = this;
+			if (that.qrcodeRequesting) {
+				return false;
+			}
+
+			let qrcodeData = {
+				pid: that.productId,
+				code: ''
+			}
+
+			that.qrcodeRequesting = true;
+			let res = await that.$http.post(that.$api.ectools.qrcode, qrcodeData);
+			that.qrcodeRequesting = false;
+			if (res.return_code === '0000') {
+				return 'data:image/png;base64,' + res.data.buffer;
+			} else {
+				return false;
+			}
+
 		},
 		savePoster() {
 			let that = this;

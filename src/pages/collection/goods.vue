@@ -5,9 +5,9 @@
         <view class="left"><image :src="goodsItem.image_default_url"></image></view>
         <view class="right">
           <view class="name">{{goodsItem.name}}</view>
-          <view class="price">￥{{goodsItem.price | formatMoney}}</view>
           <view class="action">
-            <button @click.stop="cancelFav(goodsIndex)">取消收藏</button>
+            <text class="price">￥{{goodsItem.price | formatMoney}}</text>
+            <text class="yticon icon-shoucang2" @click.stop="cancelFav(goodsIndex)"></text>
           </view>
         </view>
       </view>
@@ -91,17 +91,17 @@ export default {
         .then(res => {
           that.requesting = false;
           if (res.return_code === "0000") {
-            that.$toast("取消成功");
+            that.$toast("已取消收藏");
             that.goods.splice(goodsIndex,1);
           } else {
             console.log(res.error);
-            that.$toast("取消失败");
+            that.$toast("取消收藏失败");
           }
         })
         .catch(error => {
           that.requesting = false;
           console.log(error);
-          that.$toast("取消失败");
+          that.$toast("取消收藏失败");
         });
     },
     /**
@@ -122,15 +122,20 @@ page {
 }
 .container {
   height: 100%;
+  background-color: $page-color-base;
   .goods-scroll {
     height: 100%;
+    padding: 30rpx 30rpx 0;
     .goods-item {
+      background-color: #ffffff;
       height: 200rpx;
+      border-radius:24rpx;
       padding: 20rpx;
       box-sizing: border-box;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 20rpx;
       .left {
         height: 100%;
         display: flex;
@@ -149,25 +154,33 @@ page {
         justify-content: flex-start;
         align-items: flex-start;
         flex: auto;
-        padding-left: 20rpx;
-        .price {
-          margin-top: 20rpx;
-          color: $uni-color-primary;
+        padding-left: 30rpx;
+        box-sizing: border-box;
+        font-size: 28rpx;
+        .name {
+          display: -webkit-box;
+          overflow: hidden;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
         }
         .action {
           width: 100%;
+          margin-top: 74rpx;
           display: flex;
-          justify-content: flex-end;
+          justify-content: space-between;
           align-items: center;
-
-          button {
-            margin: 0;
-            padding: 0 10rpx;
-            height: 60rpx;
-            line-height: 60rpx;
-            background: $font-color-disabled;
-            color: $page-color-light;
-            font-size: 28rpx;
+          .price {
+            font-size: 32rpx;
+            font-weight: 500;
+            color: $base-color;
+          }
+          .icon-shoucang2 {
+            font-size: 32rpx;
+            color: $base-color;
+            width: 48rpx;
+            height: 48rpx;
+            line-height: 48rpx;
+            text-align: center;
           }
         }
       }

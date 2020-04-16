@@ -63,6 +63,7 @@ module.exports = {
     regions: 'getAreaMap', // 收货地区映射
     dlytype: 'getDlytype', // 快递信息
     payment: 'getPayments', // 支付方式
+    qrcode: 'productQrcode' // 微信小程序码
   },
   index: {
     index: 'index', // 首页数据
