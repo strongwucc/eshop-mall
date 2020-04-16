@@ -1,15 +1,13 @@
 <template>
   <view class="container">
     <scroll-view class="index-scroll" scroll-y="true" @scroll="utils.scroll">
-      <view id="mp-search-box" class="mp-search-box">
+      <view id="mp-search-box" class="mp-search-box" @click="navToSearch">
         <text class="yticon icon-sousuo"></text>
         <input
           class="ser-input"
           type="text"
-          v-model="searchContent"
           placeholder="搜索您想找的商品"
-          confirm-type="search"
-          @confirm="goSearch"
+          disabled="true"
         />
       </view>
 			<view class="search-padding"></view>
@@ -260,6 +258,11 @@ export default {
     disabledSearch() {
       let that = this;
       that.searchDisabled = false;
+    },
+    navToSearch() {
+      uni.navigateTo({
+        url: `/pages/public/search`
+      });
     },
     goSearch() {
       let that = this;

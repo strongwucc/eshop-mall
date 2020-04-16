@@ -9,8 +9,17 @@
           "titleNView": false
         }
       }
-    },
-    {
+    }, {
+      "path": "pages/public/search",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationStyle": "custom",
+        "app-plus": {
+          "titleNView": false,
+          "animationType": "slide-in-bottom"
+        }
+      }
+    }, {
       "path": "pages/product/product",
       "style": {
         "navigationBarTitleText": "详情展示",
@@ -321,6 +330,10 @@
     "list": [{
       "name": "首页", //模式名称
       "path": "pages/index/index" //启动页面，必选
+    },
+    {
+      "name": "搜索",
+      "path": "pages/public/search"
     },
     {
       "name": "分类",

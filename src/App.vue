@@ -368,6 +368,10 @@ export default {
   content: "\e64c";
 }
 
+.icon-hot:before {
+  content: "\e63f";
+}
+
 page {
   height: 100%;
   font-family: "PingFang SC", system-ui, -apple-system, BlinkMacSystemFont,
