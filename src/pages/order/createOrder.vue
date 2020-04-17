@@ -30,8 +30,8 @@
 				<view class="g-item" v-for="(item, itemIndex) in cartInfo.object.goods" :key="item.obj_ident">
 					<image :src="item.obj_items.products[0].image_url"></image>
 					<view class="right">
-						<text class="title clamp">{{item.obj_items.products[0].name}}</text>
-						<text class="spec">{{item.obj_items.products[0].spec_info}}</text>
+						<text class="title clamp">{{item.obj_items.products[0].name || ''}}</text>
+						<text class="spec">{{item.obj_items.products[0].spec_info || ''}}</text>
 						<view class="price-box">
 							<text class="price">￥{{item.obj_items.products[0].price.buy_price || 0.00}}</text>
 							<text class="number">x {{item.quantity}}</text>

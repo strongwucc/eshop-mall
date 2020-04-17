@@ -211,6 +211,7 @@ import share from '@/components/share';
 import htmlParser from '@/common/html-parser'
 import { getSharePoster } from "@/common/poster/poster";
 import { mapState, mapMutations } from 'vuex';
+import { base64src } from '@/common/util'
 export default {
 	components: {
 		share
@@ -280,8 +281,9 @@ export default {
 		let productId = options.id;
 		that.productId = productId;
 
-		that.loadData(productId)
-
+		that.loadData(productId);
+		
+		that.getProductQrcode();
 
 	},
 	onReady(res) {
@@ -504,7 +506,11 @@ export default {
 					url: '/pages/public/login'
 				});
 				return false;
-      }
+			}
+			if (that.shareQrcode === '') {
+				that.$toast('请稍后再试');
+				return false;
+			}
 			that.$refs.share.toggleMask();
 		},
 		doShare(e) {
@@ -521,16 +527,7 @@ export default {
 				return true;
 			}
 			try {
-				uni.showLoading({
-					title: '正在获取小程序码'
-				})
-				let qrcodeImg = await that.getProductQrcode();
-				if (qrcodeImg === false) {
-					uni.hideLoading();
-					that.$toast('获取小程序码失败');
-					throw '获取小程序码失败';
-				}
-				that.shareQrcode = qrcodeImg;
+				
 				const d = await getSharePoster({
 					_this: that, //若在组件中使用 必传
 					type: "shareType",
@@ -684,7 +681,7 @@ export default {
 				uni.hideLoading();
 			}
 		},
-		async getProductQrcode () {
+		getProductQrcode () {
 			let that = this;
 			if (that.qrcodeRequesting) {
 				return false;
@@ -696,13 +693,18 @@ export default {
 			}
 
 			that.qrcodeRequesting = true;
-			let res = await that.$http.post(that.$api.ectools.qrcode, qrcodeData);
-			that.qrcodeRequesting = false;
-			if (res.return_code === '0000') {
-				return 'data:image/png;base64,' + res.data.buffer;
-			} else {
-				return false;
-			}
+			that.$http.post(that.$api.ectools.qrcode, qrcodeData).then(res => {
+				if (res.return_code === '0000') {
+					base64src('data:image/png;base64,' + res.data.buffer).then(shareQrcode => {
+						that.shareQrcode = shareQrcode;
+					}).catch(error => {
+						console.log(error);
+					});
+				}
+			}).catch(error => {
+				console.log(error);
+				that.qrcodeRequesting = false;
+			});
 
 		},
 		savePoster() {

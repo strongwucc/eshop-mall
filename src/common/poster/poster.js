@@ -18,7 +18,7 @@ function getSharePoster(obj) {
       //TODO handle the exception
       removePosterStorage(obj.type);
       try {
-        _app.log('------------清除缓存后, 开始第二次尝试------------');
+        // _app.log('------------清除缓存后, 开始第二次尝试------------');
         const result2 = await returnPromise(obj);
         resolve(result2);
       } catch (e) {
@@ -55,7 +55,7 @@ function returnPromise(obj) {
     try {
       _app.showLoading('正在准备海报数据');
       if (!Context) {
-        _app.log('没有画布对象,创建画布对象');
+        // _app.log('没有画布对象,创建画布对象');
         Context = uni.createCanvasContext(posterCanvasId, (_this || null));
       }
       let bgObj;
@@ -73,7 +73,7 @@ function returnPromise(obj) {
       bgObj.width = bgObj.width * bgScale;
       bgObj.height = bgObj.height * bgScale;
 
-      _app.log('获取背景图信息对象成功:' + JSON.stringify(bgObj));
+      // _app.log('获取背景图信息对象成功:' + JSON.stringify(bgObj));
       const params = {
         bgObj,
         type,
@@ -91,7 +91,7 @@ function returnPromise(obj) {
         if (typeof (imagesArray) == 'function')
           imagesArray = imagesArray(params);
         _app.showLoading('正在生成需绘制图片的临时路径');
-        _app.log('准备设置图片');
+        // _app.log('准备设置图片');
         imagesArray = await setImage(imagesArray);
         _app.hideLoading();
       }
@@ -106,7 +106,7 @@ function returnPromise(obj) {
           qrCodeArray = qrCodeArray(params);
         _app.showLoading('正在生成需绘制图片的临时路径');
         for (let i = 0; i < qrCodeArray.length; i++) {
-          _app.log(i);
+          // _app.log(i);
           if (qrCodeArray[i].image)
             qrCodeArray[i].image = await _app.downloadFile_PromiseFc(qrCodeArray[i].image).catch(error => {
               console.log('下载图片信息失败', error);
@@ -147,7 +147,7 @@ function returnPromise(obj) {
             case 'custom':
               break;
             default:
-              _app.log('未识别的类型');
+              // _app.log('未识别的类型');
               break;
             }
             if (newData && _app.isObject(newData)) {
@@ -159,14 +159,14 @@ function returnPromise(obj) {
           }
 
           if (hasAllInfoCallback) {
-            _app.log('----------------hasAllInfoCallback----------------');
+            // _app.log('----------------hasAllInfoCallback----------------');
             const drawArray_copy = [...drawArray];
             drawArray_copy.sort((a, b) => {
               const a_serialNum = !_app.isUndef(a.serialNum) && !_app.isNull(a.serialNum) ? Number(a.serialNum) : Number.NEGATIVE_INFINITY;
               const b_serialNum = !_app.isUndef(b.serialNum) && !_app.isNull(b.serialNum) ? Number(b.serialNum) : Number.NEGATIVE_INFINITY;
               return a_serialNum - b_serialNum;
             })
-            _app.log('开始for循环');
+            // _app.log('开始for循环');
 
             for (let i = 0; i < drawArray_copy.length; i++) {
               const item = {
@@ -188,7 +188,7 @@ function returnPromise(obj) {
                 }
               }
             }
-            _app.log('for循环结束');
+            // _app.log('for循环结束');
           }
         }
       }
@@ -251,18 +251,18 @@ function drawShareImage(obj) { //绘制海报方法
   return new Promise((rs, rj) => {
     try {
       _app.showLoading('正在绘制海报');
-      _app.log('背景对象:' + JSON.stringify(bgObj));
+      // _app.log('背景对象:' + JSON.stringify(bgObj));
       if (bgObj && bgObj.path) {
-        _app.log('背景有图片路径');
+        // _app.log('背景有图片路径');
         Context.drawImage(bgObj.path, 0, 0, bgObj.width, bgObj.height);
       } else {
-        _app.log('背景没有图片路径');
+        // _app.log('背景没有图片路径');
         if (bgObj.backgroundColor) {
-          _app.log('背景有背景颜色:' + bgObj.backgroundColor);
+          // _app.log('背景有背景颜色:' + bgObj.backgroundColor);
           Context.setFillStyle(bgObj.backgroundColor);
           Context.fillRect(0, 0, bgObj.width, bgObj.height);
         } else {
-          _app.log('背景没有背景颜色');
+          // _app.log('背景没有背景颜色');
         }
       }
 
@@ -288,35 +288,35 @@ function drawShareImage(obj) { //绘制海报方法
       if (drawArray && drawArray.length > 0) {
         for (let i = 0; i < drawArray.length; i++) {
           const drawArrayItem = drawArray[i];
-          _app.log('绘制可控层级序列, drawArrayItem:' + JSON.stringify(drawArrayItem));
+          // _app.log('绘制可控层级序列, drawArrayItem:' + JSON.stringify(drawArrayItem));
           switch (drawArrayItem.type) {
           case 'image':
-            _app.log('绘制可控层级序列, 绘制图片');
+            // _app.log('绘制可控层级序列, 绘制图片');
             drawImage(Context, drawArrayItem);
             break;
           case 'text':
-            _app.log('绘制可控层级序列, 绘制文本');
+            // _app.log('绘制可控层级序列, 绘制文本');
             drawText(Context, drawArrayItem, bgObj);
             break;
           case 'qrcode':
-            _app.log('绘制可控层级序列, 绘制二维码');
+            // _app.log('绘制可控层级序列, 绘制二维码');
             drawQrCode(Context, drawArrayItem);
             break;
           case 'custom':
-            _app.log('绘制可控层级序列, 绘制自定义内容');
+            // _app.log('绘制可控层级序列, 绘制自定义内容');
             if (drawArrayItem.setDraw && typeof drawArrayItem.setDraw === 'function')
               drawArrayItem.setDraw(Context);
             break;
           default:
-            _app.log('未识别的类型');
+            // _app.log('未识别的类型');
             break;
           }
         }
       }
       _app.showLoading('绘制中')
       setTimeout(() => {
-        _app.log('准备执行draw方法')
-        _app.log('Context:' + Context);
+        // _app.log('准备执行draw方法')
+        // _app.log('Context:' + Context);
         const fn = function () {
           _app.showLoading('正在输出图片');
           let setObj = setCanvasToTempFilePath || {};
@@ -344,7 +344,7 @@ function drawShareImage(obj) { //绘制海报方法
             fileType: 'jpg',
             ...setObj
           };
-          _app.log('canvasToTempFilePath的data对象:' + JSON.stringify(data));
+          // _app.log('canvasToTempFilePath的data对象:' + JSON.stringify(data));
           canvasToTempFilePathFn = function () {
             const toTempFilePathObj = { //输出为图片
               ...data,
@@ -355,7 +355,7 @@ function drawShareImage(obj) { //绘制海报方法
               },
               fail(err) {
                 _app.hideLoading();
-                _app.log('输出图片失败:' + JSON.stringify(err));
+                // _app.log('输出图片失败:' + JSON.stringify(err));
                 rj('输出图片失败:' + JSON.stringify(err))
               }
             }
@@ -394,8 +394,8 @@ function drawShareImage(obj) { //绘制海报方法
               }
             })
           }
-          _app.log('延时系数:' + delayTimeScale);
-          _app.log('总计延时:' + delayTime);
+          // _app.log('延时系数:' + delayTimeScale);
+          // _app.log('总计延时:' + delayTime);
           setTimeout(canvasToTempFilePathFn, delayTime);
         }
         Context.draw((typeof (reserve) == 'boolean' ? reserve : false), fn);
@@ -410,25 +410,25 @@ function drawShareImage(obj) { //绘制海报方法
 
 // export 
 function setText(Context, texts) { // 设置文本数据
-  _app.log('进入设置文字方法, texts:' + JSON.stringify(texts));
+  // _app.log('进入设置文字方法, texts:' + JSON.stringify(texts));
   if (texts && _app.isArray(texts)) {
-    _app.log('texts是数组');
+    // _app.log('texts是数组');
     if (texts.length > 0) {
       for (let i = 0; i < texts.length; i++) {
-        _app.log('字符串信息-初始化之前:' + JSON.stringify(texts[i]));
+        // _app.log('字符串信息-初始化之前:' + JSON.stringify(texts[i]));
         texts[i] = setTextFn(Context, texts[i]);
       }
     }
   } else {
-    _app.log('texts是对象');
+    // _app.log('texts是对象');
     texts = setTextFn(Context, texts);
   }
-  _app.log('返回texts:' + JSON.stringify(texts));
+  // _app.log('返回texts:' + JSON.stringify(texts));
   return texts;
 }
 
 function setTextFn(Context, textItem) {
-  _app.log('进入设置文字方法, textItem:' + JSON.stringify(textItem));
+  // _app.log('进入设置文字方法, textItem:' + JSON.stringify(textItem));
   if (_app.isNotNull_string(textItem.text)) {
     textItem.text = String(textItem.text);
     textItem.alpha = textItem.alpha !== undefined ? textItem.alpha : 1;
@@ -439,12 +439,12 @@ function setTextFn(Context, textItem) {
     textItem.dx = textItem.dx || 0;
     textItem.dy = textItem.dy || 0;
     textItem.size = Math.ceil(Number(textItem.size));
-    _app.log('字符串信息-初始化默认值后:' + JSON.stringify(textItem));
+    // _app.log('字符串信息-初始化默认值后:' + JSON.stringify(textItem));
     const textLength = countTextLength(Context, {
       text: textItem.text,
       size: textItem.size
     });
-    _app.log('字符串信息-初始化时的文本长度:' + textLength);
+    // _app.log('字符串信息-初始化时的文本长度:' + textLength);
     let infoCallBackObj = {};
     if (textItem.infoCallBack && typeof (textItem.infoCallBack) === 'function') {
       infoCallBackObj = textItem.infoCallBack(textLength);
@@ -454,13 +454,13 @@ function setTextFn(Context, textItem) {
       textLength,
       ...infoCallBackObj
     }
-    _app.log('字符串信息-infoCallBack后:' + JSON.stringify(textItem));
+    // _app.log('字符串信息-infoCallBack后:' + JSON.stringify(textItem));
   }
   return textItem;
 }
 
 function countTextLength(Context, obj) {
-  _app.log('计算文字长度, obj:' + JSON.stringify(obj));
+  // _app.log('计算文字长度, obj:' + JSON.stringify(obj));
   const {
     text,
     size
@@ -474,17 +474,17 @@ function countTextLength(Context, obj) {
   	textLength = {};
   } */
   textLength = {};
-  _app.log('measureText计算文字长度, textLength:' + JSON.stringify(textLength));
+  // _app.log('measureText计算文字长度, textLength:' + JSON.stringify(textLength));
   textLength = textLength && textLength.width ? textLength.width : 0;
   if (!textLength) {
     let l = 0;
     for (let j = 0; j < text.length; j++) {
       let t = text.substr(j, 1);
       const countL = countStrLength(t);
-      _app.log('计算文字宽度系数:' + countL);
+      // _app.log('计算文字宽度系数:' + countL);
       l += countL;
     }
-    _app.log('文字宽度总系数:' + l);
+    // _app.log('文字宽度总系数:' + l);
     textLength = l * size;
   }
   return textLength;
@@ -675,17 +675,17 @@ function countStrLength(t) {
 
 // export 
 function setImage(images) { // 设置图片数据
-  _app.log('进入设置图片数据方法');
+  // _app.log('进入设置图片数据方法');
   return new Promise(async (resolve, rejcet) => {
     try {
       if (images && _app.isArray(images)) {
-        _app.log('images是一个数组');
+        // _app.log('images是一个数组');
         for (let i = 0; i < images.length; i++) {
-          _app.log('设置图片数据循环中:' + i);
+          // _app.log('设置图片数据循环中:' + i);
           images[i] = await setImageFn(images[i]);
         }
       } else {
-        _app.log('images是一个对象');
+        // _app.log('images是一个对象');
         images = await setImageFn(images);
       }
       resolve(images);
@@ -731,12 +731,12 @@ function setImageFn(image) {
 // export 
 function drawText(Context, textArray, bgObj) { // 先遍历换行再绘制
   if (!_app.isArray(textArray)) {
-    _app.log('遍历文本方法, 不是数组');
+    // _app.log('遍历文本方法, 不是数组');
     textArray = [textArray];
   } else {
-    _app.log('遍历文本方法, 是数组');
+    // _app.log('遍历文本方法, 是数组');
   }
-  _app.log('遍历文本方法, textArray:' + JSON.stringify(textArray));
+  // _app.log('遍历文本方法, textArray:' + JSON.stringify(textArray));
   const newArr = [];
   if (textArray && textArray.length > 0) {
     for (let j = 0; j < textArray.length; j++) {
@@ -777,7 +777,7 @@ function drawText(Context, textArray, bgObj) { // 先遍历换行再绘制
             temp = chr[a];
           }
         }
-        _app.log('循环出的文本数组:' + JSON.stringify(row));
+        // _app.log('循环出的文本数组:' + JSON.stringify(row));
         //只显示几行 变量间距lineHeight  变量行数lineNum
         let allNum = (lineNum >= 0 && lineNum < row.length) ? lineNum : row.length;
 
@@ -796,7 +796,7 @@ function drawText(Context, textArray, bgObj) { // 先遍历换行再绘制
               size: textItem.size
             })
           };
-          _app.log('重新组成的文本对象:' + JSON.stringify(obj));
+          // _app.log('重新组成的文本对象:' + JSON.stringify(obj));
           newArr.push(obj);
         }
       } else {
@@ -804,13 +804,13 @@ function drawText(Context, textArray, bgObj) { // 先遍历换行再绘制
       }
     }
   }
-  _app.log('绘制文本新数组:' + JSON.stringify(newArr));
+  // _app.log('绘制文本新数组:' + JSON.stringify(newArr));
   drawTexts(Context, newArr);
 }
 
 function setFont(textItem = {}) {
   if (textItem.font && typeof (textItem.font) === 'string') {
-    _app.log(textItem.font)
+    // _app.log(textItem.font)
     return textItem.font;
   } else {
     let fontStyle = 'normal';
@@ -836,22 +836,22 @@ function setFont(textItem = {}) {
 }
 
 function drawTexts(Context, texts) { // 绘制文本
-  _app.log('准备绘制文本方法, texts:' + JSON.stringify(texts));
+  // _app.log('准备绘制文本方法, texts:' + JSON.stringify(texts));
   if (texts && _app.isArray(texts)) {
-    _app.log('准备绘制文本方法, 是数组');
+    // _app.log('准备绘制文本方法, 是数组');
     if (texts.length > 0) {
       for (let i = 0; i < texts.length; i++) {
         drawTextFn(Context, texts[i]);
       }
     }
   } else {
-    _app.log('准备绘制文本方法, 不是数组');
+    // _app.log('准备绘制文本方法, 不是数组');
     drawTextFn(Context, texts);
   }
 }
 
 function drawTextFn(Context, textItem) {
-  _app.log('进入绘制文本方法, textItem:' + JSON.stringify(textItem));
+  // _app.log('进入绘制文本方法, textItem:' + JSON.stringify(textItem));
   if (textItem && _app.isObject(textItem) && textItem.text) {
     Context.font = setFont(textItem);
     Context.setFillStyle(textItem.color);
@@ -860,13 +860,13 @@ function drawTextFn(Context, textItem) {
     Context.setTextBaseline(textItem.textBaseline);
     Context.fillText(textItem.text, textItem.dx, textItem.dy);
     if (textItem.lineThrough && _app.isObject(textItem.lineThrough)) {
-      _app.log('有删除线');
+      // _app.log('有删除线');
       let lineThrough = textItem.lineThrough;
       lineThrough.alpha = lineThrough.alpha !== undefined ? lineThrough.alpha : textItem.alpha;
       lineThrough.style = lineThrough.style || textItem.color;
       lineThrough.width = lineThrough.width !== undefined ? lineThrough.width : textItem.size / 10;
       lineThrough.cap = lineThrough.cap !== undefined ? lineThrough.cap : 'butt';
-      _app.log('删除线对象:' + JSON.stringify(lineThrough));
+      // _app.log('删除线对象:' + JSON.stringify(lineThrough));
       Context.setGlobalAlpha(lineThrough.alpha);
       Context.setStrokeStyle(lineThrough.style);
       Context.setLineWidth(lineThrough.width);
@@ -899,7 +899,7 @@ function drawTextFn(Context, textItem) {
       Context.lineTo(mx + textItem.textLength, my);
       Context.stroke();
       Context.closePath();
-      _app.log('删除线完毕');
+      // _app.log('删除线完毕');
     }
     Context.setGlobalAlpha(1);
     Context.font = '10px sans-serif';
@@ -907,7 +907,7 @@ function drawTextFn(Context, textItem) {
 }
 // export 
 function drawImage(Context, images) { // 绘制图片
-  _app.log('判断图片数据类型:' + JSON.stringify(images))
+  // _app.log('判断图片数据类型:' + JSON.stringify(images))
   if (images && _app.isArray(images)) {
     if (images.length > 0) {
       for (let i = 0; i < images.length; i++) {
@@ -921,7 +921,7 @@ function drawImage(Context, images) { // 绘制图片
 }
 
 function readyDrawImageFn(Context, img) {
-  _app.log('判断绘制图片形状, img:' + JSON.stringify(img));
+  // _app.log('判断绘制图片形状, img:' + JSON.stringify(img));
   if (img.url) {
     if (img.circleSet) {
       drawCircleImage(Context, img);
@@ -934,35 +934,35 @@ function readyDrawImageFn(Context, img) {
 }
 
 function drawImageFn(Context, img) {
-  _app.log('进入绘制默认图片方法, img:' + JSON.stringify(img));
+  // _app.log('进入绘制默认图片方法, img:' + JSON.stringify(img));
   if (img.url) {
     const hasAlpha = !_app.isUndef(img.alpha);
     img.alpha = Number(!_app.isUndef(img.alpha) ? img.alpha : 1);
     Context.setGlobalAlpha(img.alpha);
-    _app.log('绘制默认图片方法, 有url');
+    // _app.log('绘制默认图片方法, 有url');
     if (img.dWidth && img.dHeight && img.sx && img.sy && img.sWidth && img.sHeight) {
-      _app.log('绘制默认图片方法, 绘制第一种方案');
+      // _app.log('绘制默认图片方法, 绘制第一种方案');
       Context.drawImage(img.url, img.dx || 0, img.dy || 0,
         img.dWidth || false, img.dHeight || false,
         img.sx || false, img.sy || false,
         img.sWidth || false, img.sHeight || false);
     } else if (img.dWidth && img.dHeight) {
-      _app.log('绘制默认图片方法, 绘制第二种方案');
+      // _app.log('绘制默认图片方法, 绘制第二种方案');
       Context.drawImage(img.url, img.dx || 0, img.dy || 0,
         img.dWidth || false, img.dHeight || false);
     } else {
-      _app.log('绘制默认图片方法, 绘制第三种方案');
+      // _app.log('绘制默认图片方法, 绘制第三种方案');
       Context.drawImage(img.url, img.dx || 0, img.dy || 0);
     }
     if (hasAlpha) {
       Context.setGlobalAlpha(1);
     }
   }
-  _app.log('绘制默认图片方法, 绘制完毕');
+  // _app.log('绘制默认图片方法, 绘制完毕');
 }
 
 function drawCircleImage(Context, obj) {
-  _app.log('进入绘制圆形图片方法, obj:' + JSON.stringify(obj));
+  // _app.log('进入绘制圆形图片方法, obj:' + JSON.stringify(obj));
   let {
     dx,
     dy,
@@ -995,12 +995,12 @@ function drawCircleImage(Context, obj) {
   Context.setGlobalAlpha(1);
   Context.clip();
   drawImageFn(Context, obj);
-  _app.log('默认图片绘制完毕');
+  // _app.log('默认图片绘制完毕');
   Context.restore();
 }
 
 function drawRoundRectImage(Context, obj) { // 绘制矩形
-  _app.log('进入绘制矩形图片方法, obj:' + JSON.stringify(obj));
+  // _app.log('进入绘制矩形图片方法, obj:' + JSON.stringify(obj));
   Context.save();
   let {
     dx,
@@ -1036,12 +1036,12 @@ function drawRoundRectImage(Context, obj) { // 绘制矩形
   Context.clip();
   drawImageFn(Context, obj);
   Context.restore();
-  _app.log('进入绘制矩形图片方法, 绘制完毕');
+  // _app.log('进入绘制矩形图片方法, 绘制完毕');
 }
 
 // export 
 function drawQrCode(Context, qrCodeObj) { //生成二维码方法， 参考了 诗小柒 的二维码生成器代码
-  _app.log('进入绘制二维码方法')
+  // _app.log('进入绘制二维码方法')
   _app.showLoading('正在生成二维码');
   let qrcodeAlgObjCache = [];
   let options = {
@@ -1130,7 +1130,7 @@ function drawQrCode(Context, qrCodeObj) { //生成二维码方法， 参考了 �
       }
     }
   }
-  _app.log('进入绘制二维码方法完毕')
+  // _app.log('进入绘制二维码方法完毕')
   _app.hideLoading();
 }
 
@@ -1150,27 +1150,27 @@ function getShreUserPosterBackground(objs) { //检查背景图是否存在于本
       // #ifdef H5
       pbg = false;
       // #endif
-      _app.log('获取的缓存:' + JSON.stringify(pbg));
+      // _app.log('获取的缓存:' + JSON.stringify(pbg));
       if (pbg && pbg.path && pbg.name) {
-        _app.log('海报有缓存, 准备获取后端背景图进行对比');
+        // _app.log('海报有缓存, 准备获取后端背景图进行对比');
         const image = await _app.getPosterUrl(objs);
-        _app.log('准备对比name是否相同');
+        // _app.log('准备对比name是否相同');
         if (pbg.name === _app.fileNameInPath(image)) {
-          _app.log('name相同, 判断该背景图是否存在于本地')
+          // _app.log('name相同, 判断该背景图是否存在于本地')
           const index = await _app.checkFile_PromiseFc(pbg.path)
           if (index >= 0) {
-            _app.log('海报save路径存在, 对比宽高信息, 存储并输出');
+            // _app.log('海报save路径存在, 对比宽高信息, 存储并输出');
             const imageObj = await _app.getImageInfo_PromiseFc(pbg.path);
             let obj = {
               ...pbg
             };
             if (!pbg.width || !pbg.height || pbg.width !== imageObj.width || pbg.height !== imageObj.height) {
-              _app.log('宽高对比不通过， 重新获取');
+              // _app.log('宽高对比不通过， 重新获取');
               const savedFilePath = await getShreUserPosterBackgroundFc(objs, image)
               _app.hideLoading();
               resolve(savedFilePath);
             } else {
-              _app.log('宽高对比通过, 再次存储, 并返回路径');
+              // _app.log('宽高对比通过, 再次存储, 并返回路径');
               obj = {
                 ...pbg,
                 width: imageObj.width,
@@ -1185,19 +1185,19 @@ function getShreUserPosterBackground(objs) { //检查背景图是否存在于本
               resolve(obj);
             }
           } else {
-            _app.log('海报save路径不存在, 重新获取海报');
+            // _app.log('海报save路径不存在, 重新获取海报');
             const savedFilePath = await getShreUserPosterBackgroundFc(objs, image)
             _app.hideLoading();
             resolve(savedFilePath);
           }
         } else {
-          _app.log('name不相同, 重新获取海报');
+          // _app.log('name不相同, 重新获取海报');
           const savedFilePath = await getShreUserPosterBackgroundFc(objs, image)
           _app.hideLoading();
           resolve(savedFilePath);
         }
       } else {
-        _app.log('海报背景图没有缓存, 准备获取海报背景图');
+        // _app.log('海报背景图没有缓存, 准备获取海报背景图');
         const savedFilePath = await getShreUserPosterBackgroundFc(objs)
         _app.hideLoading();
         resolve(savedFilePath);
@@ -1205,7 +1205,7 @@ function getShreUserPosterBackground(objs) { //检查背景图是否存在于本
     } catch (e) {
       _app.hideLoading();
       _app.showToast('获取分享用户背景图失败:' + JSON.stringify(e));
-      _app.log(JSON.stringify(e));
+      // _app.log(JSON.stringify(e));
       reject(e);
     }
   })
@@ -1237,18 +1237,18 @@ function getShreUserPosterBackgroundFc(objs, upimage) { //下载并保存背景�
     backgroundImage,
     type
   } = objs;
-  _app.log('获取分享背景图, 尝试清空本地数据');
+  // _app.log('获取分享背景图, 尝试清空本地数据');
   removePosterStorage(type);
   return new Promise(async (resolve, reject) => {
     try {
       _app.showLoading('正在下载海报背景图');
       if (upimage) {
-        _app.log('有从后端获取的背景图片路径');
-        _app.log('尝试下载并保存背景图');
+        // _app.log('有从后端获取的背景图片路径');
+        // _app.log('尝试下载并保存背景图');
         const name = _app.fileNameInPath(upimage);
         const savedFilePath = await _app.downLoadAndSaveFile_PromiseFc(upimage);
         if (savedFilePath) {
-          _app.log('下载并保存背景图成功:' + savedFilePath);
+          // _app.log('下载并保存背景图成功:' + savedFilePath);
           const imageObj = await _app.getImageInfo_PromiseFc(savedFilePath);
           const returnObj = {
             path: savedFilePath,
@@ -1268,21 +1268,21 @@ function getShreUserPosterBackgroundFc(objs, upimage) { //下载并保存背景�
           reject('not find savedFilePath');
         }
       } else {
-        _app.log('没有从后端获取的背景图片路径, 尝试从后端获取背景图片路径');
+        // _app.log('没有从后端获取的背景图片路径, 尝试从后端获取背景图片路径');
         const image = await _app.getPosterUrl(objs);
-        _app.log('尝试下载并保存背景图:' + image);
+        // _app.log('尝试下载并保存背景图:' + image);
         const savedFilePath = await _app.downLoadAndSaveFile_PromiseFc(image);
         if (savedFilePath) {
-          _app.log('下载并保存背景图成功:' + savedFilePath);
+          // _app.log('下载并保存背景图成功:' + savedFilePath);
           const imageObj = await _app.getImageInfo_PromiseFc(savedFilePath);
-          _app.log('获取图片信息成功');
+          // _app.log('获取图片信息成功');
           const returnObj = {
             path: savedFilePath,
             width: imageObj.width,
             height: imageObj.height,
             name: _app.fileNameInPath(image)
           }
-          _app.log('拼接背景图信息对象成功:' + JSON.stringify(returnObj));
+          // _app.log('拼接背景图信息对象成功:' + JSON.stringify(returnObj));
 
           // #ifndef H5
           setPosterStorage(type, {
@@ -1291,7 +1291,7 @@ function getShreUserPosterBackgroundFc(objs, upimage) { //下载并保存背景�
           // #endif
 
           _app.hideLoading();
-          _app.log('返回背景图信息对象');
+          // _app.log('返回背景图信息对象');
           resolve({
             ...returnObj
           });
