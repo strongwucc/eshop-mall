@@ -16,7 +16,7 @@
 			</view>
 			<text class="cate-item yticon icon-fenlei1" v-if="showCategory" @click="toggleCateMask('show')"></text>
 		</view>
-		<scroll-view class="goods-scroll" scroll-y refresher-enabled scroll-anchoring :refresher-triggered="refresherTriggered" @scrolltolower="reachBottom" @refresherrefresh="pullDownRefresh">
+		<scroll-view class="goods-scroll" scroll-y refresher-enabled scroll-anchoring :scroll-top="scrollTop" :refresher-triggered="refresherTriggered" @scrolltolower="reachBottom" @refresherrefresh="pullDownRefresh" @scroll="scroll">
 			<view class="goods-list">
 				<view 
 					v-for="(item, index) in goodsList" :key="index"
@@ -68,7 +68,9 @@
 				// headerPosition:"fixed",
 				// headerTop:"0px",
 				loadingType: 'more', //加载更多状态
-				filterIndex: 0, 
+				filterIndex: 0,
+				scrollTop: 0,
+				oldScrollTop: 0,
 				cateId: 0, //已选三级分类id
 				searchContent: '',
 				priceOrder: 0, //1 价格从低到高 2价格从高到低
@@ -256,6 +258,10 @@
 				});
 
 			},
+			scroll(e) {
+				let that = this;
+				that.oldScrollTop = e.detail.scrollTop;
+			},
 			//下拉刷新
 			pullDownRefresh(){
 				this.loadData('refresh');
@@ -279,10 +285,14 @@
 				}else{
 					that.priceOrder = 0;
 				}
-				uni.pageScrollTo({
-					duration: 300,
-					scrollTop: 0
-				})
+				// uni.pageScrollTo({
+				// 	duration: 300,
+				// 	scrollTop: 0
+				// })
+				that.scrollTop = that.oldScrollTop;
+				that.$nextTick(function() {
+						that.scrollTop = 0
+				});
 				that.loadData('refresh', 1);
 				uni.showLoading({
 					title: '正在加载'
