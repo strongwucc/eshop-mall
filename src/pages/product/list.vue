@@ -10,8 +10,8 @@
 			<view class="nav-item" :class="{current: filterIndex === 2}" @click="tabClick(2)">
 				<text>价格</text>
 				<view class="p-box">
-					<text :class="{active: priceOrder === 1 && filterIndex === 2}" class="yticon icon-shang"></text>
-					<text :class="{active: priceOrder === 2 && filterIndex === 2}" class="yticon icon-shang xia"></text>
+					<text :class="{active: priceOrder === 2 && filterIndex === 2}" class="yticon icon-shang"></text>
+					<text :class="{active: priceOrder === 1 && filterIndex === 2}" class="yticon icon-shang xia"></text>
 				</view>
 			</view>
 			<text class="cate-item yticon icon-fenlei1" v-if="showCategory" @click="toggleCateMask('show')"></text>

@@ -14,7 +14,7 @@
       </view>
       <view v-else class="empty-tips">
         空空如也
-        <view class="navigator" @click="navToLogin">去登陆></view>
+        <view class="navigator" @click="navToLogin">去登录></view>
       </view>
     </view>
     <template v-else-if="loaded && (cartInfo.items_count > 0)">
@@ -191,7 +191,7 @@ export default {
         });
     },
     couDan() {
-      uni.navigateTo({
+      uni.switchTab({
         url: "/pages/index/index"
       });
     },

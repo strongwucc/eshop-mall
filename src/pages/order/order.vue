@@ -124,13 +124,28 @@ export default {
         },
         {
           state: 5,
-          text: "已作废",
+          text: "已取消",
 					loadingType: "more",
 					filter: {pay_status: 'dead'},
 					currentPage: 1,
           orderList: []
         }
-      ]
+      ],
+      payStatusMap: {
+        "0": "待付款",
+        "1": "已付款",
+        "2": "已付款至到担保方",
+        "3": "部分付款",
+        "4": "部分退款",
+        "5": "全额退款"
+      },
+      shipStatusMap: {
+        "0": "未发货",
+        "1": "已发货",
+        "2": "部分发货",
+        "3": "部分退货",
+        "4": "已退货"
+      }
     };
   },
 
@@ -244,23 +259,22 @@ export default {
     orderStateExp(status, payStatus, shipStatus) {
 
       let stateTip = "",
+        that = this,
 				stateTipColor = "#fa436a";
 				
 			payStatus = ~~ payStatus;
 			shipStatus = ~~ shipStatus;
 
 			if (status === 'dead') {
-				stateTip = "已作废";
+				stateTip = "已取消";
         stateTipColor = "#909399";
 			} else if (status === 'finish') {
 				stateTip = "已完成";
 			} else if (payStatus === 0) {
 				stateTip = "待付款";
-			} else if (shipStatus === 0) {
-				stateTip = "待发货";
-			} else if (shipStatus === 1) {
-				stateTip = "待收货";
-			}
+			} else {
+        stateTip = `${that.payStatusMap[payStatus]}[${that.shipStatusMap[shipStatus]}]`
+      }
 
       return { stateTip, stateTipColor };
     },

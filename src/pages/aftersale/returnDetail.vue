@@ -29,6 +29,10 @@
         <text class="yticon icon-xia" v-show="!showDetail" @click="toggleShowDetail"></text>
       </view>
       <view class="order-item">
+        <text class="label">流水号</text>
+        <text class="content">{{detail.return_id}}</text>
+      </view>
+      <view class="order-item">
         <text class="label">申请时间</text>
         <text class="content">{{detail.add_time | formatTime}}</text>
       </view>

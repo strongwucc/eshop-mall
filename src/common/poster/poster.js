@@ -108,7 +108,9 @@ function returnPromise(obj) {
         for (let i = 0; i < qrCodeArray.length; i++) {
           _app.log(i);
           if (qrCodeArray[i].image)
-            qrCodeArray[i].image = await _app.downloadFile_PromiseFc(qrCodeArray[i].image);
+            qrCodeArray[i].image = await _app.downloadFile_PromiseFc(qrCodeArray[i].image).catch(error => {
+              console.log('下载图片信息失败', error);
+            });
         }
         _app.hideLoading();
       }
@@ -137,7 +139,9 @@ function returnPromise(obj) {
             case 'qrcode':
               if (drawArrayItem.image)
                 newData = {
-                  image: await _app.downloadFile_PromiseFc(drawArrayItem.image)
+                  image: await _app.downloadFile_PromiseFc(drawArrayItem.image).catch(error => {
+                    console.log('下载图片信息失败', error);
+                  })
                 };
               break;
             case 'custom':
@@ -696,7 +700,9 @@ function setImageFn(image) {
   return new Promise(async (resolve, reject) => {
     if (image.url) {
       let imgUrl = image.url;
-      imgUrl = await _app.downloadFile_PromiseFc(imgUrl);
+      imgUrl = await _app.downloadFile_PromiseFc(imgUrl).catch(error => {
+        console.log('下载图片信息失败', error);
+      });
       image.url = imgUrl;
       const hasinfoCallBack = image.infoCallBack && typeof (image.infoCallBack) === 'function';
       let imageInfo = {};
