@@ -19,7 +19,12 @@
         </view>
       </view>
     </view>
-    <view class="btn" @click="doRecharge">立即充值</view>
+    <!-- #ifdef MP-WEIXIN -->
+    <view class="btn" @click="minappPay">立即充值</view>
+    <!-- #endif -->
+    <!-- #ifndef MP-WEIXIN -->
+    <view class="btn" @click="h5Pay">立即充值</view>
+    <!-- #endif -->
   </view>
 </template>
 
@@ -55,7 +60,8 @@ export default {
         }
       ],
       requesting: false,
-      providerList: []
+      providerList: [],
+      paying: false
     };
   },
 
@@ -100,9 +106,103 @@ export default {
     // #endif
   },
 
-  onShow() {},
+  onShow() {
+    // #ifndef MP-WEIXIN
+    let that = this;
+    if (typeof WeixinJSBridge == "undefined") {
+      if (document.addEventListener) {
+        document.addEventListener(
+          "WeixinJSBridgeReady",
+          that.onBridgeReady,
+          false
+        );
+      } else if (document.attachEvent) {
+        document.attachEvent("WeixinJSBridgeReady", that.onBridgeReady);
+        document.attachEvent("onWeixinJSBridgeReady", that.onBridgeReady);
+      }
+    }
+    // #endif
+  },
 
   methods: {
+    // #ifdef MP-WEIXIN
+    minappPay() {
+      let that = this;
+      that.$toast("暂不支持");
+    },
+    // #endif
+    // #ifndef MP-WEIXIN
+    onBridgeReady() {},
+    formatH5PayData(html) {
+      let regex = new RegExp(
+        '\\"getBrandWCPayRequest\\"\\,(.+)\\,function\\(res\\)',
+        "gi"
+      );
+      let res = regex.exec(html);
+      return res[1] ? res[1] : false;
+    },
+    h5Pay() {
+      let that = this;
+
+      if (that.paying === true) {
+        return false;
+      }
+
+      let money = 0;
+
+      if (
+        !that.faceValues.some(face => {
+          if (face.selected) {
+            money = face.faceValue;
+            return true;
+          }
+          return false;
+        })
+      ) {
+        that.$toast("请选择充值面额");
+        return false;
+      }
+
+      let payData = {
+        pay_object: "recharge",
+        return_url: window.location.href,
+        money: money,
+        pay_app_id: "wxpay"
+      };
+
+      that.paying = true;
+      uni.showLoading();
+      that.$http
+        .post(that.$api.user.doPayment, payData)
+        .then(res => {
+          that.paying = false;
+          uni.hideLoading();
+          console.log(res);
+          let payData = that.formatH5PayData(res);
+          if (payData === false) {
+            that.$toast("充值失败");
+          } else {
+            WeixinJSBridge.invoke(
+              "getBrandWCPayRequest",
+              JSON.parse(payData),
+              function(payRes) {
+                console.log(payRes);
+                if (payRes.err_msg == "get_brand_wcpay_request:ok") {
+                  // 使用以上方式判断前端返回,微信团队郑重提示：
+                  //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+                }
+              }
+            );
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          that.paying = false;
+          uni.hideLoading();
+          that.$toast("充值失败");
+        });
+    },
+    // #endif
     selectFace(faceIndex) {
       let that = this;
       let newFaces = that.faceValues.map((face, index) => {

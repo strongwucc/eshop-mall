@@ -33,7 +33,10 @@
         :key="payment.app_id"
         @click.capture.stop="changePayType(paymentIndex)"
       >
-        <text class="icon yticon icon-erjiye-yucunkuan"></text>
+        <text
+          class="icon yticon"
+          :class="{'icon-weixinzhifu': payment.app_id === 'wxpay', 'icon-qianbao': payment.app_id === 'deposit'}"
+        ></text>
         <view class="con">
           <text class="tit">{{payment.app_name}}</text>
           <text v-if="payment.app_id === 'deposit'">
@@ -43,7 +46,7 @@
         </view>
         <label class="radio">
           <radio
-            value
+            :value="payment.app_id"
             :color="_radioColor(payment)"
             :checked="payment.app_id === orderInfo.payinfo.pay_app_id"
           />
@@ -63,6 +66,7 @@ export default {
       orderInfo: {
         total_amount: 0.0
       },
+      availablePayments: ["wxpay", "deposit"],
       payments: [],
       deposit: 0.0,
       paying: false
@@ -78,10 +82,35 @@ export default {
 
   onShow() {
     let that = this;
+    // #ifndef MP-WEIXIN
+    if (typeof WeixinJSBridge == "undefined") {
+      if (document.addEventListener) {
+        document.addEventListener(
+          "WeixinJSBridgeReady",
+          that.onBridgeReady,
+          false
+        );
+      } else if (document.attachEvent) {
+        document.attachEvent("WeixinJSBridgeReady", that.onBridgeReady);
+        document.attachEvent("onWeixinJSBridgeReady", that.onBridgeReady);
+      }
+    }
+    // #endif
     that.loadData();
   },
 
   methods: {
+    // #ifndef MP-WEIXIN
+    onBridgeReady() {},
+    formatH5PayData(html) {
+      let regex = new RegExp(
+        '\\"getBrandWCPayRequest\\"\\,(.+)\\,function\\(res\\)',
+        "gi"
+      );
+      let res = regex.exec(html);
+      return res[1] ? res[1] : false;
+    },
+    // #endif
     _radioColor(payment) {
       let that = this;
       return payment.app_id === "deposit" &&
@@ -98,7 +127,12 @@ export default {
           if (res.return_code === "0000") {
             that.deposit = parseFloat(res.data.deposit_money);
             that.orderInfo = res.data.order;
-            that.payments = res.data.payments;
+            that.payments = res.data.payments.filter(payment => {
+              if (that.availablePayments.indexOf(payment.app_id) === -1) {
+                return false;
+              }
+              return true;
+            });
           } else {
             console.log(res);
             that.$toast(res.error);
@@ -185,22 +219,47 @@ export default {
       that.$http
         .post(that.$api.user.doPayment, payData)
         .then(res => {
-      		that.paying = false
-      		uni.hideLoading();
+          that.paying = false;
+          uni.hideLoading();
           console.log(res);
-          if (res.return_code === "0000") {
-            uni.redirectTo({
-              url: "/pages/money/paySuccess?order_id=" + that.orderId
-            });
-          } else {
-            console.log(res);
-            that.$toast(res.error);
+          if (that.orderInfo.payinfo.pay_app_id === "deposit") {
+            if (res.return_code === "0000") {
+              uni.redirectTo({
+                url: "/pages/money/paySuccess?order_id=" + that.orderId
+              });
+            } else {
+              console.log(res);
+              that.$toast(res.error);
+            }
+          }
+          if (that.orderInfo.payinfo.pay_app_id === "wxpay") {
+            // #ifndef MP-WEIXIN
+            let payData = that.formatH5PayData(res);
+            if (payData === false) {
+              that.$toast("支付失败");
+            } else {
+              WeixinJSBridge.invoke(
+                "getBrandWCPayRequest",
+                JSON.parse(payData),
+                function(payRes) {
+                  console.log(payRes);
+                  if (payRes.err_msg == "get_brand_wcpay_request:ok") {
+                    // 使用以上方式判断前端返回,微信团队郑重提示：
+                    //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+                  }
+                }
+              );
+            }
+            // #endif
+            // #ifdef MP-WEIXIN
+
+            // #endif
           }
         })
         .catch(error => {
-      		console.log(error);
-      		that.paying = false
-      		uni.hideLoading();
+          console.log(error);
+          that.paying = false;
+          uni.hideLoading();
           that.$toast("支付失败");
         });
     }
@@ -254,7 +313,7 @@ export default {
     width: 100rpx;
     font-size: 52rpx;
   }
-  .icon-erjiye-yucunkuan {
+  .icon-qianbao {
     color: #fe8e2e;
   }
   .icon-weixinzhifu {

@@ -10,6 +10,7 @@
           type="text"
           :value="searchKey"
           placeholder="搜索关键字"
+          confirm-type="search"
           @input="inputSearch"
           @confirm="submitSearch"
         />
@@ -28,7 +29,7 @@
           <text class="yticon icon-iconfontshanchu1" @click="clearHistory"></text>
         </view>
         <view class="items" :class="{'show-beyond': historyDetail}">
-          <template v-for="(item, itemIndex) in historySearchKeys" :key="item">
+          <template v-for="(item, itemIndex) in historySearchKeys">
             <view
               class="item"
               :class="{'beyond': itemIndex > showCount}"
@@ -48,7 +49,7 @@
           <text class="txt">热门搜索</text>
         </view>
         <view class="items" :class="{'show-beyond': hotDetail}">
-          <template v-for="(item, itemIndex) in searchKeys" :key="item">
+          <template v-for="(item, itemIndex) in searchKeys">
             <view
               class="item"
               :class="{'beyond': itemIndex > showCount}"
@@ -143,12 +144,17 @@ export default {
   position: relative;
 }
 .navbar {
+  /* #ifdef H5 */
+  margin-top: 20rpx;
+  /* #endif */
   height: 64rpx;
   width: 100%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   .back {
+    height: 100%;
+    flex: none;
     .icon-zuo {
       @extend %flex-center;
       width: 76rpx;
@@ -159,7 +165,14 @@ export default {
   }
   .input {
     height: 100%;
+    /* #ifdef MP */
+    flex: none;
     width: 460rpx;
+    /* #endif */
+    /* #ifndef MP */
+    flex: auto;
+    margin-right: 30rpx;
+    /* #endif */
     height: 64rpx;
     background: $border-color-light;
     border-radius: 64rpx;
@@ -272,7 +285,7 @@ export default {
 .empty {
   @extend %flex-center;
   position: absolute;
-  top: 0;
+  top: 64rpx;
   bottom: 0;
   left: 0;
   right: 0;
