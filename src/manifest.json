@@ -71,8 +71,8 @@
     "publicPath": "",
     "devServer": {
       "proxy": {
-        "/ecstore/index.php/openapi/wxapp_rpc": {
-          "target": "http://localhost"
+        "/index.php/openapi/wxapp_rpc": {
+          "target": "http://183.66.65.235:8080"
         }
       }
     }

@@ -23,18 +23,19 @@ let aliRedirect = "";
 
 if (process.env.NODE_ENV === "development") {
   // #ifndef H5
-  rootUrl = "http://192.168.1.19/ecstore/";
+  rootUrl = "http://183.66.65.235:8080/";
   // rootUrl = 'https://api.yaliantong.com/'
   // #endif
   // #ifdef H5
-  rootUrl = "/ecstore/";
+  rootUrl = "http://183.66.65.235:8080/";
   // #endif
   baseUrl = rootUrl + "index.php/openapi/wxapp_rpc/";
   imgBaseUrl = rootUrl + "";
   wxRedirect = "";
   aliRedirect = "";
 } else if (process.env.NODE_ENV === "production") {
-  rootUrl = "https://api.yaliantong.com/";
+  // rootUrl = "https://api.yaliantong.com/";
+  rootUrl = "http://183.66.65.235:8080/";
   baseUrl = rootUrl + "index.php/openapi/wxapp_rpc/";
   imgBaseUrl = rootUrl + "";
   wxRedirect = "";

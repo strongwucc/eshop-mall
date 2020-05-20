@@ -32,9 +32,14 @@
             />
           </view>
           <view class="item-r">
-            <text class="active" v-show="mobileIsOk && !showTimer" @click="sendSms">发送验证码</text>
+            <text
+              class="active"
+              v-show="mobileIsOk && !showTimer"
+              @click="sendSms"
+              >发送验证码</text
+            >
             <text v-show="!mobileIsOk">发送验证码</text>
-            <text v-show="showTimer">{{seconds}}秒后重发</text>
+            <text v-show="showTimer">{{ seconds }}秒后重发</text>
           </view>
         </view>
         <view class="input-item">
@@ -69,7 +74,7 @@ export default {
       showTimer: false,
       seconds: 120,
       timer: null,
-      requesting: false
+      requesting: false,
     };
   },
   onLoad() {},
@@ -81,8 +86,8 @@ export default {
       let that = this;
       const key = e.currentTarget.dataset.key;
 
-      if (key === 'mobile') {
-        that.mobileIsOk = /^1[0-9]{10,10}$/.test(e.detail.value) ? true: false;
+      if (key === "mobile") {
+        that.mobileIsOk = /^1[0-9]{10,10}$/.test(e.detail.value) ? true : false;
       }
 
       that[key] = e.detail.value;
@@ -93,8 +98,7 @@ export default {
     /**
      * 发送短信
      */
-    sendSms () {
-      
+    sendSms() {
       let that = this;
 
       if (that.requesting) {
@@ -103,28 +107,30 @@ export default {
 
       that.requesting = true;
 
-      that.$http.post(that.$api.auth.sendSms, {uname: that.mobile, type: 'signup'}).then(res => {
-        console.log(res);
-        that.requesting = false;
-        if (res.return_code === '0000') {
-          that.$toast('发送成功');
-          that.showTimer = true;
-          that.timer = setInterval(() => {
-            if (that.seconds <= 1) {
-              clearInterval(that.timer);
-              that.showTimer = false;
-            }
-            that.seconds --
-          }, 1000);
-        } else {
-          that.$toast(res.error);
-        }
-      }).catch(error => {
-        that.requesting = false;
-        console.log(error);
-        that.$toast('发送失败');
-      });
-
+      that.$http
+        .post(that.$api.auth.sendSms, { uname: that.mobile, type: "signup" })
+        .then((res) => {
+          console.log(res);
+          that.requesting = false;
+          if (res.return_code === "0000") {
+            that.$toast("发送成功");
+            that.showTimer = true;
+            that.timer = setInterval(() => {
+              if (that.seconds <= 1) {
+                clearInterval(that.timer);
+                that.showTimer = false;
+              }
+              that.seconds--;
+            }, 1000);
+          } else {
+            that.$toast(res.error);
+          }
+        })
+        .catch((error) => {
+          that.requesting = false;
+          console.log(error);
+          that.$toast("发送失败");
+        });
     },
     /**
      * 提交
@@ -135,43 +141,59 @@ export default {
         return false;
       }
       if (/^1[0-9]{10,10}$/.test(that.mobile) === false) {
-        that.$toast('请输入正确的手机号');
+        that.$toast("请输入正确的手机号");
         return false;
       }
       if (!that.code) {
-        that.$toast('请输入验证码');
+        that.$toast("请输入验证码");
         return false;
       }
       if (!that.password) {
-        that.$toast('请输入密码');
+        that.$toast("请输入密码");
         return false;
       }
 
       that.requesting = true;
-      that.license = 'on';
-      that.$http.post(
-        that.$api.auth.signup,
-        {uname: that.mobile, code: that.code, password: that.password, license: that.license}
-      ).then(res => {
-        that.requesting = false;
-        if (res.return_code === '0000') {
-          that.$toast('注册成功');
-          that.navBack();
-        } else {
-          console.log(res);
-          that.$toast('注册失败');
-        }
-      }).catch(error => {
-        that.requesting = false;
-        console.log(error);
-        that.$toast('注册失败');
+      that.license = "on";
+
+      let signupData = {
+        uname: that.mobile,
+        code: that.code,
+        password: that.password,
+        license: that.license,
+      };
+
+      // 是否有分销人ID
+      uni.getStorage({
+        key: "spread",
+        success: function(res) {
+          signupData.spread = res.data;
+        },
       });
-    }
-  }
+
+      that.$http
+        .post(that.$api.auth.signup, signupData)
+        .then((res) => {
+          that.requesting = false;
+          if (res.return_code === "0000") {
+            that.$toast("注册成功");
+            that.navBack();
+          } else {
+            console.log(res);
+            that.$toast("注册失败");
+          }
+        })
+        .catch((error) => {
+          that.requesting = false;
+          console.log(error);
+          that.$toast("注册失败");
+        });
+    },
+  },
 };
 </script>
 
-<style lang='scss'>
+<style lang="scss">
 page {
   background: #fff;
 }

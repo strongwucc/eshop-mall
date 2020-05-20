@@ -310,6 +310,7 @@ export default {
       imgList: [], // 商品图片
       name: "", // 商品名称
       image: "", // 商品默认图片
+      imageBase64: "", // 商品默认图片
       price: 0.0, // 价格
       mktprice: 0.0, // 市场价
       sales: 0, // 销量
@@ -336,7 +337,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["hasLogin", "cartInfo"]),
+    ...mapState(["hasLogin", "cartInfo", "userInfo"]),
     discount() {
       let that = this;
       return Math.round((that.price / that.mktprice) * 100) / 10 || 0;
@@ -346,6 +347,10 @@ export default {
     let that = this;
     let productId = options.id;
     that.productId = productId;
+
+    if (options.spread) {
+      that.setSpread(options.spread);
+    }
 
     that.loadData(productId);
 
@@ -468,6 +473,18 @@ export default {
       return protocol + "//" + host + pathname;
     },
     /**
+     * 设置分销人ID
+     */
+    setSpread(uid) {
+      uni.setStorage({
+        key: "spread",
+        data: uid,
+        success: function() {
+          console.log("set spread success");
+        },
+      });
+    },
+    /**
      * 获取商品信息
      */
     loadData(productId) {
@@ -486,6 +503,8 @@ export default {
             if (res.data.page_product_basic) {
               that.name = res.data.page_product_basic.title;
               that.image = res.data.page_product_basic.image_default_url;
+              that.imageBase64 =
+                res.data.page_product_basic.image_default_base64;
               that.imgList = res.data.page_product_basic.images || [
                 { image_id: 1, image_url: that.image },
               ];
@@ -648,7 +667,7 @@ export default {
                   type: "image",
                   serialNum: 0,
                   id: "goodsImage",
-                  url: that.image,
+                  url: that.imageBase64,
                   dx: 0,
                   dy: 0,
                   infoCallBack(imageInfo) {
@@ -794,8 +813,12 @@ export default {
 
       let qrcodeData = {
         pid: that.productId,
-        code: "",
+        spread: "",
       };
+
+      if (that.userInfo.member_id) {
+        qrcodeData.spread = that.userInfo.member_id;
+      }
 
       that.qrcodeRequesting = true;
       // #ifndef H5

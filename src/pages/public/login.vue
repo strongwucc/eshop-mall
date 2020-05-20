@@ -34,7 +34,9 @@
           />
         </view>
       </view>
-      <button class="confirm-btn" @click="toLogin" :disabled="requesting">登录</button>
+      <button class="confirm-btn" @click="toLogin" :disabled="requesting">
+        登录
+      </button>
       <view class="forget-section" @click="forgetPwd">忘记密码?</view>
     </view>
     <view class="register-section">
@@ -52,7 +54,7 @@ export default {
     return {
       mobile: "",
       password: "",
-      requesting: false
+      requesting: false,
     };
   },
   onLoad() {},
@@ -67,12 +69,12 @@ export default {
     },
     toRegist() {
       uni.navigateTo({
-        url: "/pages/public/signup"
+        url: "/pages/public/signup",
       });
     },
     forgetPwd() {
       uni.redirectTo({
-        url: "/pages/public/forgetStep1"
+        url: "/pages/public/forgetStep1",
       });
     },
     /**
@@ -97,32 +99,65 @@ export default {
       that.$http
         .post(that.$api.auth.login, {
           uname: that.mobile,
-          password: that.password
+          password: that.password,
         })
-        .then(res => {
+        .then((res) => {
           that.requesting = false;
           uni.hideLoading();
           if (res.return_code === "0000") {
             that.login(res.data.session_id);
             that.$toast("登录成功");
+            that.loginSpread(that.mobile, that.password);
             that.navBack();
           } else {
             console.log(res);
             that.$toast(res.error);
           }
         })
-        .catch(error => {
+        .catch((error) => {
           that.requesting = false;
           uni.hideLoading();
           console.log(error);
           that.$toast("登录失败");
         });
-    }
-  }
+    },
+    loginSpread(uname, password) {
+      uni.request({
+        url: "http://183.66.65.235:81/api/login",
+        data: {
+          account: uname,
+          password: password,
+        },
+        header: {
+          "Content-Type": "application/json;charset=UTF-8",
+        },
+        method: "POST",
+        success: ({ data }) => {
+          console.log(data);
+          if (data.data.token) {
+            uni.setStorage({
+              key: "login_status",
+              data: data.data.token,
+              success: function() {
+                console.log("success");
+              },
+            });
+            uni.setStorage({
+              key: "login_status_expires_time",
+              data: data.data.expires_time,
+              success: function() {
+                console.log("success");
+              },
+            });
+          }
+        },
+      });
+    },
+  },
 };
 </script>
 
-<style lang='scss'>
+<style lang="scss">
 page {
   background: #fff;
 }

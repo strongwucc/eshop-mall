@@ -3,10 +3,13 @@
     <view class="user-section">
       <view class="user-info-box">
         <view class="portrait-box">
-          <image class="portrait" :src="userInfo.avatar || '/static/avatar_default@2x.png'"></image>
+          <image
+            class="portrait"
+            :src="userInfo.avatar || '/static/avatar_default@2x.png'"
+          ></image>
         </view>
         <view class="info-box">
-          <text class="username">{{userInfo.uname || '游客'}}</text>
+          <text class="username">{{ userInfo.uname || "游客" }}</text>
         </view>
         <view class="setting" @click="navTo('/pages/set/set')">
           <!-- <text class="yticon icon-shezhi"></text> -->
@@ -16,17 +19,19 @@
       <view class="vip-card-box">
         <view class="tit">
           <text class="yticon icon-iLinkapp-"></text>
-          {{userInfo.levelname || ''}}
+          {{ userInfo.levelname || "" }}
         </view>
       </view>
     </view>
 
     <view
       class="cover-container"
-      :style="[{
-				transform: coverTransform,
-				transition: coverTransition
-			}]"
+      :style="[
+        {
+          transform: coverTransform,
+          transition: coverTransition,
+        },
+      ]"
       @touchstart="coverTouchstart"
       @touchmove="coverTouchmove"
       @touchend="coverTouchend"
@@ -40,7 +45,7 @@
           hover-class="common-hover"
           :hover-stay-time="50"
         >
-          <text class="num">{{userInfo.advance | formatMoney}}</text>
+          <text class="num">{{ userInfo.advance | formatMoney }}</text>
           <text>余额</text>
         </view>
         <view
@@ -49,7 +54,7 @@
           hover-class="common-hover"
           :hover-stay-time="50"
         >
-          <text class="num">{{userInfo.coupons || 0}}</text>
+          <text class="num">{{ userInfo.coupons || 0 }}</text>
           <text>优惠券</text>
         </view>
         <view
@@ -58,7 +63,7 @@
           hover-class="common-hover"
           :hover-stay-time="50"
         >
-          <text class="num">{{userInfo.point || 0}}</text>
+          <text class="num">{{ userInfo.point || 0 }}</text>
           <text>积分</text>
         </view>
       </view>
@@ -160,7 +165,7 @@
           </view>
           <view
             class="order-item"
-            @click="navTo('')"
+            @click="mySpread"
             hover-class="common-hover"
             :hover-stay-time="50"
           >
@@ -202,7 +207,7 @@
       </view>
     </view>
   </view>
-</template>  
+</template>
 <script>
 import listCell from "@/components/mix-list-cell";
 import { mapState, mapMutations } from "vuex";
@@ -211,13 +216,13 @@ let startY = 0,
   pageAtTop = true;
 export default {
   components: {
-    listCell
+    listCell,
   },
   data() {
     return {
       coverTransform: "translateY(0px)",
       coverTransition: "0s",
-      moving: false
+      moving: false,
     };
   },
   onLoad(options) {},
@@ -236,17 +241,17 @@ export default {
       const page = pages[pages.length - 1];
       const currentWebview = page.$getAppWebview();
       currentWebview.hideTitleNViewButtonRedDot({
-        index
+        index,
       });
       // #endif
       uni.navigateTo({
-        url: "/pages/notice/notice"
+        url: "/pages/notice/notice",
       });
     }
   },
   // #endif
   computed: {
-    ...mapState(["hasLogin", "token", "userInfo"])
+    ...mapState(["hasLogin", "token", "userInfo"]),
   },
   methods: {
     ...mapMutations(["login", "setUser"]),
@@ -292,10 +297,10 @@ export default {
       let that = this;
       that.$http
         .post(that.$api.user.center)
-        .then(res => {
+        .then((res) => {
           that.setUser(res.data.member);
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     },
@@ -308,7 +313,7 @@ export default {
         url = "/pages/public/login";
       }
       uni.navigateTo({
-        url
+        url,
       });
     },
 
@@ -349,11 +354,31 @@ export default {
       this.moving = false;
       this.coverTransition = "transform 0.3s cubic-bezier(.21,1.93,.53,.64)";
       this.coverTransform = "translateY(0px)";
-    }
-  }
+    },
+    mySpread() {
+      uni.getStorage({
+        key: "login_status",
+        success: function(res) {
+          let access_token = res.data;
+          uni.getStorage({
+            key: "login_status_expires_time",
+            success: function(res) {
+              let expires_time = res.data;
+              window.location.href =
+                "http://183.66.65.235:81/#/user/user_promotion?access_token=" +
+                // "http://192.168.1.22:8081/#/user/user_promotion?access_token=" +
+                access_token +
+                "&expires_time=" +
+                expires_time;
+            },
+          });
+        },
+      });
+    },
+  },
 };
-</script>  
-<style lang='scss'>
+</script>
+<style lang="scss">
 page {
   height: 100%;
 }
@@ -415,7 +440,7 @@ page {
       align-items: center;
     }
   }
-  
+
   .setting {
     flex: none;
     .icon-shezhi {
