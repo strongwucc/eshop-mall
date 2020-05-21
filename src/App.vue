@@ -7,6 +7,7 @@ export default {
   methods: {
     ...mapMutations(["login"])
   },
+
   onLaunch: function() {
     let userInfo = uni.getStorageSync("userInfo") || "";
     if (userInfo.member_id) {
