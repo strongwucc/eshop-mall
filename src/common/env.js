@@ -23,11 +23,11 @@ let aliRedirect = "";
 
 if (process.env.NODE_ENV === "development") {
   // #ifndef H5
-  rootUrl = "http://183.66.65.235:8080/";
+  rootUrl = "http://shop0001.sh.miour.cn/";
   // rootUrl = 'https://api.yaliantong.com/'
   // #endif
   // #ifdef H5
-  rootUrl = "http://183.66.65.235:8080/";
+  rootUrl = "http://shop0001.sh.miour.cn/";
   // #endif
   baseUrl = rootUrl + "index.php/openapi/wxapp_rpc/";
   imgBaseUrl = rootUrl + "";
@@ -35,7 +35,7 @@ if (process.env.NODE_ENV === "development") {
   aliRedirect = "";
 } else if (process.env.NODE_ENV === "production") {
   // rootUrl = "https://api.yaliantong.com/";
-  rootUrl = "http://183.66.65.235:8080/";
+  rootUrl = "http://shop0001.sh.miour.cn/";
   baseUrl = rootUrl + "index.php/openapi/wxapp_rpc/";
   imgBaseUrl = rootUrl + "";
   wxRedirect = "";

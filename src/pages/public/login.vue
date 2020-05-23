@@ -123,7 +123,7 @@ export default {
     },
     loginSpread(uname, password) {
       uni.request({
-        url: "http://183.66.65.235:81/api/login",
+        url: "http://shop0001.spread.miour.cn/api/login",
         data: {
           account: uname,
           password: password,

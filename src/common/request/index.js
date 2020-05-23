@@ -23,6 +23,10 @@ http.validateStatus = (statusCode) => {
 
 http.interceptor.request((config, cancel) => {
   /* 请求之前拦截器 */
+  // console.log(config);
+  if (config.url && config.url === 'index') {
+    config.baseUrl = 'https://api.yaliantong.com/index.php/openapi/wxapp_rpc/'
+  }
   config.header = {
     ...config.header,
   }
