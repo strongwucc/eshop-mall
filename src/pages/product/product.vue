@@ -490,10 +490,12 @@ export default {
     loadData(productId) {
       let that = this;
 
+      uni.showLoading();
       that.$http
         .post(that.$api.goods.detail, { product_id: productId })
         .then((res) => {
           console.log(res);
+          uni.hideLoading();
           if (res.return_code === "0000") {
             // 默认图片
             if (res.data.spec_default_pic) {
@@ -536,6 +538,7 @@ export default {
           }
         })
         .catch((error) => {
+          uni.hideLoading();
           console.log(error);
         });
     },

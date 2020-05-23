@@ -96,14 +96,17 @@
 			 */
 			loadData(){
 				let that = this;
+				uni.showLoading();
 				that.$http.post(that.$api.goods.category).then(res => {
 					console.log(res);
+					uni.hideLoading();
 					if (res.return_code === '0000') {
 						that._formatCategoryData(res.data);
 					} else {
 						console.log(res.return_msg);
 					}
 				}).catch(error => {
+					uni.hideLoading();
 					console.log(error);
 				});
 			},
