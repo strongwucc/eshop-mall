@@ -1,15 +1,15 @@
 {
   "pages": [
-
     {
       "path": "pages/index/index",
       "style": {
-        "navigationBarTitleText": "Eshop 商城",
+        "navigationBarTitleText": "莱客哆在线商城",
         "app-plus": {
           "titleNView": false
         }
       }
-    }, {
+    },
+    {
       "path": "pages/public/search",
       "style": {
         "navigationBarTitleText": "",
@@ -19,7 +19,8 @@
           "animationType": "slide-in-bottom"
         }
       }
-    }, {
+    },
+    {
       "path": "pages/product/product",
       "style": {
         "navigationBarTitleText": "详情展示",
@@ -29,17 +30,20 @@
           }
         }
       }
-    }, {
+    },
+    {
       "path": "pages/product/comment",
       "style": {
         "navigationBarTitleText": "商品评论"
       }
-    }, {
+    },
+    {
       "path": "pages/set/set",
       "style": {
         "navigationBarTitleText": "设置"
       }
-    }, {
+    },
+    {
       "path": "pages/set/resetPwd",
       "style": {
         "navigationBarTitleText": "修改密码"
@@ -51,12 +55,14 @@
       "style": {
         "navigationBarTitleText": "修改资料"
       }
-    }, {
+    },
+    {
       "path": "pages/cart/cart",
       "style": {
         "navigationBarTitleText": "购物车"
       }
-    }, {
+    },
+    {
       "path": "pages/public/login",
       "style": {
         "navigationBarTitleText": "",
@@ -66,7 +72,8 @@
           "animationType": "slide-in-bottom"
         }
       }
-    }, {
+    },
+    {
       "path": "pages/public/signup",
       "style": {
         "navigationBarTitleText": "",
@@ -76,17 +83,20 @@
           "animationType": "slide-in-bottom"
         }
       }
-    }, {
+    },
+    {
       "path": "pages/public/forgetStep1",
       "style": {
         "navigationBarTitleText": "忘记密码"
       }
-    }, {
+    },
+    {
       "path": "pages/public/forgetStep2",
       "style": {
         "navigationBarTitleText": "忘记密码"
       }
-    }, {
+    },
+    {
       "path": "pages/user/user",
       "style": {
         "navigationBarTitleText": "我的",
@@ -99,7 +109,8 @@
           "animationType": "slide-in-bottom"
         }
       }
-    }, {
+    },
+    {
       "path": "pages/balance/records",
       "style": {
         "navigationBarTitleText": "我的余额",
@@ -107,7 +118,8 @@
           "bounce": "none"
         }
       }
-    }, {
+    },
+    {
       "path": "pages/balance/recharge",
       "style": {
         "navigationBarTitleText": "余额充值",
@@ -115,7 +127,8 @@
           "bounce": "none"
         }
       }
-    }, {
+    },
+    {
       "path": "pages/user/coupons",
       "style": {
         "navigationBarTitleText": "我的优惠券",
@@ -123,7 +136,8 @@
           "bounce": "none"
         }
       }
-    }, {
+    },
+    {
       "path": "pages/score/records",
       "style": {
         "navigationBarTitleText": "我的积分",
@@ -131,7 +145,8 @@
           "bounce": "none"
         }
       }
-    }, {
+    },
+    {
       "path": "pages/detail/detail",
       "style": {
         "navigationBarTitleText": "",
@@ -141,7 +156,8 @@
           }
         }
       }
-    }, {
+    },
+    {
       "path": "pages/order/order",
       "style": {
         "navigationBarTitleText": "我的订单",
@@ -149,70 +165,84 @@
           "bounce": "none"
         }
       }
-    }, {
+    },
+    {
       "path": "pages/order/orderDetail",
       "style": {
         "navigationBarTitleText": "订单详情"
       }
-    }, {
+    },
+    {
       "path": "pages/money/money",
       "style": {}
-    }, {
+    },
+    {
       "path": "pages/order/createOrder",
       "style": {
         "navigationBarTitleText": "创建订单"
       }
-    }, {
+    },
+    {
       "path": "pages/address/address",
       "style": {
         "navigationBarTitleText": "收货地址"
       }
-    }, {
+    },
+    {
       "path": "pages/address/addressManage",
       "style": {
         "navigationBarTitleText": ""
       }
-    }, {
+    },
+    {
       "path": "pages/money/pay",
       "style": {
         "navigationBarTitleText": "支付"
       }
-    }, {
+    },
+    {
       "path": "pages/order/cancel",
       "style": {
         "navigationBarTitleText": "取消订单"
       }
-    }, {
+    },
+    {
       "path": "pages/collection/goods",
       "style": {
         "navigationBarTitleText": "我的收藏"
       }
-    }, {
+    },
+    {
       "path": "pages/comment/noDiscuss",
       "style": {
         "navigationBarTitleText": "待评价"
       }
-    }, {
+    },
+    {
       "path": "pages/comment/asks",
       "style": {
         "navigationBarTitleText": "我的咨询"
       }
-    }, {
+    },
+    {
       "path": "pages/comment/comment",
       "style": {
         "navigationBarTitleText": "评论"
       }
-    }, {
+    },
+    {
       "path": "pages/aftersale/afterList",
       "style": {
         "navigationBarTitleText": "售后/退换"
       }
-    }, {
+    },
+    {
       "path": "pages/aftersale/addRec",
       "style": {
         "navigationBarTitleText": "申请售后"
       }
-    }, {
+    },
+    {
       "path": "pages/aftersale/returnDetail",
       "style": {
         "navigationBarTitleText": "退换记录详情"
@@ -223,12 +253,14 @@
       "style": {
         "navigationBarTitleText": "支付成功"
       }
-    }, {
+    },
+    {
       "path": "pages/notice/notice",
       "style": {
         "navigationBarTitleText": "通知"
       }
-    }, {
+    },
+    {
       "path": "pages/category/category",
       "style": {
         "navigationBarTitleText": "分类",
@@ -236,53 +268,63 @@
           "bounce": "none"
         }
       }
-    }, {
+    },
+    {
       "path": "pages/product/list",
       "style": {
         // "enablePullDownRefresh": true,
         "navigationBarTitleText": "商品列表"
       }
-    }, {
+    },
+    {
       "path": "pages/distribution/index",
       "style": {
         "navigationBarTitleText": "个人分销"
       }
-    }, {
+    },
+    {
       "path": "pages/distribution/deposit",
       "style": {
         "navigationBarTitleText": "提现"
       }
-    }, {
+    },
+    {
       "path": "pages/distribution/depositStatus",
       "style": {
         "navigationBarTitleText": "提现"
       }
-    }, {
+    },
+    {
       "path": "pages/distribution/records",
       "style": {
         "navigationBarTitleText": "收支明细"
       }
-    }, {
+    },
+    {
       "path": "pages/distribution/orders",
       "style": {
         "navigationBarTitleText": "订单查询"
       }
-    }, {
+    },
+    {
       "path": "pages/distribution/goods",
       "style": {
         "navigationBarTitleText": "分享商品"
       }
-    }, {
+    },
+    {
       "path": "pages/search/index",
       "style": {
         "navigationBarTitleText": "搜索"
       }
-    }, {
+    },
+    {
       "path": "pages/coupon/index",
       "style": {
         "navigationBarTitleText": "领券中心"
       }
-    }, {
+    },
+    {
       "path": "pages/coupon/exchange",
       "style": {
         "navigationBarTitleText": "积分兑换"
@@ -300,203 +342,207 @@
     "selectedColor": "#fa436a",
     "borderStyle": "black",
     "backgroundColor": "#ffffff",
-    "list": [{
-      "pagePath": "pages/index/index",
-      "iconPath": "static/tab-home.png",
-      "selectedIconPath": "static/tab-home-current.png",
-      "text": "首页"
-    },
-    {
-      "pagePath": "pages/category/category",
-      "iconPath": "static/tab-cate.png",
-      "selectedIconPath": "static/tab-cate-current.png",
-      "text": "分类"
-    },
-    {
-      "pagePath": "pages/cart/cart",
-      "iconPath": "static/tab-cart.png",
-      "selectedIconPath": "static/tab-cart-current.png",
-      "text": "购物车"
-    },
-    {
-      "pagePath": "pages/user/user",
-      "iconPath": "static/tab-my.png",
-      "selectedIconPath": "static/tab-my-current.png",
-      "text": "我的"
-    }]
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "static/tab-home.png",
+        "selectedIconPath": "static/tab-home-current.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/category/category",
+        "iconPath": "static/tab-cate.png",
+        "selectedIconPath": "static/tab-cate-current.png",
+        "text": "分类"
+      },
+      {
+        "pagePath": "pages/cart/cart",
+        "iconPath": "static/tab-cart.png",
+        "selectedIconPath": "static/tab-cart-current.png",
+        "text": "购物车"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "iconPath": "static/tab-my.png",
+        "selectedIconPath": "static/tab-my-current.png",
+        "text": "我的"
+      }
+    ]
   },
-  "condition": { //模式配置，仅开发期间生效
+  "condition": {
+    //模式配置，仅开发期间生效
     "current": 0, //当前激活的模式（list 的索引项）
-    "list": [{
-      "name": "首页", //模式名称
-      "path": "pages/index/index" //启动页面，必选
-    },
-    {
-      "name": "搜索",
-      "path": "pages/public/search"
-    },
-    {
-      "name": "分类",
-      "path": "pages/category/category"
-    },
-    {
-      "name": "购物车",
-      "path": "pages/cart/cart"
-    },
-    {
-      "name": "结算",
-      "path": "pages/order/createOrder"
-    },
-    {
-      "name": "去支付",
-      "path": "pages/money/pay",
-      "query": "order_id=200317172798530"
-    },
-    {
-      "name": "收货地址",
-      "path": "pages/address/address"
-    },
-    {
-      "name": "新增收货地址",
-      "path": "pages/address/addressManage",
-      "query": "type=add&data="
-    },
-    {
-      "name": "我的",
-      "path": "pages/user/user"
-    },
-    {
-      "name": "我的余额",
-      "path": "pages/balance/records"
-    },
-    {
-      "name": "充值",
-      "path": "pages/balance/recharge"
-    },
-    {
-      "name": "我的优惠券",
-      "path": "pages/user/coupons"
-    },
-    {
-      "name": "我的积分",
-      "path": "pages/score/records"
-    },
-    {
-      "name": "我的订单",
-      "path": "pages/order/order",
-      "query": "state=0"
-    },
-    {
-      "name": "订单详情",
-      "path": "pages/order/orderDetail",
-      "query": "order_id=200317164303061"
-    },
-    {
-      "name": "取消订单",
-      "path": "pages/order/cancel",
-      "query": "order_id=0"
-    },
-    {
-      "name": "我的收藏",
-      "path": "pages/collection/goods"
-    },
-    {
-      "name": "待评价",
-      "path": "pages/comment/noDiscuss"
-
-    },
-    {
-      "name": "我的咨询",
-      "path": "pages/comment/asks"
-    },
-    {
-      "name": "评论",
-      "path": "pages/comment/comment"
-    },
-    {
-      "name": "售后/退换",
-      "path": "pages/aftersale/afterList"
-    },
-    {
-      "name": "申请售后",
-      "path": "pages/aftersale/addRec",
-      "query": "orderId=200330110001456"
-    },
-    {
-      "name": "退换记录详情",
-      "path": "pages/aftersale/returnDetail",
-      "query": "returnId=20200331137015"
-    },
-    {
-      "name": "商品列表",
-      "path": "pages/product/list",
-      "query": "tid=4" //启动参数，在页面的onLoad函数里面得到。
-    },
-    {
-      "name": "商品详情",
-      "path": "pages/product/product",
-      "query": "id=241" //启动参数，在页面的onLoad函数里面得到。
-    },
-    {
-      "name": "商品评论",
-      "path": "pages/product/comment",
-      "query": "gid=21"
-    },
-    {
-      "name": "登录",
-      "path": "pages/public/login"
-    },
-    {
-      "name": "注册",
-      "path": "pages/public/signup"
-    },
-    {
-      "name": "修改密码",
-      "path": "pages/set/resetPwd"
-    },
-    {
-      "name": "忘记密码1",
-      "path": "pages/public/forgetStep1"
-    },
-    {
-      "name": "忘记密码2",
-      "path": "pages/public/forgetStep2"
-    },
-    {
-      "name": "个人分销",
-      "path": "pages/distribution/index"
-    },
-    {
-      "name": "提现",
-      "path": "pages/distribution/deposit"
-    },
-    {
-      "name": "提现状态",
-      "path": "pages/distribution/depositStatus"
-    },
-    {
-      "name": "收支明细",
-      "path": "pages/distribution/records"
-    },
-    {
-      "name": "订单查询",
-      "path": "pages/distribution/orders"
-    },
-    {
-      "name": "分享商品",
-      "path": "pages/distribution/goods"
-    },
-    {
-      "name": "搜索",
-      "path": "pages/search/index"
-    },
-    {
-      "name": "领券中心",
-      "path": "pages/coupon/index"
-    },
-    {
-      "name": "积分兑换",
-      "path": "pages/coupon/exchange"
-    }]
+    "list": [
+      {
+        "name": "首页", //模式名称
+        "path": "pages/index/index" //启动页面，必选
+      },
+      {
+        "name": "搜索",
+        "path": "pages/public/search"
+      },
+      {
+        "name": "分类",
+        "path": "pages/category/category"
+      },
+      {
+        "name": "购物车",
+        "path": "pages/cart/cart"
+      },
+      {
+        "name": "结算",
+        "path": "pages/order/createOrder"
+      },
+      {
+        "name": "去支付",
+        "path": "pages/money/pay",
+        "query": "order_id=200317172798530"
+      },
+      {
+        "name": "收货地址",
+        "path": "pages/address/address"
+      },
+      {
+        "name": "新增收货地址",
+        "path": "pages/address/addressManage",
+        "query": "type=add&data="
+      },
+      {
+        "name": "我的",
+        "path": "pages/user/user"
+      },
+      {
+        "name": "我的余额",
+        "path": "pages/balance/records"
+      },
+      {
+        "name": "充值",
+        "path": "pages/balance/recharge"
+      },
+      {
+        "name": "我的优惠券",
+        "path": "pages/user/coupons"
+      },
+      {
+        "name": "我的积分",
+        "path": "pages/score/records"
+      },
+      {
+        "name": "我的订单",
+        "path": "pages/order/order",
+        "query": "state=0"
+      },
+      {
+        "name": "订单详情",
+        "path": "pages/order/orderDetail",
+        "query": "order_id=200317164303061"
+      },
+      {
+        "name": "取消订单",
+        "path": "pages/order/cancel",
+        "query": "order_id=0"
+      },
+      {
+        "name": "我的收藏",
+        "path": "pages/collection/goods"
+      },
+      {
+        "name": "待评价",
+        "path": "pages/comment/noDiscuss"
+      },
+      {
+        "name": "我的咨询",
+        "path": "pages/comment/asks"
+      },
+      {
+        "name": "评论",
+        "path": "pages/comment/comment"
+      },
+      {
+        "name": "售后/退换",
+        "path": "pages/aftersale/afterList"
+      },
+      {
+        "name": "申请售后",
+        "path": "pages/aftersale/addRec",
+        "query": "orderId=200330110001456"
+      },
+      {
+        "name": "退换记录详情",
+        "path": "pages/aftersale/returnDetail",
+        "query": "returnId=20200331137015"
+      },
+      {
+        "name": "商品列表",
+        "path": "pages/product/list",
+        "query": "tid=4" //启动参数，在页面的onLoad函数里面得到。
+      },
+      {
+        "name": "商品详情",
+        "path": "pages/product/product",
+        "query": "id=241" //启动参数，在页面的onLoad函数里面得到。
+      },
+      {
+        "name": "商品评论",
+        "path": "pages/product/comment",
+        "query": "gid=21"
+      },
+      {
+        "name": "登录",
+        "path": "pages/public/login"
+      },
+      {
+        "name": "注册",
+        "path": "pages/public/signup"
+      },
+      {
+        "name": "修改密码",
+        "path": "pages/set/resetPwd"
+      },
+      {
+        "name": "忘记密码1",
+        "path": "pages/public/forgetStep1"
+      },
+      {
+        "name": "忘记密码2",
+        "path": "pages/public/forgetStep2"
+      },
+      {
+        "name": "个人分销",
+        "path": "pages/distribution/index"
+      },
+      {
+        "name": "提现",
+        "path": "pages/distribution/deposit"
+      },
+      {
+        "name": "提现状态",
+        "path": "pages/distribution/depositStatus"
+      },
+      {
+        "name": "收支明细",
+        "path": "pages/distribution/records"
+      },
+      {
+        "name": "订单查询",
+        "path": "pages/distribution/orders"
+      },
+      {
+        "name": "分享商品",
+        "path": "pages/distribution/goods"
+      },
+      {
+        "name": "搜索",
+        "path": "pages/search/index"
+      },
+      {
+        "name": "领券中心",
+        "path": "pages/coupon/index"
+      },
+      {
+        "name": "积分兑换",
+        "path": "pages/coupon/exchange"
+      }
+    ]
   }
 }

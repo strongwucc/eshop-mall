@@ -1,14 +1,13 @@
-import _app from './app.js';
-import QRCodeAlg from './qr_code_alg.js';
-const ShreUserPosterBackgroundKey = 'ShrePosterBackground_'; // 背景图片缓存名称前缀
-const idKey = 'QSSHAREPOSTER_IDKEY'; //drawArray自动生成的idkey
+import _app from "./app.js";
+import QRCodeAlg from "./qr_code_alg.js";
+const ShreUserPosterBackgroundKey = "ShrePosterBackground_"; // 背景图片缓存名称前缀
+const idKey = "QSSHAREPOSTER_IDKEY"; //drawArray自动生成的idkey
 var isMp = false;
 // #ifdef MP
 isMp = true;
 // #endif
 
-
-// export default 
+// export default
 function getSharePoster(obj) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -26,8 +25,7 @@ function getSharePoster(obj) {
         reject(e);
       }
     }
-  })
-
+  });
 }
 
 function returnPromise(obj) {
@@ -49,14 +47,14 @@ function returnPromise(obj) {
     Context,
     _this,
     delayTimeScale,
-    drawDelayTime
+    drawDelayTime,
   } = obj;
   return new Promise(async (rs, rj) => {
     try {
-      _app.showLoading('正在准备海报数据');
+      _app.showLoading("正在准备海报数据");
       if (!Context) {
         // _app.log('没有画布对象,创建画布对象');
-        Context = uni.createCanvasContext(posterCanvasId, (_this || null));
+        Context = uni.createCanvasContext(posterCanvasId, _this || null);
       }
       let bgObj;
       if (background && background.width && background.height) {
@@ -65,11 +63,11 @@ function returnPromise(obj) {
         bgObj = await getShreUserPosterBackground({
           backgroundImage,
           type,
-          formData
+          formData,
         });
       }
       // 为了ios 缩放一些
-      bgScale = bgScale || .75;
+      bgScale = bgScale || 0.75;
       bgObj.width = bgObj.width * bgScale;
       bgObj.height = bgObj.height * bgScale;
 
@@ -77,45 +75,43 @@ function returnPromise(obj) {
       const params = {
         bgObj,
         type,
-        bgScale
+        bgScale,
       };
-      if (setCanvasWH && typeof (setCanvasWH) == 'function') {
+      if (setCanvasWH && typeof setCanvasWH == "function") {
         await new Promise((resolve, reject) => {
           setCanvasWH(params);
           setTimeout(() => {
             resolve();
-          }, 0)
-        })
+          }, 0);
+        });
       }
       if (imagesArray) {
-        if (typeof (imagesArray) == 'function')
-          imagesArray = imagesArray(params);
-        _app.showLoading('正在生成需绘制图片的临时路径');
+        if (typeof imagesArray == "function") imagesArray = imagesArray(params);
+        _app.showLoading("正在生成需绘制图片的临时路径");
         // _app.log('准备设置图片');
         imagesArray = await setImage(imagesArray);
         _app.hideLoading();
       }
       if (textArray) {
-        if (typeof (textArray) == 'function')
-          textArray = textArray(params);
+        if (typeof textArray == "function") textArray = textArray(params);
         textArray = setText(Context, textArray);
-
       }
       if (qrCodeArray) {
-        if (typeof (qrCodeArray) == 'function')
-          qrCodeArray = qrCodeArray(params);
-        _app.showLoading('正在生成需绘制图片的临时路径');
+        if (typeof qrCodeArray == "function") qrCodeArray = qrCodeArray(params);
+        _app.showLoading("正在生成需绘制图片的临时路径");
         for (let i = 0; i < qrCodeArray.length; i++) {
           // _app.log(i);
           if (qrCodeArray[i].image)
-            qrCodeArray[i].image = await _app.downloadFile_PromiseFc(qrCodeArray[i].image).catch(error => {
-              console.log('下载图片信息失败', error);
-            });
+            qrCodeArray[i].image = await _app
+              .downloadFile_PromiseFc(qrCodeArray[i].image)
+              .catch((error) => {
+                console.log("下载图片信息失败", error);
+              });
         }
         _app.hideLoading();
       }
       if (drawArray) {
-        if (typeof (drawArray) == 'function') {
+        if (typeof drawArray == "function") {
           drawArray = drawArray(params);
         }
         if (_app.isPromise(drawArray)) {
@@ -126,65 +122,74 @@ function returnPromise(obj) {
           let hasAllInfoCallback = false;
           for (let i = 0; i < drawArray.length; i++) {
             const drawArrayItem = drawArray[i];
-            if (_app.isFn(drawArrayItem.allInfoCallback) && !hasAllInfoCallback) hasAllInfoCallback = true;
+            if (_app.isFn(drawArrayItem.allInfoCallback) && !hasAllInfoCallback)
+              hasAllInfoCallback = true;
             drawArrayItem[idKey] = i;
             let newData;
             switch (drawArrayItem.type) {
-            case 'image':
-              newData = await setImage(drawArrayItem);
-              break;
-            case 'text':
-              newData = setText(Context, drawArrayItem);
-              break;
-            case 'qrcode':
-              if (drawArrayItem.image)
-                newData = {
-                  image: await _app.downloadFile_PromiseFc(drawArrayItem.image).catch(error => {
-                    console.log('下载图片信息失败', error);
-                  })
-                };
-              break;
-            case 'custom':
-              break;
-            default:
-              // _app.log('未识别的类型');
-              break;
+              case "image":
+                newData = await setImage(drawArrayItem);
+                break;
+              case "text":
+                newData = setText(Context, drawArrayItem);
+                break;
+              case "qrcode":
+                if (drawArrayItem.image)
+                  newData = {
+                    image: await _app
+                      .downloadFile_PromiseFc(drawArrayItem.image)
+                      .catch((error) => {
+                        console.log("下载图片信息失败", error);
+                      }),
+                  };
+                break;
+              case "custom":
+                break;
+              default:
+                // _app.log('未识别的类型');
+                break;
             }
             if (newData && _app.isObject(newData)) {
               drawArray[i] = {
                 ...drawArrayItem,
-                ...newData
-              }
-            };
+                ...newData,
+              };
+            }
           }
 
           if (hasAllInfoCallback) {
             // _app.log('----------------hasAllInfoCallback----------------');
             const drawArray_copy = [...drawArray];
             drawArray_copy.sort((a, b) => {
-              const a_serialNum = !_app.isUndef(a.serialNum) && !_app.isNull(a.serialNum) ? Number(a.serialNum) : Number.NEGATIVE_INFINITY;
-              const b_serialNum = !_app.isUndef(b.serialNum) && !_app.isNull(b.serialNum) ? Number(b.serialNum) : Number.NEGATIVE_INFINITY;
+              const a_serialNum =
+                !_app.isUndef(a.serialNum) && !_app.isNull(a.serialNum)
+                  ? Number(a.serialNum)
+                  : Number.NEGATIVE_INFINITY;
+              const b_serialNum =
+                !_app.isUndef(b.serialNum) && !_app.isNull(b.serialNum)
+                  ? Number(b.serialNum)
+                  : Number.NEGATIVE_INFINITY;
               return a_serialNum - b_serialNum;
-            })
+            });
             // _app.log('开始for循环');
 
             for (let i = 0; i < drawArray_copy.length; i++) {
               const item = {
-                ...drawArray_copy[i]
+                ...drawArray_copy[i],
               };
               if (_app.isFn(item.allInfoCallback)) {
                 let newData = item.allInfoCallback({
-                  drawArray: drawArray_copy
+                  drawArray: drawArray_copy,
                 });
                 if (_app.isPromise(newData)) newData = await newData;
                 const item_idKey = item[idKey];
                 if (!_app.isUndef(item_idKey)) {
                   drawArray[item[idKey]] = {
                     ...item,
-                    ...newData
+                    ...newData,
                   };
                 } else {
-                  console.log('程序错误 找不到idKey!!!	...这不应该啊');
+                  console.log("程序错误 找不到idKey!!!	...这不应该啊");
                 }
               }
             }
@@ -207,13 +212,13 @@ function returnPromise(obj) {
         bgScale,
         _this,
         delayTimeScale,
-        drawDelayTime
+        drawDelayTime,
       });
       _app.hideLoading();
       rs({
         bgObj,
         poster,
-        type
+        type,
       });
     } catch (e) {
       //TODO handle the exception
@@ -222,7 +227,8 @@ function returnPromise(obj) {
   });
 }
 
-function drawShareImage(obj) { //绘制海报方法
+function drawShareImage(obj) {
+  //绘制海报方法
   let {
     Context,
     type,
@@ -238,19 +244,19 @@ function drawShareImage(obj) { //绘制海报方法
     bgScale,
     _this,
     delayTimeScale,
-    drawDelayTime
+    drawDelayTime,
   } = obj;
   const params = {
     Context,
     bgObj,
     type,
-    bgScale
+    bgScale,
   };
   delayTimeScale = delayTimeScale !== undefined ? delayTimeScale : 15;
   drawDelayTime = drawDelayTime !== undefined ? drawDelayTime : 100;
   return new Promise((rs, rj) => {
     try {
-      _app.showLoading('正在绘制海报');
+      _app.showLoading("正在绘制海报");
       // _app.log('背景对象:' + JSON.stringify(bgObj));
       if (bgObj && bgObj.path) {
         // _app.log('背景有图片路径');
@@ -266,71 +272,75 @@ function drawShareImage(obj) { //绘制海报方法
         }
       }
 
-      _app.showLoading('绘制图片');
+      _app.showLoading("绘制图片");
       if (imagesArray && imagesArray.length > 0)
         drawImage(Context, imagesArray);
 
-      _app.showLoading('绘制自定义内容');
-      if (setDraw && typeof (setDraw) == 'function') setDraw(params);
+      _app.showLoading("绘制自定义内容");
+      if (setDraw && typeof setDraw == "function") setDraw(params);
 
-      _app.showLoading('绘制文本');
+      _app.showLoading("绘制文本");
       if (textArray && textArray.length > 0)
         drawText(Context, textArray, bgObj);
 
-      _app.showLoading('绘制二维码');
+      _app.showLoading("绘制二维码");
       if (qrCodeArray && qrCodeArray.length > 0) {
         for (let i = 0; i < qrCodeArray.length; i++) {
           drawQrCode(Context, qrCodeArray[i]);
         }
       }
 
-      _app.showLoading('绘制可控层级序列');
+      _app.showLoading("绘制可控层级序列");
       if (drawArray && drawArray.length > 0) {
         for (let i = 0; i < drawArray.length; i++) {
           const drawArrayItem = drawArray[i];
           // _app.log('绘制可控层级序列, drawArrayItem:' + JSON.stringify(drawArrayItem));
           switch (drawArrayItem.type) {
-          case 'image':
-            // _app.log('绘制可控层级序列, 绘制图片');
-            drawImage(Context, drawArrayItem);
-            break;
-          case 'text':
-            // _app.log('绘制可控层级序列, 绘制文本');
-            drawText(Context, drawArrayItem, bgObj);
-            break;
-          case 'qrcode':
-            // _app.log('绘制可控层级序列, 绘制二维码');
-            drawQrCode(Context, drawArrayItem);
-            break;
-          case 'custom':
-            // _app.log('绘制可控层级序列, 绘制自定义内容');
-            if (drawArrayItem.setDraw && typeof drawArrayItem.setDraw === 'function')
-              drawArrayItem.setDraw(Context);
-            break;
-          default:
-            // _app.log('未识别的类型');
-            break;
+            case "image":
+              // _app.log('绘制可控层级序列, 绘制图片');
+              drawImage(Context, drawArrayItem);
+              break;
+            case "text":
+              // _app.log('绘制可控层级序列, 绘制文本');
+              drawText(Context, drawArrayItem, bgObj);
+              break;
+            case "qrcode":
+              // _app.log('绘制可控层级序列, 绘制二维码');
+              drawQrCode(Context, drawArrayItem);
+              break;
+            case "custom":
+              // _app.log('绘制可控层级序列, 绘制自定义内容');
+              if (
+                drawArrayItem.setDraw &&
+                typeof drawArrayItem.setDraw === "function"
+              )
+                drawArrayItem.setDraw(Context);
+              break;
+            default:
+              // _app.log('未识别的类型');
+              break;
           }
         }
       }
-      _app.showLoading('绘制中')
+      _app.showLoading("绘制中");
       setTimeout(() => {
         // _app.log('准备执行draw方法')
         // _app.log('Context:' + Context);
-        const fn = function () {
-          _app.showLoading('正在输出图片');
+        const fn = function() {
+          _app.showLoading("正在输出图片");
           let setObj = setCanvasToTempFilePath || {};
-          if (setObj && typeof (setObj) == 'function')
+          if (setObj && typeof setObj == "function")
             setObj = setCanvasToTempFilePath(bgObj, type);
           let canvasToTempFilePathFn;
           // #ifdef H5
-          canvasToTempFilePathFn = function () {
+          canvasToTempFilePathFn = function() {
             _app.hideLoading();
             rs({
-              tempFilePath: document.querySelector(`uni-canvas[canvas-id=${posterCanvasId}]>canvas`).toDataURL(
-                'image/jpeg', setObj.quality || .8)
+              tempFilePath: document
+                .querySelector(`uni-canvas[canvas-id=${posterCanvasId}]>canvas`)
+                .toDataURL("image/jpeg", setObj.quality || 0.8),
             });
-          }
+          };
           // #endif
           // #ifndef H5
           const data = {
@@ -340,13 +350,14 @@ function drawShareImage(obj) { //绘制海报方法
             height: bgObj.height,
             destWidth: bgObj.width * 2, // 若H5使用这里请不要乘以二
             destHeight: bgObj.height * 2, // 若H5使用这里请不要乘以二
-            quality: .8,
-            fileType: 'jpg',
-            ...setObj
+            quality: 0.8,
+            fileType: "jpg",
+            ...setObj,
           };
           // _app.log('canvasToTempFilePath的data对象:' + JSON.stringify(data));
-          canvasToTempFilePathFn = function () {
-            const toTempFilePathObj = { //输出为图片
+          canvasToTempFilePathFn = function() {
+            const toTempFilePathObj = {
+              //输出为图片
               ...data,
               canvasId: posterCanvasId,
               success(res) {
@@ -356,49 +367,49 @@ function drawShareImage(obj) { //绘制海报方法
               fail(err) {
                 _app.hideLoading();
                 // _app.log('输出图片失败:' + JSON.stringify(err));
-                rj('输出图片失败:' + JSON.stringify(err))
-              }
-            }
+                rj("输出图片失败:" + JSON.stringify(err));
+              },
+            };
             uni.canvasToTempFilePath(toTempFilePathObj, _this || null);
-          }
+          };
           // #endif
           let delayTime = 0;
           if (qrCodeArray) {
-            qrCodeArray.forEach(item => {
+            qrCodeArray.forEach((item) => {
               if (item.text) {
                 delayTime += Number(item.text.length);
               }
-            })
+            });
           }
           if (imagesArray) {
             imagesArray.forEach(() => {
               delayTime += delayTimeScale;
-            })
+            });
           }
           if (textArray) {
             textArray.forEach(() => {
               delayTime += delayTimeScale;
-            })
+            });
           }
           if (drawArray) {
-            drawArray.forEach(item => {
+            drawArray.forEach((item) => {
               switch (item.type) {
-              case 'text':
-                if (item.text) {
-                  delayTime += item.text.length;
-                }
-                break;
-              default:
-                delayTime += delayTimeScale;
-                break;
+                case "text":
+                  if (item.text) {
+                    delayTime += item.text.length;
+                  }
+                  break;
+                default:
+                  delayTime += delayTimeScale;
+                  break;
               }
-            })
+            });
           }
           // _app.log('延时系数:' + delayTimeScale);
           // _app.log('总计延时:' + delayTime);
           setTimeout(canvasToTempFilePathFn, delayTime);
-        }
-        Context.draw((typeof (reserve) == 'boolean' ? reserve : false), fn);
+        };
+        Context.draw(typeof reserve == "boolean" ? reserve : false, fn);
       }, drawDelayTime);
     } catch (e) {
       //TODO handle the exception
@@ -408,8 +419,9 @@ function drawShareImage(obj) { //绘制海报方法
   });
 }
 
-// export 
-function setText(Context, texts) { // 设置文本数据
+// export
+function setText(Context, texts) {
+  // 设置文本数据
   // _app.log('进入设置文字方法, texts:' + JSON.stringify(texts));
   if (texts && _app.isArray(texts)) {
     // _app.log('texts是数组');
@@ -432,28 +444,28 @@ function setTextFn(Context, textItem) {
   if (_app.isNotNull_string(textItem.text)) {
     textItem.text = String(textItem.text);
     textItem.alpha = textItem.alpha !== undefined ? textItem.alpha : 1;
-    textItem.color = textItem.color || 'black';
+    textItem.color = textItem.color || "black";
     textItem.size = textItem.size !== undefined ? textItem.size : 10;
-    textItem.textAlign = textItem.textAlign || 'left';
-    textItem.textBaseline = textItem.textBaseline || 'middle';
+    textItem.textAlign = textItem.textAlign || "left";
+    textItem.textBaseline = textItem.textBaseline || "middle";
     textItem.dx = textItem.dx || 0;
     textItem.dy = textItem.dy || 0;
     textItem.size = Math.ceil(Number(textItem.size));
     // _app.log('字符串信息-初始化默认值后:' + JSON.stringify(textItem));
     const textLength = countTextLength(Context, {
       text: textItem.text,
-      size: textItem.size
+      size: textItem.size,
     });
     // _app.log('字符串信息-初始化时的文本长度:' + textLength);
     let infoCallBackObj = {};
-    if (textItem.infoCallBack && typeof (textItem.infoCallBack) === 'function') {
+    if (textItem.infoCallBack && typeof textItem.infoCallBack === "function") {
       infoCallBackObj = textItem.infoCallBack(textLength);
     }
     textItem = {
       ...textItem,
       textLength,
-      ...infoCallBackObj
-    }
+      ...infoCallBackObj,
+    };
     // _app.log('字符串信息-infoCallBack后:' + JSON.stringify(textItem));
   }
   return textItem;
@@ -461,10 +473,7 @@ function setTextFn(Context, textItem) {
 
 function countTextLength(Context, obj) {
   // _app.log('计算文字长度, obj:' + JSON.stringify(obj));
-  const {
-    text,
-    size
-  } = obj;
+  const { text, size } = obj;
   Context.setFontSize(size);
   let textLength;
   /* try{
@@ -494,187 +503,188 @@ function countTextLength(Context, obj) {
 function countStrLength(t) {
   let l;
   if (/a/.test(t)) {
-    l = 0.552734375
+    l = 0.552734375;
   } else if (/b/.test(t)) {
-    l = 0.638671875
+    l = 0.638671875;
   } else if (/c/.test(t)) {
-    l = 0.50146484375
+    l = 0.50146484375;
   } else if (/d/.test(t)) {
-    l = 0.6396484375
+    l = 0.6396484375;
   } else if (/e/.test(t)) {
-    l = 0.5673828125
+    l = 0.5673828125;
   } else if (/f/.test(t)) {
-    l = 0.3466796875
+    l = 0.3466796875;
   } else if (/g/.test(t)) {
-    l = 0.6396484375
+    l = 0.6396484375;
   } else if (/h/.test(t)) {
-    l = 0.61572265625
+    l = 0.61572265625;
   } else if (/i/.test(t)) {
-    l = 0.26611328125
+    l = 0.26611328125;
   } else if (/j/.test(t)) {
-    l = 0.26708984375
+    l = 0.26708984375;
   } else if (/k/.test(t)) {
-    l = 0.54443359375
+    l = 0.54443359375;
   } else if (/l/.test(t)) {
-    l = 0.26611328125
+    l = 0.26611328125;
   } else if (/m/.test(t)) {
-    l = 0.93701171875
+    l = 0.93701171875;
   } else if (/n/.test(t)) {
-    l = 0.6162109375
+    l = 0.6162109375;
   } else if (/o/.test(t)) {
-    l = 0.6357421875
+    l = 0.6357421875;
   } else if (/p/.test(t)) {
-    l = 0.638671875
+    l = 0.638671875;
   } else if (/q/.test(t)) {
-    l = 0.6396484375
+    l = 0.6396484375;
   } else if (/r/.test(t)) {
-    l = 0.3818359375
+    l = 0.3818359375;
   } else if (/s/.test(t)) {
-    l = 0.462890625
+    l = 0.462890625;
   } else if (/t/.test(t)) {
-    l = 0.37255859375
+    l = 0.37255859375;
   } else if (/u/.test(t)) {
-    l = 0.6162109375
+    l = 0.6162109375;
   } else if (/v/.test(t)) {
-    l = 0.52490234375
+    l = 0.52490234375;
   } else if (/w/.test(t)) {
-    l = 0.78955078125
+    l = 0.78955078125;
   } else if (/x/.test(t)) {
-    l = 0.5068359375
+    l = 0.5068359375;
   } else if (/y/.test(t)) {
-    l = 0.529296875
+    l = 0.529296875;
   } else if (/z/.test(t)) {
-    l = 0.49169921875
+    l = 0.49169921875;
   } else if (/A/.test(t)) {
-    l = 0.70361328125
+    l = 0.70361328125;
   } else if (/B/.test(t)) {
-    l = 0.62744140625
+    l = 0.62744140625;
   } else if (/C/.test(t)) {
-    l = 0.6689453125
+    l = 0.6689453125;
   } else if (/D/.test(t)) {
-    l = 0.76171875
+    l = 0.76171875;
   } else if (/E/.test(t)) {
-    l = 0.5498046875
+    l = 0.5498046875;
   } else if (/F/.test(t)) {
-    l = 0.53125
+    l = 0.53125;
   } else if (/G/.test(t)) {
-    l = 0.74365234375
+    l = 0.74365234375;
   } else if (/H/.test(t)) {
-    l = 0.7734375
+    l = 0.7734375;
   } else if (/I/.test(t)) {
-    l = 0.2939453125
+    l = 0.2939453125;
   } else if (/J/.test(t)) {
-    l = 0.39599609375
+    l = 0.39599609375;
   } else if (/K/.test(t)) {
-    l = 0.634765625
+    l = 0.634765625;
   } else if (/L/.test(t)) {
-    l = 0.51318359375
+    l = 0.51318359375;
   } else if (/M/.test(t)) {
-    l = 0.97705078125
+    l = 0.97705078125;
   } else if (/N/.test(t)) {
-    l = 0.81298828125
+    l = 0.81298828125;
   } else if (/O/.test(t)) {
-    l = 0.81494140625
+    l = 0.81494140625;
   } else if (/P/.test(t)) {
-    l = 0.61181640625
+    l = 0.61181640625;
   } else if (/Q/.test(t)) {
-    l = 0.81494140625
+    l = 0.81494140625;
   } else if (/R/.test(t)) {
-    l = 0.65283203125
+    l = 0.65283203125;
   } else if (/S/.test(t)) {
-    l = 0.5771484375
+    l = 0.5771484375;
   } else if (/T/.test(t)) {
-    l = 0.5732421875
+    l = 0.5732421875;
   } else if (/U/.test(t)) {
-    l = 0.74658203125
+    l = 0.74658203125;
   } else if (/V/.test(t)) {
-    l = 0.67626953125
+    l = 0.67626953125;
   } else if (/W/.test(t)) {
-    l = 1.017578125
+    l = 1.017578125;
   } else if (/X/.test(t)) {
-    l = 0.64501953125
+    l = 0.64501953125;
   } else if (/Y/.test(t)) {
-    l = 0.603515625
+    l = 0.603515625;
   } else if (/Z/.test(t)) {
-    l = 0.6201171875
+    l = 0.6201171875;
   } else if (/[0-9]/.test(t)) {
-    l = 0.58642578125
+    l = 0.58642578125;
   } else if (/[\u4e00-\u9fa5]/.test(t)) {
-    l = 1
+    l = 1;
   } else if (/ /.test(t)) {
-    l = 0.2958984375
+    l = 0.2958984375;
   } else if (/\`/.test(t)) {
-    l = 0.294921875
+    l = 0.294921875;
   } else if (/\~/.test(t)) {
-    l = 0.74169921875
+    l = 0.74169921875;
   } else if (/\!/.test(t)) {
-    l = 0.3125
+    l = 0.3125;
   } else if (/\@/.test(t)) {
-    l = 1.03125
+    l = 1.03125;
   } else if (/\#/.test(t)) {
-    l = 0.63818359375
+    l = 0.63818359375;
   } else if (/\$/.test(t)) {
-    l = 0.58642578125
+    l = 0.58642578125;
   } else if (/\%/.test(t)) {
-    l = 0.8896484375
+    l = 0.8896484375;
   } else if (/\^/.test(t)) {
-    l = 0.74169921875
+    l = 0.74169921875;
   } else if (/\&/.test(t)) {
-    l = 0.8701171875
+    l = 0.8701171875;
   } else if (/\*/.test(t)) {
-    l = 0.455078125
+    l = 0.455078125;
   } else if (/\(/.test(t)) {
-    l = 0.333984375
+    l = 0.333984375;
   } else if (/\)/.test(t)) {
-    l = 0.333984375
+    l = 0.333984375;
   } else if (/\_/.test(t)) {
-    l = 0.4482421875
+    l = 0.4482421875;
   } else if (/\-/.test(t)) {
-    l = 0.4326171875
+    l = 0.4326171875;
   } else if (/\+/.test(t)) {
-    l = 0.74169921875
+    l = 0.74169921875;
   } else if (/\=/.test(t)) {
-    l = 0.74169921875
+    l = 0.74169921875;
   } else if (/\|/.test(t)) {
-    l = 0.26904296875
+    l = 0.26904296875;
   } else if (/\\/.test(t)) {
-    l = 0.416015625
+    l = 0.416015625;
   } else if (/\[/.test(t)) {
-    l = 0.333984375
+    l = 0.333984375;
   } else if (/\]/.test(t)) {
-    l = 0.333984375
+    l = 0.333984375;
   } else if (/\;/.test(t)) {
-    l = 0.24072265625
+    l = 0.24072265625;
   } else if (/\'/.test(t)) {
-    l = 0.25634765625
+    l = 0.25634765625;
   } else if (/\,/.test(t)) {
-    l = 0.24072265625
+    l = 0.24072265625;
   } else if (/\./.test(t)) {
-    l = 0.24072265625
+    l = 0.24072265625;
   } else if (/\//.test(t)) {
-    l = 0.42724609375
+    l = 0.42724609375;
   } else if (/\{/.test(t)) {
-    l = 0.333984375
+    l = 0.333984375;
   } else if (/\}/.test(t)) {
-    l = 0.333984375
+    l = 0.333984375;
   } else if (/\:/.test(t)) {
-    l = 0.24072265625
+    l = 0.24072265625;
   } else if (/\"/.test(t)) {
-    l = 0.435546875
+    l = 0.435546875;
   } else if (/\</.test(t)) {
-    l = 0.74169921875
+    l = 0.74169921875;
   } else if (/\>/.test(t)) {
-    l = 0.74169921875
+    l = 0.74169921875;
   } else if (/\?/.test(t)) {
-    l = 0.48291015625
+    l = 0.48291015625;
   } else {
-    l = 1
+    l = 1;
   }
   return l;
 }
 
-// export 
-function setImage(images) { // 设置图片数据
+// export
+function setImage(images) {
+  // 设置图片数据
   // _app.log('进入设置图片数据方法');
   return new Promise(async (resolve, rejcet) => {
     try {
@@ -693,26 +703,27 @@ function setImage(images) { // 设置图片数据
       //TODO handle the exception
       rejcet(e);
     }
-  })
+  });
 }
 
 function setImageFn(image) {
   return new Promise(async (resolve, reject) => {
     if (image.url) {
       let imgUrl = image.url;
-      imgUrl = await _app.downloadFile_PromiseFc(imgUrl).catch(error => {
-        console.log('下载图片信息失败', error);
+      imgUrl = await _app.downloadFile_PromiseFc(imgUrl).catch((error) => {
+        console.log("下载图片信息失败", error);
       });
       image.url = imgUrl;
-      const hasinfoCallBack = image.infoCallBack && typeof (image.infoCallBack) === 'function';
+      const hasinfoCallBack =
+        image.infoCallBack && typeof image.infoCallBack === "function";
       let imageInfo = {};
-      imageInfo = await _app.getImageInfo_PromiseFc(imgUrl).catch(error => {
-        console.log('获取图片信息失败', error);
+      imageInfo = await _app.getImageInfo_PromiseFc(imgUrl).catch((error) => {
+        console.log("获取图片信息失败", error);
       });
       if (hasinfoCallBack) {
         image = {
           ...image,
-          ...image.infoCallBack(imageInfo)
+          ...image.infoCallBack(imageInfo),
         };
       }
       image.dx = image.dx || 0;
@@ -721,15 +732,16 @@ function setImageFn(image) {
       image.dHeight = image.dHeight || imageInfo.height;
       image = {
         ...image,
-        imageInfo
-      }
+        imageInfo,
+      };
     }
     resolve(image);
-  })
+  });
 }
 
-// export 
-function drawText(Context, textArray, bgObj) { // 先遍历换行再绘制
+// export
+function drawText(Context, textArray, bgObj) {
+  // 先遍历换行再绘制
   if (!_app.isArray(textArray)) {
     // _app.log('遍历文本方法, 不是数组');
     textArray = [textArray];
@@ -748,28 +760,44 @@ function drawText(Context, textArray, bgObj) { // 先遍历换行再绘制
           dx = textItem.dx;
         if (_app.isObject(textItem.lineFeed)) {
           const lineFeed = textItem.lineFeed;
-          lineNum = (lineFeed.lineNum !== undefined && typeof (lineFeed.lineNum) === 'number') && lineFeed.lineNum >= 0 ?
-            lineFeed.lineNum : lineNum;
-          maxWidth = (lineFeed.maxWidth !== undefined && typeof (lineFeed.maxWidth) === 'number') ? lineFeed.maxWidth :
-            maxWidth;
-          lineHeight = (lineFeed.lineHeight !== undefined && typeof (lineFeed.lineHeight) === 'number') ? lineFeed.lineHeight :
-            lineHeight;
-          dx = (lineFeed.dx !== undefined && typeof (lineFeed.dx) === 'number') ? lineFeed.dx : dx;
+          lineNum =
+            lineFeed.lineNum !== undefined &&
+            typeof lineFeed.lineNum === "number" &&
+            lineFeed.lineNum >= 0
+              ? lineFeed.lineNum
+              : lineNum;
+          maxWidth =
+            lineFeed.maxWidth !== undefined &&
+            typeof lineFeed.maxWidth === "number"
+              ? lineFeed.maxWidth
+              : maxWidth;
+          lineHeight =
+            lineFeed.lineHeight !== undefined &&
+            typeof lineFeed.lineHeight === "number"
+              ? lineFeed.lineHeight
+              : lineHeight;
+          dx =
+            lineFeed.dx !== undefined && typeof lineFeed.dx === "number"
+              ? lineFeed.dx
+              : dx;
         }
-        const chr = (textItem.text).split("");
+        const chr = textItem.text.split("");
         let temp = "";
         const row = [];
         //循环出几行文字组成数组
         for (let a = 0, len = chr.length; a < len; a++) {
-          if (countTextLength(Context, {
+          if (
+            countTextLength(Context, {
               text: temp,
-              size: textItem.size
-            }) <= maxWidth && countTextLength(Context, {
-              text: (temp + chr[a]),
-              size: textItem.size
-            }) <= maxWidth) {
+              size: textItem.size,
+            }) <= maxWidth &&
+            countTextLength(Context, {
+              text: temp + chr[a],
+              size: textItem.size,
+            }) <= maxWidth
+          ) {
             temp += chr[a];
-            if (a == (chr.length - 1)) {
+            if (a == chr.length - 1) {
               row.push(temp);
             }
           } else {
@@ -779,22 +807,23 @@ function drawText(Context, textArray, bgObj) { // 先遍历换行再绘制
         }
         // _app.log('循环出的文本数组:' + JSON.stringify(row));
         //只显示几行 变量间距lineHeight  变量行数lineNum
-        let allNum = (lineNum >= 0 && lineNum < row.length) ? lineNum : row.length;
+        let allNum =
+          lineNum >= 0 && lineNum < row.length ? lineNum : row.length;
 
         for (let i = 0; i < allNum; i++) {
           let str = row[i];
-          if (i == (allNum - 1) && allNum < row.length) {
-            str = str.substring(0, str.length - 1) + '...';
+          if (i == allNum - 1 && allNum < row.length) {
+            str = str.substring(0, str.length - 1) + "...";
           }
           const obj = {
             ...textItem,
             text: str,
-            dx: i === 0 ? textItem.dx : (dx >= 0 ? dx : textItem.dx),
-            dy: textItem.dy + (i * lineHeight),
+            dx: i === 0 ? textItem.dx : dx >= 0 ? dx : textItem.dx,
+            dy: textItem.dy + i * lineHeight,
             textLength: countTextLength(Context, {
               text: str,
-              size: textItem.size
-            })
+              size: textItem.size,
+            }),
           };
           // _app.log('重新组成的文本对象:' + JSON.stringify(obj));
           newArr.push(obj);
@@ -809,33 +838,45 @@ function drawText(Context, textArray, bgObj) { // 先遍历换行再绘制
 }
 
 function setFont(textItem = {}) {
-  if (textItem.font && typeof (textItem.font) === 'string') {
+  if (textItem.font && typeof textItem.font === "string") {
     // _app.log(textItem.font)
     return textItem.font;
   } else {
-    let fontStyle = 'normal';
-    let fontVariant = 'normal';
-    let fontWeight = 'normal';
+    let fontStyle = "normal";
+    let fontVariant = "normal";
+    let fontWeight = "normal";
     let fontSize = textItem.size || 10;
-    let fontFamily = 'sans-serif';
+    let fontFamily = "sans-serif";
     fontSize = Math.ceil(Number(fontSize));
-    if (textItem.fontStyle && typeof (textItem.fontStyle) === 'string')
+    if (textItem.fontStyle && typeof textItem.fontStyle === "string")
       fontStyle = textItem.fontStyle.trim();
-    if (textItem.fontVariant && typeof (textItem.fontVariant) === 'string')
+    if (textItem.fontVariant && typeof textItem.fontVariant === "string")
       fontVariant = textItem.fontVariant.trim();
-    if (textItem.fontWeight && (typeof (textItem.fontWeight) === 'string' || typeof (textItem.fontWeight) === 'number'))
+    if (
+      textItem.fontWeight &&
+      (typeof textItem.fontWeight === "string" ||
+        typeof textItem.fontWeight === "number")
+    )
       fontWeight = textItem.fontWeight.trim();
-    if (textItem.fontFamily && typeof (textItem.fontFamily) === 'string')
+    if (textItem.fontFamily && typeof textItem.fontFamily === "string")
       fontFamily = textItem.fontFamily.trim();
-    return fontStyle + ' ' +
-      fontVariant + ' ' +
-      fontWeight + ' ' +
-      fontSize + 'px' + ' ' +
-      fontFamily;
+    return (
+      fontStyle +
+      " " +
+      fontVariant +
+      " " +
+      fontWeight +
+      " " +
+      fontSize +
+      "px" +
+      " " +
+      fontFamily
+    );
   }
 }
 
-function drawTexts(Context, texts) { // 绘制文本
+function drawTexts(Context, texts) {
+  // 绘制文本
   // _app.log('准备绘制文本方法, texts:' + JSON.stringify(texts));
   if (texts && _app.isArray(texts)) {
     // _app.log('准备绘制文本方法, 是数组');
@@ -862,10 +903,15 @@ function drawTextFn(Context, textItem) {
     if (textItem.lineThrough && _app.isObject(textItem.lineThrough)) {
       // _app.log('有删除线');
       let lineThrough = textItem.lineThrough;
-      lineThrough.alpha = lineThrough.alpha !== undefined ? lineThrough.alpha : textItem.alpha;
+      lineThrough.alpha =
+        lineThrough.alpha !== undefined ? lineThrough.alpha : textItem.alpha;
       lineThrough.style = lineThrough.style || textItem.color;
-      lineThrough.width = lineThrough.width !== undefined ? lineThrough.width : textItem.size / 10;
-      lineThrough.cap = lineThrough.cap !== undefined ? lineThrough.cap : 'butt';
+      lineThrough.width =
+        lineThrough.width !== undefined
+          ? lineThrough.width
+          : textItem.size / 10;
+      lineThrough.cap =
+        lineThrough.cap !== undefined ? lineThrough.cap : "butt";
       // _app.log('删除线对象:' + JSON.stringify(lineThrough));
       Context.setGlobalAlpha(lineThrough.alpha);
       Context.setStrokeStyle(lineThrough.style);
@@ -873,26 +919,26 @@ function drawTextFn(Context, textItem) {
       Context.setLineCap(lineThrough.cap);
       let mx, my;
       switch (textItem.textAlign) {
-      case 'left':
-        mx = textItem.dx;
-        break;
-      case 'center':
-        mx = textItem.dx - (textItem.textLength) / 2;
-        break;
-      default:
-        mx = textItem.dx - (textItem.textLength);
-        break;
+        case "left":
+          mx = textItem.dx;
+          break;
+        case "center":
+          mx = textItem.dx - textItem.textLength / 2;
+          break;
+        default:
+          mx = textItem.dx - textItem.textLength;
+          break;
       }
       switch (textItem.textBaseline) {
-      case 'top':
-        my = textItem.dy + (textItem.size * .5);
-        break;
-      case 'middle':
-        my = textItem.dy;
-        break;
-      default:
-        my = textItem.dy - (textItem.size * .5);
-        break;
+        case "top":
+          my = textItem.dy + textItem.size * 0.5;
+          break;
+        case "middle":
+          my = textItem.dy;
+          break;
+        default:
+          my = textItem.dy - textItem.size * 0.5;
+          break;
       }
       Context.beginPath();
       Context.moveTo(mx, my);
@@ -902,11 +948,12 @@ function drawTextFn(Context, textItem) {
       // _app.log('删除线完毕');
     }
     Context.setGlobalAlpha(1);
-    Context.font = '10px sans-serif';
+    Context.font = "10px sans-serif";
   }
 }
-// export 
-function drawImage(Context, images) { // 绘制图片
+// export
+function drawImage(Context, images) {
+  // 绘制图片
   // _app.log('判断图片数据类型:' + JSON.stringify(images))
   if (images && _app.isArray(images)) {
     if (images.length > 0) {
@@ -917,7 +964,6 @@ function drawImage(Context, images) { // 绘制图片
   } else {
     readyDrawImageFn(Context, images);
   }
-
 }
 
 function readyDrawImageFn(Context, img) {
@@ -940,16 +986,35 @@ function drawImageFn(Context, img) {
     img.alpha = Number(!_app.isUndef(img.alpha) ? img.alpha : 1);
     Context.setGlobalAlpha(img.alpha);
     // _app.log('绘制默认图片方法, 有url');
-    if (img.dWidth && img.dHeight && img.sx && img.sy && img.sWidth && img.sHeight) {
+    if (
+      img.dWidth &&
+      img.dHeight &&
+      img.sx &&
+      img.sy &&
+      img.sWidth &&
+      img.sHeight
+    ) {
       // _app.log('绘制默认图片方法, 绘制第一种方案');
-      Context.drawImage(img.url, img.dx || 0, img.dy || 0,
-        img.dWidth || false, img.dHeight || false,
-        img.sx || false, img.sy || false,
-        img.sWidth || false, img.sHeight || false);
+      Context.drawImage(
+        img.url,
+        img.dx || 0,
+        img.dy || 0,
+        img.dWidth || false,
+        img.dHeight || false,
+        img.sx || false,
+        img.sy || false,
+        img.sWidth || false,
+        img.sHeight || false
+      );
     } else if (img.dWidth && img.dHeight) {
       // _app.log('绘制默认图片方法, 绘制第二种方案');
-      Context.drawImage(img.url, img.dx || 0, img.dy || 0,
-        img.dWidth || false, img.dHeight || false);
+      Context.drawImage(
+        img.url,
+        img.dx || 0,
+        img.dy || 0,
+        img.dWidth || false,
+        img.dHeight || false
+      );
     } else {
       // _app.log('绘制默认图片方法, 绘制第三种方案');
       Context.drawImage(img.url, img.dx || 0, img.dy || 0);
@@ -963,16 +1028,9 @@ function drawImageFn(Context, img) {
 
 function drawCircleImage(Context, obj) {
   // _app.log('进入绘制圆形图片方法, obj:' + JSON.stringify(obj));
-  let {
-    dx,
-    dy,
-    dWidth,
-    dHeight,
-    circleSet,
-    imageInfo
-  } = obj;
+  let { dx, dy, dWidth, dHeight, circleSet, imageInfo } = obj;
   let x, y, r;
-  if (typeof circleSet === 'object') {
+  if (typeof circleSet === "object") {
     x = circleSet.x;
     y = circleSet.y;
     r = circleSet.r;
@@ -990,7 +1048,7 @@ function drawCircleImage(Context, obj) {
   Context.arc(x, y, r, 0, 2 * Math.PI, false);
   Context.closePath();
   Context.setGlobalAlpha(0);
-  Context.fillStyle = '#FFFFFF';
+  Context.fillStyle = "#FFFFFF";
   Context.fill();
   Context.setGlobalAlpha(1);
   Context.clip();
@@ -999,22 +1057,16 @@ function drawCircleImage(Context, obj) {
   Context.restore();
 }
 
-function drawRoundRectImage(Context, obj) { // 绘制矩形
+function drawRoundRectImage(Context, obj) {
+  // 绘制矩形
   // _app.log('进入绘制矩形图片方法, obj:' + JSON.stringify(obj));
   Context.save();
-  let {
-    dx,
-    dy,
-    dWidth,
-    dHeight,
-    roundRectSet,
-    imageInfo
-  } = obj;
+  let { dx, dy, dWidth, dHeight, roundRectSet, imageInfo } = obj;
   let r;
-  if (typeof roundRectSet === 'object') {
+  if (typeof roundRectSet === "object") {
     r = roundRectSet.r;
   }
-  r = r || dWidth * .1;
+  r = r || dWidth * 0.1;
 
   if (dWidth < 2 * r) {
     r = dWidth / 2;
@@ -1030,7 +1082,7 @@ function drawRoundRectImage(Context, obj) { // 绘制矩形
   Context.arcTo(dx, dy, dx + dWidth, dy, r);
   Context.closePath();
   Context.setGlobalAlpha(0);
-  Context.fillStyle = '#FFFFFF';
+  Context.fillStyle = "#FFFFFF";
   Context.fill();
   Context.setGlobalAlpha(1);
   Context.clip();
@@ -1039,28 +1091,32 @@ function drawRoundRectImage(Context, obj) { // 绘制矩形
   // _app.log('进入绘制矩形图片方法, 绘制完毕');
 }
 
-// export 
-function drawQrCode(Context, qrCodeObj) { //生成二维码方法， 参考了 诗小柒 的二维码生成器代码
+// export
+function drawQrCode(Context, qrCodeObj) {
+  //生成二维码方法， 参考了 诗小柒 的二维码生成器代码
   // _app.log('进入绘制二维码方法')
-  _app.showLoading('正在生成二维码');
+  _app.showLoading("正在生成二维码");
   let qrcodeAlgObjCache = [];
   let options = {
-    text: String(qrCodeObj.text || '') || '', // 生成内容
+    text: String(qrCodeObj.text || "") || "", // 生成内容
     size: Number(qrCodeObj.size || 0) || 200, // 二维码大小
-    background: String(qrCodeObj.background || '') || '#ffffff', // 背景色
-    foreground: String(qrCodeObj.foreground || '') || '#000000', // 前景色
-    pdground: String(qrCodeObj.pdground || '') || '#000000', // 定位角点颜色
+    background: String(qrCodeObj.background || "") || "#ffffff", // 背景色
+    foreground: String(qrCodeObj.foreground || "") || "#000000", // 前景色
+    pdground: String(qrCodeObj.pdground || "") || "#000000", // 定位角点颜色
     correctLevel: Number(qrCodeObj.correctLevel || 0) || 3, // 容错级别
-    image: String(qrCodeObj.image || '') || '', // 二维码图标
+    image: String(qrCodeObj.image || "") || "", // 二维码图标
     imageSize: Number(qrCodeObj.imageSize || 0) || 40, // 二维码图标大小
     dx: Number(qrCodeObj.dx || 0) || 0, // x轴距离
-    dy: Number(qrCodeObj.dy || 0) || 0 // y轴距离
-  }
+    dy: Number(qrCodeObj.dy || 0) || 0, // y轴距离
+  };
   let qrCodeAlg = null;
   let d = 0;
   for (var i = 0, l = qrcodeAlgObjCache.length; i < l; i++) {
     d = i;
-    if (qrcodeAlgObjCache[i].text == options.text && qrcodeAlgObjCache[i].text.correctLevel == options.correctLevel) {
+    if (
+      qrcodeAlgObjCache[i].text == options.text &&
+      qrcodeAlgObjCache[i].text.correctLevel == options.correctLevel
+    ) {
       qrCodeAlg = qrcodeAlgObjCache[i].obj;
       break;
     }
@@ -1070,20 +1126,27 @@ function drawQrCode(Context, qrCodeObj) { //生成二维码方法， 参考了 �
     qrcodeAlgObjCache.push({
       text: options.text,
       correctLevel: options.correctLevel,
-      obj: qrCodeAlg
+      obj: qrCodeAlg,
     });
   }
-  let getForeGround = function (config) {
+  let getForeGround = function(config) {
     let options = config.options;
-    if (options.pdground && (
-        (config.row > 1 && config.row < 5 && config.col > 1 && config.col < 5) ||
-        (config.row > (config.count - 6) && config.row < (config.count - 2) && config.col > 1 && config.col < 5) ||
-        (config.row > 1 && config.row < 5 && config.col > (config.count - 6) && config.col < (config.count - 2))
-      )) {
+    if (
+      options.pdground &&
+      ((config.row > 1 && config.row < 5 && config.col > 1 && config.col < 5) ||
+        (config.row > config.count - 6 &&
+          config.row < config.count - 2 &&
+          config.col > 1 &&
+          config.col < 5) ||
+        (config.row > 1 &&
+          config.row < 5 &&
+          config.col > config.count - 6 &&
+          config.col < config.count - 2))
+    ) {
       return options.pdground;
     }
     return options.foreground;
-  }
+  };
   let count = qrCodeAlg.getModuleCount();
   let ratioSize = options.size;
   let ratioImgSize = options.imageSize;
@@ -1093,33 +1156,60 @@ function drawQrCode(Context, qrCodeObj) { //生成二维码方法， 参考了 �
   //绘制
   for (let row = 0; row < count; row++) {
     for (let col = 0; col < count; col++) {
-      let w = (Math.ceil((col + 1) * tileW) - Math.floor(col * tileW));
-      let h = (Math.ceil((row + 1) * tileW) - Math.floor(row * tileW));
+      let w = Math.ceil((col + 1) * tileW) - Math.floor(col * tileW);
+      let h = Math.ceil((row + 1) * tileW) - Math.floor(row * tileW);
       let foreground = getForeGround({
         row: row,
         col: col,
         count: count,
-        options: options
+        options: options,
       });
-      Context.setFillStyle(qrCodeAlg.modules[row][col] ? foreground : options.background);
-      Context.fillRect(options.dx + Math.round(col * tileW), options.dy + Math.round(row * tileH), w, h);
+      Context.setFillStyle(
+        qrCodeAlg.modules[row][col] ? foreground : options.background
+      );
+      Context.fillRect(
+        options.dx + Math.round(col * tileW),
+        options.dy + Math.round(row * tileH),
+        w,
+        h
+      );
     }
   }
   if (options.image) {
     let x = options.dx + Number(((ratioSize - ratioImgSize) / 2).toFixed(2));
     let y = options.dy + Number(((ratioSize - ratioImgSize) / 2).toFixed(2));
-    drawRoundedRect(Context, x, y, ratioImgSize, ratioImgSize, 2, 6, true, true)
+    drawRoundedRect(
+      Context,
+      x,
+      y,
+      ratioImgSize,
+      ratioImgSize,
+      2,
+      6,
+      true,
+      true
+    );
     Context.drawImage(options.image, x, y, ratioImgSize, ratioImgSize);
     // 画圆角矩形
-    function drawRoundedRect(ctxi, x, y, width, height, r, lineWidth, fill, stroke) {
+    function drawRoundedRect(
+      ctxi,
+      x,
+      y,
+      width,
+      height,
+      r,
+      lineWidth,
+      fill,
+      stroke
+    ) {
       ctxi.setLineWidth(lineWidth);
       ctxi.setFillStyle(options.background);
       ctxi.setStrokeStyle(options.background);
-      ctxi.beginPath(); // draw top and top right corner 
+      ctxi.beginPath(); // draw top and top right corner
       ctxi.moveTo(x + r, y);
-      ctxi.arcTo(x + width, y, x + width, y + r, r); // draw right side and bottom right corner 
-      ctxi.arcTo(x + width, y + height, x + width - r, y + height, r); // draw bottom and bottom left corner 
-      ctxi.arcTo(x, y + height, x, y + height - r, r); // draw left and top left corner 
+      ctxi.arcTo(x + width, y, x + width, y + r, r); // draw right side and bottom right corner
+      ctxi.arcTo(x + width, y + height, x + width - r, y + height, r); // draw bottom and bottom left corner
+      ctxi.arcTo(x, y + height, x, y + height - r, r); // draw left and top left corner
       ctxi.arcTo(x, y, x + r, y, r);
       ctxi.closePath();
       if (fill) {
@@ -1134,15 +1224,12 @@ function drawQrCode(Context, qrCodeObj) { //生成二维码方法， 参考了 �
   _app.hideLoading();
 }
 
-
-function getShreUserPosterBackground(objs) { //检查背景图是否存在于本地， 若存在直接返回， 否则调用getShreUserPosterBackgroundFc方法
-  let {
-    backgroundImage,
-    type
-  } = objs;
+function getShreUserPosterBackground(objs) {
+  //检查背景图是否存在于本地， 若存在直接返回， 否则调用getShreUserPosterBackgroundFc方法
+  let { backgroundImage, type } = objs;
   return new Promise(async (resolve, reject) => {
     try {
-      _app.showLoading('正在获取海报背景图');
+      _app.showLoading("正在获取海报背景图");
       let pbg;
       // #ifndef H5
       pbg = getPosterStorage(type);
@@ -1157,16 +1244,24 @@ function getShreUserPosterBackground(objs) { //检查背景图是否存在于本
         // _app.log('准备对比name是否相同');
         if (pbg.name === _app.fileNameInPath(image)) {
           // _app.log('name相同, 判断该背景图是否存在于本地')
-          const index = await _app.checkFile_PromiseFc(pbg.path)
+          const index = await _app.checkFile_PromiseFc(pbg.path);
           if (index >= 0) {
             // _app.log('海报save路径存在, 对比宽高信息, 存储并输出');
             const imageObj = await _app.getImageInfo_PromiseFc(pbg.path);
             let obj = {
-              ...pbg
+              ...pbg,
             };
-            if (!pbg.width || !pbg.height || pbg.width !== imageObj.width || pbg.height !== imageObj.height) {
+            if (
+              !pbg.width ||
+              !pbg.height ||
+              pbg.width !== imageObj.width ||
+              pbg.height !== imageObj.height
+            ) {
               // _app.log('宽高对比不通过， 重新获取');
-              const savedFilePath = await getShreUserPosterBackgroundFc(objs, image)
+              const savedFilePath = await getShreUserPosterBackgroundFc(
+                objs,
+                image
+              );
               _app.hideLoading();
               resolve(savedFilePath);
             } else {
@@ -1174,11 +1269,11 @@ function getShreUserPosterBackground(objs) { //检查背景图是否存在于本
               obj = {
                 ...pbg,
                 width: imageObj.width,
-                height: imageObj.height
+                height: imageObj.height,
               };
               // #ifndef H5
               setPosterStorage(type, {
-                ...obj
+                ...obj,
               });
               // #endif
               _app.hideLoading();
@@ -1186,29 +1281,35 @@ function getShreUserPosterBackground(objs) { //检查背景图是否存在于本
             }
           } else {
             // _app.log('海报save路径不存在, 重新获取海报');
-            const savedFilePath = await getShreUserPosterBackgroundFc(objs, image)
+            const savedFilePath = await getShreUserPosterBackgroundFc(
+              objs,
+              image
+            );
             _app.hideLoading();
             resolve(savedFilePath);
           }
         } else {
           // _app.log('name不相同, 重新获取海报');
-          const savedFilePath = await getShreUserPosterBackgroundFc(objs, image)
+          const savedFilePath = await getShreUserPosterBackgroundFc(
+            objs,
+            image
+          );
           _app.hideLoading();
           resolve(savedFilePath);
         }
       } else {
         // _app.log('海报背景图没有缓存, 准备获取海报背景图');
-        const savedFilePath = await getShreUserPosterBackgroundFc(objs)
+        const savedFilePath = await getShreUserPosterBackgroundFc(objs);
         _app.hideLoading();
         resolve(savedFilePath);
       }
     } catch (e) {
       _app.hideLoading();
-      _app.showToast('获取分享用户背景图失败:' + JSON.stringify(e));
+      _app.showToast("获取分享用户背景图失败:" + JSON.stringify(e));
       // _app.log(JSON.stringify(e));
       reject(e);
     }
-  })
+  });
 }
 
 function getPosterStorage(type) {
@@ -1229,19 +1330,17 @@ function setPosterStorage(type, data) {
 }
 
 function getStorageKey(type) {
-  return ShreUserPosterBackgroundKey + (type || 'default');
+  return ShreUserPosterBackgroundKey + (type || "default");
 }
 
-function getShreUserPosterBackgroundFc(objs, upimage) { //下载并保存背景图方法
-  let {
-    backgroundImage,
-    type
-  } = objs;
+function getShreUserPosterBackgroundFc(objs, upimage) {
+  //下载并保存背景图方法
+  let { backgroundImage, type } = objs;
   // _app.log('获取分享背景图, 尝试清空本地数据');
   removePosterStorage(type);
   return new Promise(async (resolve, reject) => {
     try {
-      _app.showLoading('正在下载海报背景图');
+      _app.showLoading("正在下载海报背景图");
       if (upimage) {
         // _app.log('有从后端获取的背景图片路径');
         // _app.log('尝试下载并保存背景图');
@@ -1254,18 +1353,18 @@ function getShreUserPosterBackgroundFc(objs, upimage) { //下载并保存背景�
             path: savedFilePath,
             width: imageObj.width,
             height: imageObj.height,
-            name
-          }
+            name,
+          };
           // #ifndef H5
           setPosterStorage(type, {
-            ...returnObj
+            ...returnObj,
           });
           // #endif
           _app.hideLoading();
           resolve(returnObj);
         } else {
           _app.hideLoading();
-          reject('not find savedFilePath');
+          reject("not find savedFilePath");
         }
       } else {
         // _app.log('没有从后端获取的背景图片路径, 尝试从后端获取背景图片路径');
@@ -1280,24 +1379,24 @@ function getShreUserPosterBackgroundFc(objs, upimage) { //下载并保存背景�
             path: savedFilePath,
             width: imageObj.width,
             height: imageObj.height,
-            name: _app.fileNameInPath(image)
-          }
+            name: _app.fileNameInPath(image),
+          };
           // _app.log('拼接背景图信息对象成功:' + JSON.stringify(returnObj));
 
           // #ifndef H5
           setPosterStorage(type, {
-            ...returnObj
+            ...returnObj,
           });
           // #endif
 
           _app.hideLoading();
           // _app.log('返回背景图信息对象');
           resolve({
-            ...returnObj
+            ...returnObj,
           });
         } else {
           _app.hideLoading();
-          reject('not find savedFilePath');
+          reject("not find savedFilePath");
         }
       }
     } catch (e) {
@@ -1307,12 +1406,11 @@ function getShreUserPosterBackgroundFc(objs, upimage) { //下载并保存背景�
   });
 }
 
-
 module.exports = {
   getSharePoster,
   setText,
   setImage,
   drawText,
   drawImage,
-  drawQrCode
-}
+  drawQrCode,
+};

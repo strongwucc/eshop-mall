@@ -1,16 +1,16 @@
-import Request from './request'
-import Env from '../env'
+import Request from "./request";
+import Env from "../env";
 
-const http = new Request()
+const http = new Request();
 
 http.setConfig((config) => {
   /* 设置全局配置 */
-  config.baseUrl = Env.baseUrl /* 根域名不同 */
+  config.baseUrl = Env.baseUrl; /* 根域名不同 */
   config.header = {
     ...config.header,
-  }
-  return config
-})
+  };
+  return config;
+});
 
 /**
  * 自定义验证器，如果返回true 则进入响应拦截器的响应成功函数(resolve)，否则进入响应拦截器的响应错误函数(reject)
@@ -18,27 +18,32 @@ http.setConfig((config) => {
  * @return { Boolean } 如果为true,则 resolve, 否则 reject
  */
 http.validateStatus = (statusCode) => {
-  return statusCode === 200
-}
+  return statusCode === 200;
+};
 
 http.interceptor.request((config, cancel) => {
   /* 请求之前拦截器 */
-  config.header = {
-    ...config.header,
+
+  if (config.url === "index") {
+    config.baseUrl = "https://api.yaliantong.com/index.php/openapi/wxapp_rpc/";
   }
 
+  config.header = {
+    ...config.header,
+  };
+
   // token
-  let token = '';
+  let token = "";
   try {
-    token = uni.getStorageSync('token');
+    token = uni.getStorageSync("token");
   } catch (e) {
     console.log(e);
   }
 
   if (token) {
-    if (config.method === 'UPLOAD') {
+    if (config.method === "UPLOAD") {
       config.formData.session_id = token;
-      config.url = config.url + '?sess_id=' + token;
+      config.url = config.url + "?sess_id=" + token;
     } else {
       config.data.session_id = token;
       config.params.sess_id = token;
@@ -50,22 +55,26 @@ http.interceptor.request((config, cancel) => {
   }
   */
   return config;
-})
+});
 
-http.interceptor.response((response) => {
-  /* 请求之后拦截器 */
-  // if (response.data.code !== 200) { // 服务端返回的状态码不等于200，则reject()
-  //   return Promise.reject(response)
-  // }
-  // if (response.config.custom.verification) { // 演示自定义参数的作用
-  //   return response.data
-  // }
-  return response.data
-}, (response) => { // 请求错误做点什么
-  console.log('出错啦：', response)
-  return response
-})
+http.interceptor.response(
+  (response) => {
+    /* 请求之后拦截器 */
+    // if (response.data.code !== 200) { // 服务端返回的状态码不等于200，则reject()
+    //   return Promise.reject(response)
+    // }
+    // if (response.config.custom.verification) { // 演示自定义参数的作用
+    //   return response.data
+    // }
+    return response.data;
+  },
+  (response) => {
+    // 请求错误做点什么
+    console.log("出错啦：", response);
+    return response;
+  }
+);
 
 module.exports = {
-  http: http
-}
+  http: http,
+};

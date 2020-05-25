@@ -351,8 +351,10 @@ export default {
     if (options.spread) {
       that.setSpread(options.spread);
     }
-
-    that.loadData(productId);
+  },
+  onShow() {
+    let that = this;
+    that.loadData(that.productId);
 
     that.getProductQrcode();
   },
@@ -490,9 +492,11 @@ export default {
     loadData(productId) {
       let that = this;
 
+      uni.showLoading();
       that.$http
         .post(that.$api.goods.detail, { product_id: productId })
         .then((res) => {
+          uni.hideLoading();
           console.log(res);
           if (res.return_code === "0000") {
             // 默认图片
@@ -536,6 +540,7 @@ export default {
           }
         })
         .catch((error) => {
+          uni.hideLoading();
           console.log(error);
         });
     },
@@ -825,6 +830,7 @@ export default {
       that.$http
         .post(that.$api.ectools.miniQrcode, qrcodeData)
         .then((res) => {
+          that.qrcodeRequesting = false;
           if (res.return_code === "0000") {
             base64src("data:image/png;base64," + res.data.buffer)
               .then((shareQrcode) => {
@@ -846,6 +852,7 @@ export default {
         .post(that.$api.ectools.qrcode, qrcodeData)
         .then((res) => {
           console.log(window.location);
+          that.qrcodeRequesting = false;
           if (res.return_code === "0000") {
             that.shareQrcode = "data:image/png;base64," + res.data.buffer;
           }

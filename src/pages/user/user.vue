@@ -365,8 +365,8 @@ export default {
             success: function(res) {
               let expires_time = res.data;
               window.location.href =
-                "http://183.66.65.235:81/#/user/user_promotion?access_token=" +
-                // "http://192.168.1.22:8081/#/user/user_promotion?access_token=" +
+                // "http://183.66.65.235:81/#/user/user_promotion?access_token=" +
+                "http://shop0001.spread.miour.cn/#/user/user_promotion?access_token=" +
                 access_token +
                 "&expires_time=" +
                 expires_time;
