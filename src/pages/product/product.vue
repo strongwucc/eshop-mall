@@ -498,6 +498,7 @@ export default {
         .then((res) => {
           uni.hideLoading();
           console.log(res);
+          uni.hideLoading();
           if (res.return_code === "0000") {
             // 默认图片
             if (res.data.spec_default_pic) {

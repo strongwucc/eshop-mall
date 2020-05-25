@@ -100,6 +100,7 @@
 				that.$http.post(that.$api.goods.category).then(res => {
 					uni.hideLoading();
 					console.log(res);
+					uni.hideLoading();
 					if (res.return_code === '0000') {
 						that._formatCategoryData(res.data);
 					} else {
