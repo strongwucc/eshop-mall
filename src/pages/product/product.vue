@@ -276,6 +276,7 @@ import htmlParser from "@/common/html-parser";
 import { getSharePoster } from "@/common/poster/poster";
 import { mapState, mapMutations } from "vuex";
 import { base64src } from "@/common/util";
+import { rootUrl } from "@/common/env";
 export default {
   components: {
     share,
@@ -471,8 +472,12 @@ export default {
      * 获取当前连接
      */
     _getShareBaseUrl() {
-      let { protocol, host, pathname } = window.location;
-      return protocol + "//" + host + pathname;
+      if (typeof window === "undefined") {
+        return rootUrl;
+      } else {
+        let { protocol, host, pathname } = window.location;
+        return protocol + "//" + host + pathname;
+      }
     },
     /**
      * 设置分销人ID
@@ -827,7 +832,7 @@ export default {
       }
 
       that.qrcodeRequesting = true;
-      // #ifndef H5
+      // #ifdef MP-WEIXIN
       that.$http
         .post(that.$api.ectools.miniQrcode, qrcodeData)
         .then((res) => {
@@ -847,12 +852,12 @@ export default {
           that.qrcodeRequesting = false;
         });
       // #endif
-      // #ifdef H5
+      // #ifndef MP-WEIXIN
       qrcodeData.base_url = that._getShareBaseUrl();
       that.$http
         .post(that.$api.ectools.qrcode, qrcodeData)
         .then((res) => {
-          console.log(window.location);
+          console.log(res);
           that.qrcodeRequesting = false;
           if (res.return_code === "0000") {
             that.shareQrcode = "data:image/png;base64," + res.data.buffer;

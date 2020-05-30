@@ -333,7 +333,7 @@ export default {
   justify-content: center;
   align-items: center;
   position: fixed;
-	top: 0;
+	top: var(--window-top);
 	z-index: 99;
   color: rgba(187, 187, 187, 1);
   font-size: 24rpx;
