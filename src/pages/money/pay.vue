@@ -82,7 +82,7 @@ export default {
 
   onShow() {
     let that = this;
-    // #ifndef MP-WEIXIN
+    // #ifdef H5
     if (typeof WeixinJSBridge == "undefined") {
       if (document.addEventListener) {
         document.addEventListener(
@@ -100,7 +100,7 @@ export default {
   },
 
   methods: {
-    // #ifndef MP-WEIXIN
+    // #ifdef H5
     onBridgeReady() {},
     formatH5PayData(html) {
       let regex = new RegExp(
@@ -233,7 +233,7 @@ export default {
             }
           }
           if (that.orderInfo.payinfo.pay_app_id === "wxpay") {
-            // #ifndef MP-WEIXIN
+            // #ifdef H5
             let payData = that.formatH5PayData(res);
             if (payData === false) {
               that.$toast("支付失败");
