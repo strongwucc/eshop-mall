@@ -364,6 +364,7 @@ export default {
             key: "login_status_expires_time",
             success: function(res) {
               let expires_time = res.data;
+              // #ifdef H5
               window.location.href =
                 // "http://183.66.65.235:81/#/user/user_promotion?access_token=" +
                 "http://shop0001.spread.miour.cn/#/user/user_promotion?access_token=" +
@@ -371,6 +372,7 @@ export default {
                 access_token +
                 "&expires_time=" +
                 expires_time;
+              // #endif
             },
           });
         },

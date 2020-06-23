@@ -113,7 +113,9 @@ export default {
           if (res.return_code === "0000") {
             that.login(res.data.session_id);
             that.$toast("登录成功");
+            // #ifdef H5
             that.loginSpread(that.mobile, that.password);
+            // #endif
             that.navBack();
           } else {
             console.log(res);

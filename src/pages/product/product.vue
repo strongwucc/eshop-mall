@@ -123,12 +123,12 @@
           mode="aspectFill"
         ></image>
         <view class="right">
-          <text class="name">{{ discuss.list.discuss[0].author || "" }}</text>
-          <text class="con">{{ discuss.list.discuss[0].comment || "" }}</text>
+          <text class="name">{{ showDiscuss.author || "" }}</text>
+          <text class="con">{{ showDiscuss.comment || "" }}</text>
           <view class="bot">
             <!-- <text class="attr">购买类型：XL 红色</text> -->
             <text class="time">{{
-              discuss.list.discuss[0].time | formatTime
+              showDiscuss.time | formatTime
             }}</text>
           </view>
         </view>
@@ -333,6 +333,11 @@ export default {
           discuss: [],
         },
       },
+      showDiscuss: {
+        author: "",
+        comment: "",
+        time: 0
+      },
       shareQrcode: "",
       qrcodeRequesting: false,
     };
@@ -527,6 +532,9 @@ export default {
                   ? true
                   : false;
               that.discuss = res.data.discuss || {};
+              if (res.data.discuss.list.discuss.length > 0) {
+                this.showDiscuss = res.data.discuss.list.discuss[0];
+              }
               that._formatPromotion(res.data.page_product_basic.promotion);
               that._formatSpec(res.data.page_product_basic.spec);
               that.getGoodsIntro(res.data.page_product_basic.goods_id);
@@ -678,7 +686,12 @@ export default {
                   type: "image",
                   serialNum: 0,
                   id: "goodsImage",
+                  // #ifdef MP
+                  url: that.image,
+                  // #endif
+                  // #ifndef MP
                   url: that.imageBase64,
+                  // #endif
                   dx: 0,
                   dy: 0,
                   infoCallBack(imageInfo) {

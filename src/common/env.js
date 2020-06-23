@@ -11,8 +11,10 @@
 let rootUrl = "";
 let baseUrl = "";
 let imgBaseUrl = "";
-let wxAppid = "wxe413db41714cb4c7";
-let wxAppsecret = "42604eded9c04bff44ea7f4230a09bcb";
+// let wxAppid = "wxe413db41714cb4c7";
+// let wxAppsecret = "42604eded9c04bff44ea7f4230a09bcb";
+let wxAppid = "wxa32e1b967ddb4f70";
+let wxAppsecret = "51f88472f2ecba8647685b364be8f13e";
 let wxOauthUrl = "https://open.weixin.qq.com/connect/oauth2/authorize";
 let wxAccessTokenUrl = "https://api.weixin.qq.com/sns/oauth2/access_token";
 let wxRefreshTokenUrl = "https://api.weixin.qq.com/sns/oauth2/refresh_token";
@@ -23,11 +25,11 @@ let aliRedirect = "";
 
 if (process.env.NODE_ENV === "development") {
   // #ifndef H5
-  rootUrl = "http://shop0001.sh.miour.cn/";
+  rootUrl = "https://shop0001.sh.miour.cn/";
   // rootUrl = 'https://api.yaliantong.com/'
   // #endif
   // #ifdef H5
-  rootUrl = "http://shop0001.sh.miour.cn/";
+  rootUrl = "https://shop0001.sh.miour.cn/";
   // #endif
   baseUrl = rootUrl + "index.php/openapi/wxapp_rpc/";
   imgBaseUrl = rootUrl + "";
@@ -35,7 +37,7 @@ if (process.env.NODE_ENV === "development") {
   aliRedirect = "";
 } else if (process.env.NODE_ENV === "production") {
   // rootUrl = "https://api.yaliantong.com/";
-  rootUrl = "http://shop0001.sh.miour.cn/";
+  rootUrl = "https://shop0001.sh.miour.cn/";
   baseUrl = rootUrl + "index.php/openapi/wxapp_rpc/";
   imgBaseUrl = rootUrl + "";
   wxRedirect = "";
