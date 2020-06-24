@@ -1,8 +1,9 @@
 {
-  "pages": [{
+  "pages": [
+    {
       "path": "pages/index/index",
       "style": {
-        "navigationBarTitleText": "电器城",
+        "navigationBarTitleText": "演示专用",
         "app-plus": {
           "bounce": "none"
         }
@@ -341,7 +342,8 @@
     "selectedColor": "#fa436a",
     "borderStyle": "black",
     "backgroundColor": "#ffffff",
-    "list": [{
+    "list": [
+      {
         "pagePath": "pages/index/index",
         "iconPath": "static/tab-home.png",
         "selectedIconPath": "static/tab-home-current.png",
@@ -370,7 +372,8 @@
   "condition": {
     //模式配置，仅开发期间生效
     "current": 0, //当前激活的模式（list 的索引项）
-    "list": [{
+    "list": [
+      {
         "name": "首页", //模式名称
         "path": "pages/index/index" //启动页面，必选
       },

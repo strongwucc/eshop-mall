@@ -1,7 +1,8 @@
 <template>
   <view class="container">
     <view class="header">
-      <view class="btn" @click="recharge">充值</view>
+      <!-- <view class="btn" @click="recharge">充值</view> -->
+      <view class="btn"></view>
       <view class="label">
         <!-- <text class="line"></text> -->
         <text class="txt">余额（元）</text>
@@ -84,10 +85,10 @@ export default {
           console.log(error);
         });
     },
-    recharge () {
+    recharge() {
       let that = this;
       uni.navigateTo({
-        url: '/pages/balance/recharge'
+        url: "/pages/balance/recharge"
       });
     }
   }
@@ -129,10 +130,10 @@ page {
       width: 160rpx;
       height: 56rpx;
       line-height: 56rpx;
-      background:rgba(104,62,32,1);
+      // background: rgba(104, 62, 32, 1);
       border-radius: 30rpx;
       font-size: 28rpx;
-      color:rgba(242,242,242,1);
+      color: rgba(242, 242, 242, 1);
       align-self: flex-end;
       margin: 40rpx 40rpx 0 0;
     }
@@ -201,7 +202,7 @@ page {
         }
         .right {
           font-size: 38rpx;
-          color: rgba(225,166,112,1);
+          color: rgba(225, 166, 112, 1);
         }
       }
     }
