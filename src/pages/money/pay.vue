@@ -2,7 +2,7 @@
   <view class="app">
     <view class="price-box">
       <text>支付金额</text>
-      <text class="price">{{orderInfo.total_amount | formatMoney}}</text>
+      <text class="price">{{ orderInfo.total_amount | formatMoney }}</text>
     </view>
 
     <view class="pay-type-list">
@@ -26,7 +26,7 @@
 					<radio value="" color="#fa436a" :checked='payType == 2' />
 					</radio>
 				</label>
-      </view>-->
+      </view> -->
       <view
         class="type-item"
         v-for="(payment, paymentIndex) in payments"
@@ -35,13 +35,18 @@
       >
         <text
           class="icon yticon"
-          :class="{'icon-weixinzhifu': payment.app_id === 'wxpay', 'icon-qianbao': payment.app_id === 'deposit'}"
+          :class="{
+            'icon-weixinzhifu': payment.app_id === 'wxpay',
+            'icon-qianbao': payment.app_id === 'deposit',
+          }"
         ></text>
         <view class="con">
-          <text class="tit">{{payment.app_name}}</text>
+          <text class="tit">{{ payment.app_name }}</text>
           <text v-if="payment.app_id === 'deposit'">
-            <text class="notice" v-if="orderInfo.total_amount > deposit">余额不足，</text>
-            可用余额 ¥{{deposit | formatMoney}}
+            <text class="notice" v-if="orderInfo.total_amount > deposit"
+              >余额不足，</text
+            >
+            可用余额 ¥{{ deposit | formatMoney }}
           </text>
         </view>
         <label class="radio">
@@ -64,12 +69,12 @@ export default {
     return {
       orderId: "",
       orderInfo: {
-        total_amount: 0.0
+        total_amount: 0.0,
       },
       availablePayments: ["wxpay", "deposit"],
       payments: [],
       deposit: 0.0,
-      paying: false
+      paying: false,
     };
   },
   computed: {},
@@ -122,12 +127,12 @@ export default {
       let that = this;
       that.$http
         .post(that.$api.user.pay, { order_id: that.orderId })
-        .then(res => {
+        .then((res) => {
           console.log(res);
           if (res.return_code === "0000") {
             that.deposit = parseFloat(res.data.deposit_money);
             that.orderInfo = res.data.order;
-            that.payments = res.data.payments.filter(payment => {
+            that.payments = res.data.payments.filter((payment) => {
               if (that.availablePayments.indexOf(payment.app_id) === -1) {
                 return false;
               }
@@ -138,7 +143,7 @@ export default {
             that.$toast(res.error);
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           that.$toast("出错啦");
         });
@@ -161,27 +166,27 @@ export default {
       that.$http
         .post(that.$api.user.changePayment, {
           order_id: that.orderId,
-          app_id: app_id
+          app_id: app_id,
         })
-        .then(res => {
+        .then((res) => {
           if (res.return_code === "0000") {
             that.$set(that.orderInfo, "payinfo", {
               ...orderInfo.payinfo,
               pay_app_id: app_id,
-              pay_name: app_name
+              pay_name: app_name,
             });
           } else {
             console.log(res);
             that.$toast("更换失败");
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           that.$toast("更换失败");
         });
     },
     //确认支付
-    confirm: async function() {
+    confirm: async function () {
       let that = this;
 
       if (that.paying === true) {
@@ -211,21 +216,21 @@ export default {
       let payData = {
         order_id: that.orderId,
         cur_money: that.orderInfo.cur_amount,
-        pay_app_id: that.orderInfo.payinfo.pay_app_id
+        pay_app_id: that.orderInfo.payinfo.pay_app_id,
       };
 
       that.paying = true;
       uni.showLoading();
       that.$http
         .post(that.$api.user.doPayment, payData)
-        .then(res => {
+        .then((res) => {
           that.paying = false;
           uni.hideLoading();
           console.log(res);
           if (that.orderInfo.payinfo.pay_app_id === "deposit") {
             if (res.return_code === "0000") {
               uni.redirectTo({
-                url: "/pages/money/paySuccess?order_id=" + that.orderId
+                url: "/pages/money/paySuccess?order_id=" + that.orderId,
               });
             } else {
               console.log(res);
@@ -241,7 +246,7 @@ export default {
               WeixinJSBridge.invoke(
                 "getBrandWCPayRequest",
                 JSON.parse(payData),
-                function(payRes) {
+                function (payRes) {
                   console.log(payRes);
                   if (payRes.err_msg == "get_brand_wcpay_request:ok") {
                     // 使用以上方式判断前端返回,微信团队郑重提示：
@@ -256,14 +261,14 @@ export default {
             // #endif
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           that.paying = false;
           uni.hideLoading();
           that.$toast("支付失败");
         });
-    }
-  }
+    },
+  },
 };
 </script>
 

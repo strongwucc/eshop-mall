@@ -9,6 +9,7 @@ module.exports = {
     signup: "create", // 注册
     resetPwdCode: "resetPwdCode", // 找回密码短信验证
     resetPassWord: "resetPassWord", // 密码重置
+    loginCode: "loginCode", // code 登录
   },
   user: {
     center: "member", // 个人中心

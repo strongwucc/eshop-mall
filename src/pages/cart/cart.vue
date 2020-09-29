@@ -1,7 +1,7 @@
 <template>
   <view class="container">
     <!-- 空白页 -->
-    <view v-if="loaded && (cartInfo.items_count === 0)" class="empty">
+    <view v-if="loaded && cartInfo.items_count === 0" class="empty">
       <image src="/static/emptyCart.jpg" mode="aspectFit"></image>
       <view v-if="hasLogin" class="empty-tips">
         空空如也
@@ -10,28 +10,38 @@
           v-if="hasLogin"
           url="../index/index"
           open-type="switchTab"
-        >随便逛逛></navigator>
+          >随便逛逛></navigator
+        >
       </view>
       <view v-else class="empty-tips">
         空空如也
         <view class="navigator" @click="navToLogin">去登录></view>
       </view>
     </view>
-    <template v-else-if="loaded && (cartInfo.items_count > 0)">
+    <template v-else-if="loaded && cartInfo.items_count > 0">
       <view class="unempty">
         <!-- 促销信息 -->
-        <view class="promotion" v-if="unuseRule.length > 0 || useRule.length > 0">
+        <view
+          class="promotion"
+          v-if="unuseRule.length > 0 || useRule.length > 0"
+        >
           <view class="used item" v-if="useRule.length > 0">
             <view class="title">
               <text class="notice">您已参与</text>
               <text class="coudan" @click="couDan">再逛逛</text>
             </view>
             <view class="rules">
-              <view class="rule-item" v-for="(rule, ruleIndex) in useRule" :key="rule.rule_id">
-                <text class="icon">{{rule.desc_tag}}</text>
+              <view
+                class="rule-item"
+                v-for="(rule, ruleIndex) in useRule"
+                :key="rule.rule_id"
+              >
+                <text class="icon">{{ rule.desc_tag }}</text>
                 <text class="content">
-                  {{rule.name}}，已减
-                  <text class="red">{{rule.discount_amount | formatMoney}}</text>
+                  {{ rule.name }}，已减
+                  <text class="red">{{
+                    rule.discount_amount | formatMoney
+                  }}</text>
                 </text>
               </view>
             </view>
@@ -42,9 +52,13 @@
               <text class="coudan" @click="couDan">去凑单</text>
             </view>
             <view class="rules">
-              <view class="rule-item" v-for="(rule, ruleIndex) in unuseRule" :key="ruleIndex">
-                <text class="icon">{{rule.desc_tag}}</text>
-                <text class="content">{{rule.name}}</text>
+              <view
+                class="rule-item"
+                v-for="(rule, ruleIndex) in unuseRule"
+                :key="ruleIndex"
+              >
+                <text class="icon">{{ rule.desc_tag }}</text>
+                <text class="content">{{ rule.name }}</text>
               </view>
             </view>
           </view>
@@ -62,21 +76,43 @@
                 @click="deleteCartItem(index)"
                 @change="changeSwipe"
               >
-                <view class="left" @click="navToDetailPage(item.obj_items.products[0].product_id)">
-                  <image :src="item.obj_items.products[0].image_url" mode="aspectFill" class="loaded" lazy-load></image>
+                <view
+                  class="left"
+                  @click="
+                    navToDetailPage(item.obj_items.products[0].product_id)
+                  "
+                >
+                  <image
+                    :src="item.obj_items.products[0].image_url"
+                    mode="aspectFill"
+                    class="loaded"
+                    lazy-load
+                  ></image>
                 </view>
                 <view class="right">
-                  <view class="name">{{item.obj_items.products[0].name || ''}}</view>
-                  <view class="spec">{{item.obj_items.products[0].spec_info || ''}}</view>
+                  <view class="name">{{
+                    item.obj_items.products[0].name || ""
+                  }}</view>
+                  <view class="spec">{{
+                    item.obj_items.products[0].spec_info || ""
+                  }}</view>
                   <view class="price-nums">
-                    <text class="price">¥{{item.obj_items.products[0].price.buy_price | formatMoney}}</text>
+                    <text class="price"
+                      >¥{{
+                        item.obj_items.products[0].price.buy_price | formatMoney
+                      }}</text
+                    >
                     <uni-number-box
                       class="cart-number"
                       :height="56"
                       :width="196"
                       :min="1"
                       :max="item.store.store"
-                      :value="item.quantity > item.store.store ? item.store.store : item.quantity"
+                      :value="
+                        item.quantity > item.store.store
+                          ? item.store.store
+                          : item.quantity
+                      "
                       :isMax="item.quantity >= item.stock ? true : false"
                       :isMin="item.quantity === 1"
                       :index="index"
@@ -95,14 +131,20 @@
         <view class="left">
           <view class="total-amount">
             <text class="label">合计：</text>
-            <text class="value">￥{{cartInfo.promotion_subtotal | formatMoney}}</text>
+            <text class="value"
+              >￥{{ cartInfo.promotion_subtotal | formatMoney }}</text
+            >
           </view>
           <view class="total-discount">
             <text class="label">已优惠：</text>
-            <text class="value">￥{{cartInfo.subtotal_discount | formatMoney}}</text>
+            <text class="value"
+              >￥{{ cartInfo.subtotal_discount | formatMoney }}</text
+            >
           </view>
         </view>
-        <view class="right" @click="createOrder">去结算({{cartInfo.items_quantity || 0}})</view>
+        <view class="right" @click="createOrder"
+          >去结算({{ cartInfo.items_quantity || 0 }})</view
+        >
       </view>
       <view class="cart-padding"></view>
     </template>
@@ -110,7 +152,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex";
 import uniNumberBox from "@/components/uni-number-box.vue";
 import uniSwipeAction from "@/components/uni-swipe-action/uni-swipe-action.vue";
 import uniSwipeActionItem from "@/components/uni-swipe-action-item/uni-swipe-action-item.vue";
@@ -118,7 +160,7 @@ export default {
   components: {
     uniNumberBox,
     uniSwipeAction,
-    uniSwipeActionItem
+    uniSwipeActionItem,
   },
   data() {
     return {
@@ -130,13 +172,13 @@ export default {
           text: "删除",
           style: {
             backgroundColor: "#fa436a",
-            borderRadius: "12rpx 0 0 12rpx"
-          }
-        }
+            borderRadius: "12rpx 0 0 12rpx",
+          },
+        },
       ],
       cartInfo: {
         object: {
-          goods: []
+          goods: [],
         },
         subtotal: 0.0,
         subtotal_price: 0.0,
@@ -145,24 +187,25 @@ export default {
         items_count: 0,
         discount_amount_order: 0.0,
         discount_amount: 0.0,
-        promotion_subtotal: 0.0
+        promotion_subtotal: 0.0,
       },
       allChecked: false, //全选状态  true|false
-      requesting: false
+      requesting: false,
     };
   },
   onLoad() {
     // this.loadData();
   },
-  onShow () {
+  onShow() {
     this.loadData();
   },
   watch: {},
   computed: {
-    ...mapState(["hasLogin"])
+    ...mapState(["hasLogin"]),
   },
   methods: {
-    ...mapMutations(['setCart']),
+    ...mapMutations(["setCart"]),
+    ...mapActions(["getUserInfo"]),
     /**
      * 获取购物车数据
      */
@@ -170,12 +213,12 @@ export default {
       let that = this;
       that
         .getCartInfo()
-        .then(res => {
+        .then((res) => {
           if (res.return_code === "0000") {
             that.cartInfo = res.data.aCart;
             that.setCart({
               itemsQuantity: res.data.aCart.items_quantity,
-              itemsCount: res.data.aCart.items_count
+              itemsCount: res.data.aCart.items_count,
             });
             that.useRule = res.data.use_rule || [];
             that.unuseRule = res.data.unuse_rule || [];
@@ -186,22 +229,22 @@ export default {
             that.loaded = true;
           });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     },
     couDan() {
       uni.switchTab({
-        url: "/pages/index/index"
+        url: "/pages/index/index",
       });
     },
     /**
      * 详情
      */
-    navToDetailPage(product_id){
+    navToDetailPage(product_id) {
       uni.navigateTo({
-        url: `/pages/product/product?id=${product_id}`
-      })
+        url: `/pages/product/product?id=${product_id}`,
+      });
     },
     changeSwipe(open) {
       console.log("当前开启状态：" + open);
@@ -210,9 +253,16 @@ export default {
       console.log(e);
     },
     navToLogin() {
+      // H5 账号密码登录，其他授权登录
+      // #ifdef H5
       uni.navigateTo({
-        url: "/pages/public/login"
+        url: "/pages/public/login",
       });
+      // #endif
+
+      // #ifndef H5
+      this.getUserInfo();
+      // #endif
     },
     /**
      * 获取购物车
@@ -231,7 +281,7 @@ export default {
         goods_id: goodsId,
         product_id: productId,
         num: 1,
-        mini_cart: true
+        mini_cart: true,
       });
     },
     /**
@@ -244,7 +294,7 @@ export default {
         obj_type: "goods",
         goods_ident: goodsIdent,
         goods_id: goodsIdent.split("_")[1],
-        response_type: true
+        response_type: true,
       };
       data[dataKey] = quantity;
 
@@ -260,7 +310,7 @@ export default {
         type: "goods",
         goods_ident: goodsIdent,
         goods_id: goodsIdent.split("_")[1],
-        response_type: true
+        response_type: true,
       };
 
       if (goodsIdent !== "") {
@@ -312,7 +362,7 @@ export default {
       let that = this;
       uni.showModal({
         content: "确认移除商品？",
-        success: e => {
+        success: (e) => {
           if (e.confirm) {
             console.log(index);
             let goodsData = that.cartInfo.object.goods;
@@ -322,7 +372,7 @@ export default {
             uni.showLoading();
             that
               .removeCart(cartIdent, quantity)
-              .then(removeRes => {
+              .then((removeRes) => {
                 uni.hideLoading();
                 if (removeRes.return_code === "0000") {
                   that.cartInfo.object.goods.splice(index, 1);
@@ -335,33 +385,35 @@ export default {
                       items_count: 0,
                       discount_amount_order: 0.0,
                       discount_amount: 0.0,
-                      promotion_subtotal: 0.0
+                      promotion_subtotal: 0.0,
                     });
                     that.setCart({
                       itemsQuantity: 0,
-                      itemsCount: 0
+                      itemsCount: 0,
                     });
                   } else {
                     that.cartInfo = Object.assign(
                       {},
                       that.cartInfo,
                       removeRes.data.sub_total,
-                      {items_quantity: that.cartInfo.items_quantity - quantity}
+                      {
+                        items_quantity: that.cartInfo.items_quantity - quantity,
+                      }
                     );
                     that.setCart({
                       itemsQuantity: that.cartInfo.items_quantity,
-                      itemsCount: that.cartInfo.items_count
+                      itemsCount: that.cartInfo.items_count,
                     });
                   }
                 } else {
                   that.$toast(removeRes.error);
                 }
               })
-              .catch(error => {
+              .catch((error) => {
                 console.log(error);
               });
           }
-        }
+        },
       });
     },
     /**
@@ -370,20 +422,20 @@ export default {
     clearCart() {
       uni.showModal({
         content: "清空购物车？",
-        success: e => {
+        success: (e) => {
           if (e.confirm) {
             console.log(e);
           }
-        }
+        },
       });
     },
     //创建订单
     createOrder() {
       uni.navigateTo({
-        url: `/pages/order/createOrder`
+        url: `/pages/order/createOrder`,
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
