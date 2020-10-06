@@ -10,7 +10,7 @@
           disabled="true"
         />
       </view>
-			<view class="search-padding"></view>
+      <view class="search-padding"></view>
 
       <view class="slide">
         <swiper
@@ -41,7 +41,7 @@
           @click="navToGoodsList(category.catId)"
         >
           <image :src="category.logo"></image>
-          <text>{{category.title}}</text>
+          <text>{{ category.title }}</text>
         </view>
       </view>
 
@@ -51,32 +51,43 @@
 
       <view
         class="index-goods"
-        :class="{'first-index-goods': dataIndex === 0}"
+        :class="{ 'first-index-goods': dataIndex === 0 }"
         v-for="(data, dataIndex) in indexGoods"
         :key="dataIndex"
       >
-        <view class="title">{{data.title}}</view>
+        <view class="title">{{ data.title }}</view>
         <scroll-view class="goods" scroll-x="true">
           <block v-for="(goods, goodsIndex) in data.goods" :key="goods.goodsId">
             <view class="goods-item" @click="navToDetailPage(goods)">
-              <image :src="goods.goodsPic || ''" lazy-load="true" mode="aspectFit"></image>
-              <text class="name">{{goods.goodsName || ''}}</text>
-              <text class="price">￥{{goods.goodsSalePrice | formatMoney}}</text>
+              <image
+                :src="goods.goodsPic || ''"
+                lazy-load="true"
+                mode="aspectFit"
+              ></image>
+              <text class="name">{{ goods.goodsName || "" }}</text>
+              <text class="price"
+                >￥{{ goods.goodsSalePrice | formatMoney }}</text
+              >
             </view>
           </block>
         </scroll-view>
       </view>
 
       <view class="tabs">
-        <view id="tab-nav-box" class="navs" :data-search-height="searchHeight" :data-nav-top="tabNavTop">
+        <view
+          id="tab-nav-box"
+          class="navs"
+          :data-search-height="searchHeight"
+          :data-nav-top="tabNavTop"
+        >
           <view
             class="nav-item"
             v-for="(tab, tabIndex) in tabList"
             :key="tab.state"
-            :class="{current: tabCurrentIndex === tab.state}"
+            :class="{ current: tabCurrentIndex === tab.state }"
             @click="clickTab(tab.state)"
           >
-            <text>{{tab.text}}</text>
+            <text>{{ tab.text }}</text>
           </view>
         </view>
         <view class="content">
@@ -85,7 +96,7 @@
             :current="tabCurrentIndex"
             duration="300"
             @change="changeTab"
-            :style="{height: tabList[tabCurrentIndex].height}"
+            :style="{ height: tabList[tabCurrentIndex].height }"
           >
             <swiper-item
               class="tab-swiper-item"
@@ -99,12 +110,20 @@
                 @click="navToDetailPage(goods)"
               >
                 <view class="image">
-                  <image :src="goods.goodsPic || ''" lazy-load="true" mode="aspectFit"></image>
+                  <image
+                    :src="goods.goodsPic || ''"
+                    lazy-load="true"
+                    mode="aspectFit"
+                  ></image>
                 </view>
-                <view class="name">{{goods.goodsName || ''}}</view>
+                <view class="name">{{ goods.goodsName || "" }}</view>
                 <view class="price">
-                  <text class="sale">￥{{goods.goodsSalePrice | formatMoney}}</text>
-                  <text class="market">￥{{goods.goodsMarketPrice | formatMoney}}</text>
+                  <text class="sale"
+                    >￥{{ goods.goodsSalePrice | formatMoney }}</text
+                  >
+                  <text class="market"
+                    >￥{{ goods.goodsMarketPrice | formatMoney }}</text
+                  >
                 </view>
               </view>
             </swiper-item>
@@ -117,27 +136,26 @@
 
 <script module="utils" lang="wxs">
 
-    function scroll(event, ins) {
-			var scrollTop = event.detail.scrollTop;
-			var tabNav = ins.selectComponent('#tab-nav-box');
-			var tabNavData = tabNav.getDataset();
-			if (tabNavData.navTop && tabNavData.searchHeight) {
-				if ((tabNavData.navTop - tabNavData.searchHeight) <= scrollTop) {
-					tabNav.addClass('is-sticky');
-				} else {
-					tabNav.removeClass('is-sticky');
-				}
-			}
-      return false
-    }
-    module.exports = {
-      scroll: scroll
+  function scroll(event, ins) {
+	var scrollTop = event.detail.scrollTop;
+	var tabNav = ins.selectComponent('#tab-nav-box');
+	var tabNavData = tabNav.getDataset();
+	if (tabNavData.navTop && tabNavData.searchHeight) {
+		if ((tabNavData.navTop - tabNavData.searchHeight) <= scrollTop) {
+			tabNav.addClass('is-sticky');
+		} else {
+			tabNav.removeClass('is-sticky');
 		}
-		
+	}
+    return false
+  }
+  module.exports = {
+    scroll: scroll
+}
 </script>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapMutations } from "vuex";
 export default {
   data() {
     return {
@@ -147,8 +165,8 @@ export default {
       slides: [],
       categorys: [],
       indexGoods: [],
-			tabCurrentIndex: 0,
-			tabNavTop: 0,
+      tabCurrentIndex: 0,
+      tabNavTop: 0,
       tabList: [
         {
           state: 0,
@@ -156,7 +174,7 @@ export default {
           loadingType: "more",
           currentPage: 1,
           height: 0,
-          goodsList: []
+          goodsList: [],
         },
         {
           state: 1,
@@ -164,7 +182,7 @@ export default {
           loadingType: "more",
           currentPage: 1,
           height: 0,
-          goodsList: []
+          goodsList: [],
         },
         {
           state: 2,
@@ -172,25 +190,24 @@ export default {
           loadingType: "more",
           currentPage: 1,
           height: 0,
-          goodsList: []
-        }
-      ]
+          goodsList: [],
+        },
+      ],
     };
   },
   onLoad() {
     this.loadHomePageData();
   },
-  onShow() {
-  },
+  onShow() {},
   methods: {
-    ...mapMutations(['setSearchKeys']),
+    ...mapMutations(["setSearchKeys"]),
     _formatData(data) {
       if (data === null || typeof data[Symbol.iterator] !== "function") {
         return false;
       }
       let that = this;
 
-      data.forEach(item => {
+      data.forEach((item) => {
         if (item.widgets_type === "main_slide" && that.slides.length === 0) {
           let slideData = Object.values(item.data.pic);
           that.slides = [].concat(slideData);
@@ -215,11 +232,11 @@ export default {
           item.widgets_type === "goodscat" &&
           that.categorys.length === 0
         ) {
-          let categorys = item.data.map(cateItem => {
+          let categorys = item.data.map((cateItem) => {
             return {
               catId: cateItem.cat_id,
               title: cateItem.title,
-              logo: cateItem.logo
+              logo: cateItem.logo,
             };
           });
           that.categorys = [].concat(categorys);
@@ -227,29 +244,29 @@ export default {
           let title = item.params.block_name;
           let goods = Object.values(item.data.goodsRows);
           that.indexGoods.push({ title, goods });
-        } else if (item.widgets_type === 'search') {
+        } else if (item.widgets_type === "search") {
           if (item.data.search) {
             that.setSearchKeys(item.data.search);
           }
         }
-			});
-			
-			// 获取搜索框和 nav 的位置
-			that.$nextTick(() => {
-				let query = uni.createSelectorQuery();
-				query.select("#mp-search-box").boundingClientRect();
-				query.select("#tab-nav-box").boundingClientRect();
-				query.exec(function(res) {
-					if (res && res[0]) {
-						console.log(res[0]);
-						that.searchHeight = res[0].height;
-					}
-					if (res && res[1]) {
-						console.log(res[1]);
-						that.tabNavTop = res[1].top;
-					}
-				});
-			});
+      });
+
+      // 获取搜索框和 nav 的位置
+      that.$nextTick(() => {
+        let query = uni.createSelectorQuery();
+        query.select("#mp-search-box").boundingClientRect();
+        query.select("#tab-nav-box").boundingClientRect();
+        query.exec(function(res) {
+          if (res && res[0]) {
+            console.log(res[0]);
+            that.searchHeight = res[0].height;
+          }
+          if (res && res[1]) {
+            console.log(res[1]);
+            that.tabNavTop = res[1].top;
+          }
+        });
+      });
     },
     activeSearch() {
       let that = this;
@@ -261,7 +278,7 @@ export default {
     },
     navToSearch() {
       uni.navigateTo({
-        url: `/pages/public/search`
+        url: `/pages/public/search`,
       });
     },
     goSearch() {
@@ -271,15 +288,18 @@ export default {
         return false;
       }
       uni.navigateTo({
-        url: `/pages/product/list?s=${that.searchContent}`
+        url: `/pages/product/list?s=${that.searchContent}`,
       });
     },
+    // #ifdef H5
+
+    // #endif
     loadHomePageData() {
       let that = this;
       uni.showLoading();
       that.$http
         .post(that.$api.index.index)
-        .then(res => {
+        .then((res) => {
           uni.hideLoading();
           if (res.return_code === "0000") {
             that._formatData(res.data);
@@ -287,7 +307,7 @@ export default {
             console.log(res);
           }
         })
-        .catch(error => {
+        .catch((error) => {
           uni.hideLoading();
           console.log(error);
         });
@@ -304,7 +324,7 @@ export default {
     },
     navToGoodsList(tid) {
       uni.navigateTo({
-        url: `/pages/product/list?tid=${tid}`
+        url: `/pages/product/list?tid=${tid}`,
       });
     },
     //详情页
@@ -316,10 +336,10 @@ export default {
         return false;
       }
       uni.navigateTo({
-        url: `/pages/product/product?id=${pId}`
+        url: `/pages/product/product?id=${pId}`,
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -333,8 +353,8 @@ export default {
   justify-content: center;
   align-items: center;
   position: fixed;
-	top: var(--window-top);
-	z-index: 99;
+  top: var(--window-top);
+  z-index: 99;
   color: rgba(187, 187, 187, 1);
   font-size: 24rpx;
   .icon-sousuo {
@@ -354,8 +374,8 @@ export default {
 }
 
 .search-padding {
-	height: 106rpx;
-	width: 100%;
+  height: 106rpx;
+  width: 100%;
 }
 
 page {
@@ -363,12 +383,12 @@ page {
 }
 
 .container {
-	height: 100%;
+  height: 100%;
   background-color: $page-color-base;
 }
 
 .index-scroll {
-	height: 100%;
+  height: 100%;
 }
 
 .slide,
@@ -487,7 +507,7 @@ page {
 
 .tabs {
   margin-top: 20rpx;
-	background-color: $page-color-base;
+  background-color: $page-color-base;
   .navs {
     width: 100%;
     display: flex;
@@ -496,8 +516,13 @@ page {
     font-size: 28rpx;
     background-color: $page-color-base;
     &.is-sticky {
-			background-color: #ffffff;
-			top: calc(106rpx + var(--window-top));
+      background-color: #ffffff;
+      /*  #ifndef  H5  */
+      top: calc(106rpx + var(--window-top));
+      /*  #endif  */
+      /*  #ifdef  H5  */
+      top: 106rpx;
+      /*  #endif  */
     }
     .nav-item {
       flex: auto;

@@ -5,7 +5,14 @@
 import { mapMutations } from "vuex";
 export default {
   methods: {
-    ...mapMutations(["login"])
+    ...mapMutations(["login", "setSysInfo"]),
+    getSysInfo() {
+      uni.getSystemInfo({
+        success: function(res) {
+          console.log(res);
+        },
+      });
+    },
   },
 
   onLaunch: function() {
@@ -14,22 +21,25 @@ export default {
       //更新登陆状态
       uni.getStorage({
         key: "userInfo",
-        success: res => {
+        success: (res) => {
           this.login(res.data);
-        }
+        },
       });
     }
+
+    // 获取系统信息
+    // this.getSysInfo();
   },
   onShow: function() {
     console.log("App Show");
   },
   onHide: function() {
     console.log("App Hide");
-  }
+  },
 };
 </script>
 
-<style lang='scss'>
+<style lang="scss">
 // @font-face {
 //   font-family: "yticon";
 //   src: url("~@/static/iconfont.eot");

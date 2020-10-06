@@ -9,8 +9,9 @@ const store = new Vuex.Store({
     token: '',
     userInfo: {},
     cartInfo: {},
-		searchKeys: [],
-		historySearchKeys: [],
+    searchKeys: [],
+    historySearchKeys: [],
+    sysInfo: {},
   },
   mutations: {
     login(state, token) {
@@ -26,6 +27,13 @@ const store = new Vuex.Store({
       uni.setStorage({
         key: 'userInfo',
         data: JSON.stringify(userInfo)
+      });
+    },
+    setSysInfo(state, sysInfo) {
+      state.sysInfo = sysInfo;
+      uni.setStorage({
+        key: 'sysInfo',
+        data: JSON.stringify(sysInfo)
       });
     },
     setCart(state, cartInfo) {
@@ -56,8 +64,8 @@ const store = new Vuex.Store({
         key: 'searchKeys',
         data: JSON.stringify(searchKeys)
       });
-		},
-		setHistorySearchKeys(state, searchKeys) {
+    },
+    setHistorySearchKeys(state, searchKeys) {
       state.historySearchKeys = searchKeys;
       uni.setStorage({
         key: 'historySearchKeys',
