@@ -2,7 +2,7 @@
   <view class="app">
     <view class="price-box">
       <text>支付金额</text>
-      <text class="price">{{orderInfo.total_amount | formatMoney}}</text>
+      <text class="price">{{ orderInfo.total_amount | formatMoney }}</text>
     </view>
 
     <view class="pay-type-list">
@@ -35,13 +35,18 @@
       >
         <text
           class="icon yticon"
-          :class="{'icon-weixinzhifu': payment.app_id === 'wxpay', 'icon-qianbao': payment.app_id === 'deposit'}"
+          :class="{
+            'icon-weixinzhifu': payment.app_id === 'weixinscan',
+            'icon-qianbao': payment.app_id === 'deposit',
+          }"
         ></text>
         <view class="con">
-          <text class="tit">{{payment.app_name}}</text>
+          <text class="tit">{{ payment.app_display_name }}</text>
           <text v-if="payment.app_id === 'deposit'">
-            <text class="notice" v-if="orderInfo.total_amount > deposit">余额不足，</text>
-            可用余额 ¥{{deposit | formatMoney}}
+            <text class="notice" v-if="orderInfo.total_amount > deposit"
+              >余额不足，</text
+            >
+            可用余额 ¥{{ deposit | formatMoney }}
           </text>
         </view>
         <label class="radio">
@@ -64,12 +69,12 @@ export default {
     return {
       orderId: "",
       orderInfo: {
-        total_amount: 0.0
+        total_amount: 0.0,
       },
-      availablePayments: ["wxpay", "deposit"],
+      availablePayments: ["weixinscan", "deposit"],
       payments: [],
       deposit: 0.0,
-      paying: false
+      paying: false,
     };
   },
   computed: {},
@@ -122,12 +127,12 @@ export default {
       let that = this;
       that.$http
         .post(that.$api.user.pay, { order_id: that.orderId })
-        .then(res => {
+        .then((res) => {
           console.log(res);
           if (res.return_code === "0000") {
             that.deposit = parseFloat(res.data.deposit_money);
             that.orderInfo = res.data.order;
-            that.payments = res.data.payments.filter(payment => {
+            that.payments = res.data.payments.filter((payment) => {
               if (that.availablePayments.indexOf(payment.app_id) === -1) {
                 return false;
               }
@@ -138,7 +143,7 @@ export default {
             that.$toast(res.error);
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           that.$toast("出错啦");
         });
@@ -161,21 +166,21 @@ export default {
       that.$http
         .post(that.$api.user.changePayment, {
           order_id: that.orderId,
-          app_id: app_id
+          app_id: app_id,
         })
-        .then(res => {
+        .then((res) => {
           if (res.return_code === "0000") {
             that.$set(that.orderInfo, "payinfo", {
               ...orderInfo.payinfo,
               pay_app_id: app_id,
-              pay_name: app_name
+              pay_name: app_name,
             });
           } else {
             console.log(res);
             that.$toast("更换失败");
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           that.$toast("更换失败");
         });
@@ -208,24 +213,26 @@ export default {
         return false;
       }
 
+      // 如果是微信支付则需要获取code
+
       let payData = {
         order_id: that.orderId,
         cur_money: that.orderInfo.cur_amount,
-        pay_app_id: that.orderInfo.payinfo.pay_app_id
+        pay_app_id: that.orderInfo.payinfo.pay_app_id,
       };
 
       that.paying = true;
       uni.showLoading();
       that.$http
         .post(that.$api.user.doPayment, payData)
-        .then(res => {
+        .then((res) => {
           that.paying = false;
           uni.hideLoading();
           console.log(res);
           if (that.orderInfo.payinfo.pay_app_id === "deposit") {
             if (res.return_code === "0000") {
               uni.redirectTo({
-                url: "/pages/money/paySuccess?order_id=" + that.orderId
+                url: "/pages/money/paySuccess?order_id=" + that.orderId,
               });
             } else {
               console.log(res);
@@ -256,18 +263,18 @@ export default {
             // #endif
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           that.paying = false;
           uni.hideLoading();
           that.$toast("支付失败");
         });
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style lang='scss'>
+<style lang="scss">
 .app {
   width: 100%;
 }
