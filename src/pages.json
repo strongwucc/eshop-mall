@@ -6,6 +6,9 @@
         "navigationBarTitleText": "演示专用",
         "app-plus": {
           "bounce": "none"
+        },
+        "h5": {
+          "titleNView": false
         }
       }
     },
@@ -17,6 +20,9 @@
         "app-plus": {
           "titleNView": false,
           "animationType": "slide-in-bottom"
+        },
+        "h5": {
+          "titleNView": false
         }
       }
     },
@@ -27,6 +33,9 @@
         "app-plus": {
           "titleNView": {
             "type": "transparent"
+          },
+          "h5": {
+            "titleNView": false
           }
         }
       }
@@ -34,32 +43,47 @@
     {
       "path": "pages/product/comment",
       "style": {
-        "navigationBarTitleText": "商品评论"
+        "navigationBarTitleText": "商品评论",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
       "path": "pages/set/set",
       "style": {
-        "navigationBarTitleText": "设置"
+        "navigationBarTitleText": "设置",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
       "path": "pages/set/resetPwd",
       "style": {
-        "navigationBarTitleText": "修改密码"
+        "navigationBarTitleText": "修改密码",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
 
     {
       "path": "pages/userinfo/userinfo",
       "style": {
-        "navigationBarTitleText": "修改资料"
+        "navigationBarTitleText": "修改资料",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
       "path": "pages/cart/cart",
       "style": {
-        "navigationBarTitleText": "购物车"
+        "navigationBarTitleText": "购物车",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
@@ -70,6 +94,9 @@
         "app-plus": {
           "titleNView": false,
           "animationType": "slide-in-bottom"
+        },
+        "h5": {
+          "titleNView": false
         }
       }
     },
@@ -81,19 +108,28 @@
         "app-plus": {
           "titleNView": false,
           "animationType": "slide-in-bottom"
+        },
+        "h5": {
+          "titleNView": false
         }
       }
     },
     {
       "path": "pages/public/forgetStep1",
       "style": {
-        "navigationBarTitleText": "忘记密码"
+        "navigationBarTitleText": "忘记密码",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
       "path": "pages/public/forgetStep2",
       "style": {
-        "navigationBarTitleText": "忘记密码"
+        "navigationBarTitleText": "忘记密码",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
@@ -107,6 +143,9 @@
           "bounce": "none",
           "titleNView": false,
           "animationType": "slide-in-bottom"
+        },
+        "h5": {
+          "titleNView": false
         }
       }
     },
@@ -116,6 +155,9 @@
         "navigationBarTitleText": "我的余额",
         "app-plus": {
           "bounce": "none"
+        },
+        "h5": {
+          "titleNView": false
         }
       }
     },
@@ -125,6 +167,9 @@
         "navigationBarTitleText": "余额充值",
         "app-plus": {
           "bounce": "none"
+        },
+        "h5": {
+          "titleNView": false
         }
       }
     },
@@ -134,6 +179,9 @@
         "navigationBarTitleText": "我的优惠券",
         "app-plus": {
           "bounce": "none"
+        },
+        "h5": {
+          "titleNView": false
         }
       }
     },
@@ -143,6 +191,9 @@
         "navigationBarTitleText": "我的积分",
         "app-plus": {
           "bounce": "none"
+        },
+        "h5": {
+          "titleNView": false
         }
       }
     },
@@ -154,6 +205,9 @@
           "titleNView": {
             "type": "transparent"
           }
+        },
+        "h5": {
+          "titleNView": false
         }
       }
     },
@@ -163,101 +217,153 @@
         "navigationBarTitleText": "我的订单",
         "app-plus": {
           "bounce": "none"
+        },
+        "h5": {
+          "titleNView": false
         }
       }
     },
     {
       "path": "pages/order/orderDetail",
       "style": {
-        "navigationBarTitleText": "订单详情"
+        "navigationBarTitleText": "订单详情",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
       "path": "pages/money/money",
-      "style": {}
+      "style": {
+        "h5": {
+          "titleNView": false
+        }
+      }
     },
     {
       "path": "pages/order/createOrder",
       "style": {
-        "navigationBarTitleText": "创建订单"
+        "navigationBarTitleText": "创建订单",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
       "path": "pages/address/address",
       "style": {
-        "navigationBarTitleText": "收货地址"
+        "navigationBarTitleText": "收货地址",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
       "path": "pages/address/addressManage",
       "style": {
-        "navigationBarTitleText": ""
+        "navigationBarTitleText": "",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
       "path": "pages/money/pay",
       "style": {
-        "navigationBarTitleText": "支付"
+        "navigationBarTitleText": "支付",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
       "path": "pages/order/cancel",
       "style": {
-        "navigationBarTitleText": "取消订单"
+        "navigationBarTitleText": "取消订单",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
       "path": "pages/collection/goods",
       "style": {
-        "navigationBarTitleText": "我的收藏"
+        "navigationBarTitleText": "我的收藏",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
       "path": "pages/comment/noDiscuss",
       "style": {
-        "navigationBarTitleText": "待评价"
+        "navigationBarTitleText": "待评价",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
       "path": "pages/comment/asks",
       "style": {
-        "navigationBarTitleText": "我的咨询"
+        "navigationBarTitleText": "我的咨询",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
       "path": "pages/comment/comment",
       "style": {
-        "navigationBarTitleText": "评论"
+        "navigationBarTitleText": "评论",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
       "path": "pages/aftersale/afterList",
       "style": {
-        "navigationBarTitleText": "售后/退换"
+        "navigationBarTitleText": "售后/退换",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
       "path": "pages/aftersale/addRec",
       "style": {
-        "navigationBarTitleText": "申请售后"
+        "navigationBarTitleText": "申请售后",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
       "path": "pages/aftersale/returnDetail",
       "style": {
-        "navigationBarTitleText": "退换记录详情"
+        "navigationBarTitleText": "退换记录详情",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
       "path": "pages/money/paySuccess",
       "style": {
-        "navigationBarTitleText": "支付成功"
+        "navigationBarTitleText": "支付成功",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
       "path": "pages/notice/notice",
       "style": {
-        "navigationBarTitleText": "通知"
+        "navigationBarTitleText": "通知",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
@@ -266,6 +372,9 @@
         "navigationBarTitleText": "分类",
         "app-plus": {
           "bounce": "none"
+        },
+        "h5": {
+          "titleNView": false
         }
       }
     },
@@ -273,61 +382,91 @@
       "path": "pages/product/list",
       "style": {
         // "enablePullDownRefresh": true,
-        "navigationBarTitleText": "商品列表"
+        "navigationBarTitleText": "商品列表",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
       "path": "pages/distribution/index",
       "style": {
-        "navigationBarTitleText": "个人分销"
+        "navigationBarTitleText": "个人分销",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
       "path": "pages/distribution/deposit",
       "style": {
-        "navigationBarTitleText": "提现"
+        "navigationBarTitleText": "提现",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
       "path": "pages/distribution/depositStatus",
       "style": {
-        "navigationBarTitleText": "提现"
+        "navigationBarTitleText": "提现",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
       "path": "pages/distribution/records",
       "style": {
-        "navigationBarTitleText": "收支明细"
+        "navigationBarTitleText": "收支明细",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
       "path": "pages/distribution/orders",
       "style": {
-        "navigationBarTitleText": "订单查询"
+        "navigationBarTitleText": "订单查询",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
       "path": "pages/distribution/goods",
       "style": {
-        "navigationBarTitleText": "分享商品"
+        "navigationBarTitleText": "分享商品",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
       "path": "pages/search/index",
       "style": {
-        "navigationBarTitleText": "搜索"
+        "navigationBarTitleText": "搜索",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
       "path": "pages/coupon/index",
       "style": {
-        "navigationBarTitleText": "领券中心"
+        "navigationBarTitleText": "领券中心",
+        "h5": {
+          "titleNView": false
+        }
       }
     },
     {
       "path": "pages/coupon/exchange",
       "style": {
-        "navigationBarTitleText": "积分兑换"
+        "navigationBarTitleText": "积分兑换",
+        "h5": {
+          "titleNView": false
+        }
       }
     }
   ],

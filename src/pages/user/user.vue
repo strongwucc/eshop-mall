@@ -163,16 +163,15 @@
             <image src="/static/member_icon_shoucang@2x.png"></image>
             <text class="txt">我的收藏</text>
           </view>
-          <view
+          <!-- <view
             class="order-item"
             @click="mySpread"
             hover-class="common-hover"
             :hover-stay-time="50"
           >
-            <!-- <text class="yticon icon-qunzu"></text> -->
             <image src="/static/my_icon_fenxiao@2x.png"></image>
             <text class="txt">个人分销</text>
-          </view>
+          </view> -->
           <view
             class="order-item"
             @click="navTo('/pages/address/address')"
@@ -358,11 +357,11 @@ export default {
     mySpread() {
       uni.getStorage({
         key: "login_status",
-        success: function(res) {
+        success: function (res) {
           let access_token = res.data;
           uni.getStorage({
             key: "login_status_expires_time",
-            success: function(res) {
+            success: function (res) {
               let expires_time = res.data;
               // #ifdef H5
               window.location.href =

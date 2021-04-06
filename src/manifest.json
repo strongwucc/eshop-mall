@@ -69,7 +69,7 @@
   "mp-weixin": {
     /* 小程序特有相关 */
     "usingComponents": true,
-    "appid": "wxd861283cbd39ddf2",
+    "appid": "wx88dffeb2f95e2b65",
     "setting": {
       "urlCheck": true
     }
@@ -84,8 +84,9 @@
     "publicPath": "",
     "devServer": {
       "proxy": {
-        "/index.php/openapi/wxapp_rpc": {
-          "target": "http://183.66.65.235:8080"
+        "/ecmall/index.php/openapi/wxapp_rpc": {
+          "target": "http://ceshi6.sdykt.com.cn:1280",
+          "changeOrigin": true
         }
       }
     }

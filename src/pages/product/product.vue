@@ -54,10 +54,10 @@
 			</view> -->
       <!-- <text class="tit">该商品分享可领49减10红包</text>
 			<text class="yticon icon-bangzhu1"></text> -->
-      <view class="share-btn">
+      <!-- <view class="share-btn">
         立即分享
         <text class="yticon icon-you"></text>
-      </view>
+      </view> -->
     </view>
 
     <view class="c-list">
@@ -127,9 +127,7 @@
           <text class="con">{{ showDiscuss.comment || "" }}</text>
           <view class="bot">
             <!-- <text class="attr">购买类型：XL 红色</text> -->
-            <text class="time">{{
-              showDiscuss.time | formatTime
-            }}</text>
+            <text class="time">{{ showDiscuss.time | formatTime }}</text>
           </view>
         </view>
       </view>
@@ -169,14 +167,14 @@
       <view class="action-btn-group" v-else>
         <button
           type="primary"
-          class=" action-btn no-border buy-now-btn"
+          class="action-btn no-border buy-now-btn"
           @click="toggleSpec(true)"
         >
           立即购买
         </button>
         <button
           type="primary"
-          class=" action-btn no-border add-cart-btn"
+          class="action-btn no-border add-cart-btn"
           @click="toggleSpec(false)"
         >
           加入购物车
@@ -336,7 +334,7 @@ export default {
       showDiscuss: {
         author: "",
         comment: "",
-        time: 0
+        time: 0,
       },
       shareQrcode: "",
       qrcodeRequesting: false,
@@ -373,10 +371,10 @@ export default {
     return {
       title: that.name,
       path: "/pages/product/product?id=" + that.productId,
-      success: function() {
+      success: function () {
         console.log("成功");
       },
-      fail: function() {
+      fail: function () {
         console.log("失败");
       },
     };
@@ -491,7 +489,7 @@ export default {
       uni.setStorage({
         key: "spread",
         data: uid,
-        success: function() {
+        success: function () {
           console.log("set spread success");
         },
       });
@@ -569,11 +567,11 @@ export default {
         .then((res) => {
           if (res.return_code === "0000") {
             let html = res.data.html;
-            // let newHtml = html.replace(/(<img)(.*?)(>)/g, function (...args) {
-            // 	return args[1] + args[2] + " style=\"width: 100%\"" + args[3];
-            // });
-            // let nodes = htmlParser(newHtml);
-            let nodes = htmlParser(html);
+            let newHtml = html.replace(/(<img)(.*?)(>)/g, function (...args) {
+              return args[1] + args[2] + ' style="width: 100%"' + args[3];
+            });
+            let nodes = htmlParser(newHtml);
+            // let nodes = htmlParser(html);
             that.desc = nodes ? nodes : [];
           } else {
             console.log(res.return_msg);
@@ -1021,7 +1019,7 @@ export default {
               itemsCount: res.data.cartCount,
             });
             if (that.isFastbuy) {
-              setTimeout(function() {
+              setTimeout(function () {
                 uni.navigateTo({
                   url: `/pages/order/createOrder?fastbuy=1`,
                 });
